@@ -82,7 +82,7 @@ terraform {
 
 # DynamoDB Example
 resource "aws_dynamodb_table" "example" {
-  name           = "Bryon-Table-${random_pet.name.id}"
+  name           = "BoB-Table-${random_pet.name.id}"
   billing_mode   = "PROVISIONED"
   read_capacity  = 5
   write_capacity = 5
