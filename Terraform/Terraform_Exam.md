@@ -119,12 +119,11 @@
     ```
     </details>
 
-
-
-
-
-
 ### 2. Understand Terraform’s purpose (vs other IaC) <br>
+
+
+
+
 ### 3. Understand Terraform basics <br>
 ### 4. Use the Terraform CLI (outside of core workflow) <br>
 ### 5. Interact with Terraform modules <br>
