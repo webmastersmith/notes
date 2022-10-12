@@ -82,7 +82,7 @@ terraform {
 ### Terraform Cloud
 
 - cannot include a backend block
-- terraform workspace show # show which workspace your using. 'default' is default
+- `terraform workspace show` # show which workspace your using. 'default' is default
 - to start using
   - terraform login
     - add credentials
