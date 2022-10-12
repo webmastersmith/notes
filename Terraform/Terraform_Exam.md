@@ -10,7 +10,7 @@
 
 
 
-### Understand infrastructure as code (IaC) concepts <br>
+### 1. Understand infrastructure as code (IaC) concepts <br>
 - **Explain what IaC is**
   <details>
   <summary>show answer</summary>
@@ -37,9 +37,9 @@
 
 
 
-### Understand Terraform’s purpose (vs other IaC) <br>
-### Understand Terraform basics <br>
-### Use the Terraform CLI (outside of core workflow) <br>
+### 2. Understand Terraform’s purpose (vs other IaC) <br>
+### 3. Understand Terraform basics <br>
+### 4. Use the Terraform CLI (outside of core workflow) <br>
 ### Interact with Terraform modules <br>
 ### Navigate Terraform workflow <br>
 ### Implement and maintain state <br>
