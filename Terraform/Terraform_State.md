@@ -31,6 +31,7 @@ moved {
 **cloud state backup/management**
 
 - [Getting-Started](https://learn.hashicorp.com/tutorials/terraform/aws-remote?in=terraform/aws-get-started)
+- [S3](https://developer.hashicorp.com/terraform/language/settings/backends/s3)
 - terraform login //paste token when asked.
 - add aws credentials to cloud
 
@@ -46,6 +47,7 @@ terraform {
 
 # or aws s3 bucket
   backend "s3" {
+    encrypt = true
     bucket = "terra-ptkgux"
     key    = "terraform/terraform.tfstate"
     region = "us-east-1"  # cannot be a variable
@@ -62,6 +64,7 @@ terraform {
 - remote state
   - [Locking State Hashicorp](https://developer.hashicorp.com/terraform/language/state/locking)
   - [s3 must add DynamoDB table name](https://developer.hashicorp.com/terraform/language/settings/backends/s3)
+    - The DynomoDB table must have a partition key named `LockID` with type of `String`. If not configured, state locking will be disabled.
   - terraform cloud # automatic versioning
 
 ```hcl
@@ -71,11 +74,32 @@ terraform {
     bucket = "terra-ptkgux"
     key    = "terraform/terraform.tfstate"
     dynamodb_table = "your dynamodb table name"  # to lock state when multiple people use it.
-    region = "us-east-1"  #cannot be a variable
+    region = "us-east-1"  # cannot be a variable
   }
   required_providers {
     aws = { ... }
 }
+
+# DynamoDB Example
+resource "aws_dynamodb_table" "example" {
+  name           = "Bryon-Table-${random_pet.name.id}"
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 5
+  write_capacity = 5
+  hash_key       = "LockID" # must be LockID or Terraform will error.
+
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
+
+  tags = {
+    Architect = "BoB"
+    Zone      = "Ohio"
+    Managed   = "Terraform"
+  }
+}
+
 
 ```
 
