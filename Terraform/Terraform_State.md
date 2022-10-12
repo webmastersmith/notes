@@ -45,7 +45,6 @@ terraform {
   backend "s3" {
     bucket = "terra-ptkgux"
     key    = "terraform/terraform.tfstate"
-    dynamodb_table = "your dynamodb table name"  # to lock state when multiple people use it.
     region = "us-east-1"  #cannot be a variable
   }
   required_providers {
@@ -91,9 +90,9 @@ terraform {
 ```hcl
 terraform {
  cloud {
-  organization = "your organization name on terraform cloud"
+  organization = "My-Org"  # must exist before terraform init
   workspaces {
-    name = "Devops-Production"  # create name here, then the workspace on cloud will be named this.
+    name = "Devops-Production"  # name must NOT exist.
   }
  }
 }
