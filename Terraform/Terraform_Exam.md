@@ -10,5 +10,40 @@
 
 
 
+### Understand infrastructure as code (IaC) concepts
+- **Explain what IaC is:**
+  <details>
+  <summary>show answer1</summary>
 
+  - managing and provisioning of infrastructure through code.
+  - easier to edit and distribute configurations. share and automate code.
+  - avoid undocumented changes and code duplication errors.
+  - version control. divide your infrastructure into modular components.
+  </details><br>
+
+- **Describe the advantages of IaC patterns**
+<details>
+<summary>show answer</summary>
+
+- managing and provisioning of infrastructure through code.
+- easier to edit and distribute configurations. share and automate code.
+- avoid undocumented changes and code duplication errors.
+- version control. divide your infrastructure into modular components.
+</details>
+
+
+
+
+
+
+
+
+### Understand Terraform’s purpose (vs other IaC)
+### Understand Terraform basics
+### Use the Terraform CLI (outside of core workflow)
+### Interact with Terraform modules
+### Navigate Terraform workflow
+### Implement and maintain state
+### Read, generate, and modify the configuration
+### Understand Terraform Cloud and Enterprise capabilities
 
