@@ -24,14 +24,14 @@
   <details>
   <summary>show answer</summary>
 
-  ```txt
+  <pre>
   **a. Automation**
   We can bring up the servers with one script and scale up and down based on our load with the same script. <br>
   **b. Reusability of the code**
   We can reuse the same code <br>
   **c. Versioning**
   We can check it into version control and we get versioning. Now we can see an incremental history of who changed what, how is our infrastructure actually defined at any given point of time, and wehave this transparency of documentationIaC makes changes idempotent, consistent, repeatable, and predictable.
-  ```
+  </pre>
   </details><br>
 
 
