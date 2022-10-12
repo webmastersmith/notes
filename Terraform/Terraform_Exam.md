@@ -10,9 +10,10 @@
 
 
 
-### 1. Understand infrastructure as code (IaC) concepts <br>
+### Understand infrastructure as code (IaC) concepts <br>
   - Explain what IaC is
   - Describe the advantages of IaC patterns<br>
+
 1. **What is Infrastructure as Code?**
   <details>
   <summary>show answer</summary>
