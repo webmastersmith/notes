@@ -61,6 +61,29 @@
     ```
     </details>
 
+**5. What are Day 0 and Day 1 activities?**
+    <details>
+    <summary>show answer</summary>
+
+    ```txt
+    IaC can be applied throughout the lifecycle, both on the initial build, as well as throughout the life of the infrastructure. Commonly, these are referred to as Day 0 and Day 1 activities.
+
+    “Day 0” code provisions and configures your initial infrastructure.
+    “Day 1” refers to OS and application configurations you apply after you’ve initially built your infrastructure.
+    ```
+    </details>
+
+**6. What are the use cases of Terraform?**
+    <details>
+    <summary>show answer</summary>
+
+    ```txt
+    IaC can be applied throughout the lifecycle, both on the initial build, as well as throughout the life of the infrastructure. Commonly, these are referred to as Day 0 and Day 1 activities.
+
+    “Day 0” code provisions and configures your initial infrastructure.
+    “Day 1” refers to OS and application configurations you apply after you’ve initially built your infrastructure.
+    ```
+    </details>
 
 
 
