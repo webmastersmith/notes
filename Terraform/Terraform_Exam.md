@@ -24,7 +24,7 @@
   <details>
   <summary>show answer</summary>
 
-  <pre>
+  <pre><code>
   **a. Automation**
   We can bring up the servers with one script and scale up and down based on our load with the same script. <br>
   **b. Reusability of the code**
