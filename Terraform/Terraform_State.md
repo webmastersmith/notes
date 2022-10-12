@@ -9,7 +9,9 @@
 terraform init -reconfigure
 ```
 
-**Migrate state**
+[**Migrate state**](https://developer.hashicorp.com/terraform/tutorials/cloud/cloud-migrate)
+
+- you must comment out `backend blocks`
 
 ```hcl
 terraform init -migrate-state  # pull remote state to local, if state local add to remote.
@@ -50,7 +52,7 @@ terraform {
     encrypt = true
     bucket = "terra-ptkgux"
     key    = "terraform/terraform.tfstate"
-    region = "us-east-1"  # cannot be a variable
+    region = "us-east-2"  # cannot be a variable
   }
   required_providers {
     aws = {
@@ -66,6 +68,8 @@ terraform {
   - [s3 must add DynamoDB table name](https://developer.hashicorp.com/terraform/language/settings/backends/s3)
     - The DynomoDB table must have a partition key named `LockID` with type of `String`. If not configured, state locking will be disabled.
   - terraform cloud # automatic versioning
+  - Disable locking
+    - `-lock=false` Disable locking of state files during state-related operations
 
 ```hcl
 # S3
