@@ -42,16 +42,22 @@
     <details>
     <summary>show answer</summary>
 
-    <pre>
-    <b>a. Automation</b>
-    We can bring up the servers with one script and scale up and down based on our load with the same script. <br>
-    <b>b. Reusability of the code</b>
-    We can reuse the same code <br>
-    <b>c. Versioning</b>
-    We can check it into version control and we get versioning. 
-    Now we can see an incremental history of who changed what, how is our infrastructure actually defined at any given point of time, and we have this transparency of documentationIaC makes changes idempotent, consistent, repeatable, and predictable.
-    </pre>
+    ```txt
+    IaC makes it easy to provision and apply infrastructure configurations, saving time. It standardizes workflows across different infrastructure providers (e.g., VMware, AWS, Azure, GCP, etc.) by using a common syntax across all of them.
+    ```
     </details>
+
+4. **What is Ideompodent in terms of IaC?**
+    <details>
+    <summary>show answer</summary>
+
+    ```txt
+    IaC can be applied throughout the lifecycle, both on the initial build, as well as throughout the life of the infrastructure. Commonly, these are referred to as Day 0 and Day 1 activities. 
+    “Day 0” code provisions and configures your initial infrastructure.
+    “Day 1” refers to OS and application configurations you apply after you’ve initially built your infrastructure.
+    ```
+    </details>
+
 
 
 
