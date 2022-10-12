@@ -31,7 +31,6 @@ moved {
 **cloud state backup/management**
 
 - [Getting-Started](https://learn.hashicorp.com/tutorials/terraform/aws-remote?in=terraform/aws-get-started)
-- [Locking](https://developer.hashicorp.com/terraform/language/state/locking)
 - terraform login //paste token when asked.
 - add aws credentials to cloud
 
@@ -49,7 +48,7 @@ terraform {
   backend "s3" {
     bucket = "terra-ptkgux"
     key    = "terraform/terraform.tfstate"
-    region = "us-east-1"  #cannot be a variable
+    region = "us-east-1"  # cannot be a variable
   }
   required_providers {
     aws = {
@@ -61,6 +60,7 @@ terraform {
 
 - local state, locking is performed by default.
 - remote state
+  - [Locking State Hashicorp](https://developer.hashicorp.com/terraform/language/state/locking)
   - [s3 must add DynamoDB table name](https://developer.hashicorp.com/terraform/language/settings/backends/s3)
   - terraform cloud # automatic versioning
 
