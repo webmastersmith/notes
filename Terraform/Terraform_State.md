@@ -41,7 +41,7 @@ moved {
 terraform {
 # terraform online storage  # Terraform versions older than 1.1 use the remote backend block else use terraform cloud
   backend "remote" {
-    organization = "Batch22"  # must already exist
+    organization = "My-Org"  # must already exist
     workspaces {
       name = "Batch_Terraform_Workspace"  # can't already exist
     }
@@ -78,7 +78,7 @@ terraform {
     bucket = "terra-ptkgux"
     key    = "terraform/terraform.tfstate"
     dynamodb_table = "your dynamodb table name"  # to lock state when multiple people use it.
-    region = "us-east-1"  # cannot be a variable
+    region = "us-east-2"  # cannot be a variable
   }
   required_providers {
     aws = { ... }
@@ -110,7 +110,7 @@ resource "aws_dynamodb_table" "example" {
 ### [Terraform Cloud](https://developer.hashicorp.com/terraform/tutorials/cloud/cloud-migrate)
 
 - Terraform versions older than 1.1 use the `remote backend block`
-- cannot include a backend block.
+- cannot include a `backend block`.
 - automatic state locking.
 - `terraform workspace show` # show which workspace your using. 'default' is default
 - to start using
