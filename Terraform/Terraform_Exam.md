@@ -21,7 +21,7 @@
     ```txt
     You write and execute the code to define, deploy, update, and destroy your infrastructure.
       ```
-    </details><br>
+    </details>
 
 2. **What are the benefits of IaC?**
     <details>
@@ -36,7 +36,7 @@
     We can check it into version control and we get versioning. 
     Now we can see an incremental history of who changed what, how is our infrastructure actually defined at any given point of time, and we have this transparency of documentationIaC makes changes idempotent, consistent, repeatable, and predictable.
     </pre>
-    </details><br>
+    </details>
 
 3. **How using IaC make it easy to provision infrastructure?**
     <details>
@@ -51,7 +51,7 @@
     We can check it into version control and we get versioning. 
     Now we can see an incremental history of who changed what, how is our infrastructure actually defined at any given point of time, and we have this transparency of documentationIaC makes changes idempotent, consistent, repeatable, and predictable.
     </pre>
-    </details><br>
+    </details>
 
 
 
