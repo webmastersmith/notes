@@ -62,6 +62,7 @@ terraform {
 
 ```hcl
 # S3
+terraform {
   backend "s3" {
     bucket = "terra-ptkgux"
     key    = "terraform/terraform.tfstate"
@@ -69,8 +70,7 @@ terraform {
     region = "us-east-1"  #cannot be a variable
   }
   required_providers {
-    aws = {
-  ...
+    aws = { ... }
 }
 
 ```
