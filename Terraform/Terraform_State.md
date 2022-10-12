@@ -2,8 +2,9 @@
 
 - production environment with multiple teams, need remote state
 - avoid race condition -solution restore state remotely
+- [Pros / Cons](https://blog.gruntwork.io/how-to-manage-terraform-state-28f5697e68fa)
 
-**Remote state changed**
+**Remote state module version changed**
 
 ```hcl
 terraform init -reconfigure
@@ -19,6 +20,7 @@ terraform init -migrate-state  # pull remote state to local, if state local add 
 
 ### [Updating Resource Names](https://blog.gruntwork.io/terraform-up-running-3rd-edition-is-now-published-4b99804d922a)
 
+- [Move Resources](https://developer.hashicorp.com/terraform/cli/commands/state/mv)
 - Any time you refactor your code, you should add a moved block to capture how the state should be updated. You can add the moved block in any .tf file in your Terraform code, though to make them easier to find, you may wish to pick a convention, such as putting all moved blocks in a moved.tf file.
 
 ```hcl
@@ -27,6 +29,10 @@ moved {
   to   = aws_instance.jenkins
 }
 ```
+
+### [Move, Concat, Add State](https://lgallardo.com/2019/06/25/how-to-migrate-terraform-remote-tfstates/)
+
+- `terraform state pull > ./someFile.tfstate` # get remote/local state
 
 ### Backup State
 
@@ -107,15 +113,17 @@ resource "aws_dynamodb_table" "example" {
 
 ```
 
-### [Terraform Cloud](https://developer.hashicorp.com/terraform/tutorials/cloud/cloud-migrate)
+### [Terraform Cloud](https://developer.hashicorp.com/terraform/cli/cloud)
 
+- [Migrate State](https://developer.hashicorp.com/terraform/tutorials/cloud/cloud-migrate)
+- [Initializing and Migrating](https://developer.hashicorp.com/terraform/cli/cloud/migrating)
 - Terraform versions older than 1.1 use the `remote backend block`
 - cannot include a `backend block`.
 - automatic state locking.
 - `terraform workspace show` # show which workspace your using. 'default' is default
 - to start using
   - terraform login
-    - add credentials
+    - [add credentials](https://developer.hashicorp.com/terraform/cli/config/config-file#credentials-1)
     - when you terraform cloud gives you a token, it is stored in a json file: **~/.terraform.d/credentials.tfrc.json**
     - now you can run: `terraform apply`
 
@@ -129,3 +137,12 @@ terraform {
  }
 }
 ```
+
+[**Migrate Terraform Cloud State Back to Local**](https://developer.hashicorp.com/terraform/cloud-docs/api-docs/state-versions)
+
+- [Migrate State off Terraform Cloud](https://nedinthecloud.com/2022/03/03/migrating-state-data-off-terraform-cloud/)
+
+1. `terraform state pull > ./terraform.tfstate`
+2. remove `.terraform` folder and `.terraform.lock.hcl` file
+3. comment out the `cloud block`
+4. `terraform init`
