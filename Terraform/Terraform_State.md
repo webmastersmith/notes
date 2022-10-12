@@ -1,19 +1,21 @@
 # Terraform State
 
-- production enviroment with multiple teams, need remote state
+- production environment with multiple teams, need remote state
 - avoid race condition -solution restore state remotely
 
-remote state changed
+**Remote state changed**
+
 ```hcl
 terraform init -reconfigure
 ```
 
-migrate state
+**Migrate state**
+
 ```hcl
 terraform init -migrate-state  # pull remote state to local, if state local add to remote.
 ```
 
-**[updating resource names](https://blog.gruntwork.io/terraform-up-running-3rd-edition-is-now-published-4b99804d922a)**
+### [Updating Resource Names](https://blog.gruntwork.io/terraform-up-running-3rd-edition-is-now-published-4b99804d922a)
 
 - Any time you refactor your code, you should add a moved block to capture how the state should be updated. You can add the moved block in any .tf file in your Terraform code, though to make them easier to find, you may wish to pick a convention, such as putting all moved blocks in a moved.tf file.
 
@@ -24,11 +26,13 @@ moved {
 }
 ```
 
-## Backup State
+### Backup State
+
 **cloud state backup/management**
+
 - [Getting-Started](https://learn.hashicorp.com/tutorials/terraform/aws-remote?in=terraform/aws-get-started)
 - [Locking](https://developer.hashicorp.com/terraform/language/state/locking)
-- terraform login  //paste token when asked.
+- terraform login //paste token when asked.
 - add aws credentials to cloud
 
 ```hcl
@@ -53,11 +57,12 @@ terraform {
 }
 ```
 
-**Locking State**
+### Locking State
+
 - local state, locking is performed by default.
 - remote state
   - [s3 must add DynamoDB table name](https://developer.hashicorp.com/terraform/language/settings/backends/s3)
-  - terraform cloud  # automatic versioning
+  - terraform cloud # automatic versioning
 
 ```hcl
 # S3
@@ -74,13 +79,10 @@ terraform {
 
 ```
 
+### Terraform Cloud
 
-
-
-
-**Terraform Cloud**
 - cannot include a backend block
-- terraform workspace show  # show which workspace your using.  'default' is default
+- terraform workspace show # show which workspace your using. 'default' is default
 - to start using
   - terraform login
     - add credentials
