@@ -81,13 +81,14 @@ terraform {
 
 ### Terraform Cloud
 
-- cannot include a backend block
+- cannot include a backend block.
+- automatic state locking.
 - `terraform workspace show` # show which workspace your using. 'default' is default
 - to start using
   - terraform login
     - add credentials
-    - when you add token, creates jason file: **~/.terraform.d/credentials.tfrc.json**
-    - now you can run: terraform apply
+    - when you terraform cloud gives you a token, it is stored in a json file: **~/.terraform.d/credentials.tfrc.json**
+    - now you can run: `terraform apply`
 
 ```hcl
 terraform {
