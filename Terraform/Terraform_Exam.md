@@ -16,8 +16,9 @@
   <summary>show answer</summary>
 
 ```txt
-  You write and execute the code to define, deploy, update, and destroy your infrastructure.
+You write and execute the code to define, deploy, update, and destroy your infrastructure.
   ```
+
   </details><br>
 
 - **Describe the advantages of IaC patterns**
@@ -32,6 +33,7 @@ We can reuse the same code
 c. Versioning
 We can check it into version control and we get versioning. Now we can see an incremental history of who changed what, how is our infrastructure actually defined at any given point of time, and wehave this transparency of documentationIaC makes changes idempotent, consistent, repeatable, and predictable.
  ```
+ 
   </details><br>
 
 
