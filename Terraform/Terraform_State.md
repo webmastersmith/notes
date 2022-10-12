@@ -11,7 +11,7 @@ terraform init -reconfigure
 
 [**Migrate state**](https://developer.hashicorp.com/terraform/tutorials/cloud/cloud-migrate)
 
-- you must comment out `backend blocks`
+- you must add/remove `backend blocks` before running `terraform init -migrate-state`
 
 ```hcl
 terraform init -migrate-state  # pull remote state to local, if state local add to remote.
@@ -39,7 +39,7 @@ moved {
 
 ```hcl
 terraform {
-# terraform online storage
+# terraform online storage  # Terraform versions older than 1.1 use the remote backend block else use terraform cloud
   backend "remote" {
     organization = "Batch22"  # must already exist
     workspaces {
@@ -107,8 +107,9 @@ resource "aws_dynamodb_table" "example" {
 
 ```
 
-### Terraform Cloud
+### [Terraform Cloud](https://developer.hashicorp.com/terraform/tutorials/cloud/cloud-migrate)
 
+- Terraform versions older than 1.1 use the `remote backend block`
 - cannot include a backend block.
 - automatic state locking.
 - `terraform workspace show` # show which workspace your using. 'default' is default
