@@ -15,10 +15,11 @@
   <details>
   <summary>show answer</summary>
 
-  - managing and provisioning of infrastructure through code.
-  - easier to edit and distribute configurations. share and automate code.
-  - avoid undocumented changes and code duplication errors.
-  - version control. divide your infrastructure into modular components.
+  - You write and execute the code to define, deploy, update, and destroy your infrastructure.
+    - managing and provisioning of infrastructure through code.
+    - easier to edit and distribute configurations. share and automate code.
+    - avoid undocumented changes and code duplication errors.
+    - version control. divide your infrastructure into modular components.
   </details><br>
 
 - **Describe the advantages of IaC patterns**
@@ -40,9 +41,9 @@
 ### 2. Understand Terraform’s purpose (vs other IaC) <br>
 ### 3. Understand Terraform basics <br>
 ### 4. Use the Terraform CLI (outside of core workflow) <br>
-### Interact with Terraform modules <br>
-### Navigate Terraform workflow <br>
-### Implement and maintain state <br>
-### Read, generate, and modify the configuration <br>
-### Understand Terraform Cloud and Enterprise capabilities <br>
+### 5. Interact with Terraform modules <br>
+### 6. Navigate Terraform workflow <br>
+### 7. Implement and maintain state <br>
+### 8. Read, generate, and modify the configuration <br>
+### 9. Understand Terraform Cloud and Enterprise capabilities <br>
 
