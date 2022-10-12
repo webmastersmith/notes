@@ -11,7 +11,9 @@
 
 
 ### 1. Understand infrastructure as code (IaC) concepts <br>
-- **Explain what IaC is**
+  - Explain what IaC is
+  - Describe the advantages of IaC patterns<br>
+1. **What is Infrastructure as Code?**
   <details>
   <summary>show answer</summary>
 
@@ -20,7 +22,7 @@
     ```
   </details><br>
 
-- **Describe the advantages of IaC patterns**
+2. **What are the benefits of IaC?**
   <details>
   <summary>show answer</summary>
 
@@ -35,6 +37,20 @@
   </pre>
   </details><br>
 
+3. **How using IaC make it easy to provision infrastructure?**
+  <details>
+  <summary>show answer</summary>
+
+  <pre>
+  <b>a. Automation</b>
+  We can bring up the servers with one script and scale up and down based on our load with the same script. <br>
+  <b>b. Reusability of the code</b>
+  We can reuse the same code <br>
+  <b>c. Versioning</b>
+  We can check it into version control and we get versioning. 
+  Now we can see an incremental history of who changed what, how is our infrastructure actually defined at any given point of time, and we have this transparency of documentationIaC makes changes idempotent, consistent, repeatable, and predictable.
+  </pre>
+  </details><br>
 
 
 
