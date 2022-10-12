@@ -78,12 +78,47 @@
     <summary>show answer</summary>
 
     ```txt
-    IaC can be applied throughout the lifecycle, both on the initial build, as well as throughout the life of the infrastructure. Commonly, these are referred to as Day 0 and Day 1 activities.
-
-    "Day 0" code provisions and configures your initial infrastructure.
-    "Day 1" refers to OS and application configurations you apply after you've initially built your infrastructure.
+    Heroku App Setup
+    Multi-Tier Applications
+    Self-Service Clusters
+    Software Demos
+    Disposable Environments
+    Software Defined Networking
+    Resource Schedulers
+    Multi-Cloud Deployment
+    https://www.terraform.io/intro/use-cases.html
     ```
     </details>
+
+7. **What are the advantages of Terraform?**
+    <details>
+    <summary>show answer</summary>
+
+    ```txt
+    Platform Agnostic
+    State Management
+    Operator Confidencehttps://learn.hashicorp.com/terraform/getting-started/intro
+    ```
+    </details>
+
+8. **Where do you describe all the components or your entire data center so that Terraform provision those?**
+    <details>
+    <summary>show answer</summary>
+
+    ```txt
+    Configuration files ends with *.tf
+    ```
+    </details>
+
+9. **How can Terraform build infrastructure so efficiently?**
+    <details>
+    <summary>show answer</summary>
+
+    ```txt
+    Terraform builds a graph of all your resources, and parallelizes the creation and modification of any non-dependent resources. Because of this, Terraform builds infrastructure as efficiently as possible, and operators get insight into dependencies in their infrastructure.
+    ```
+    </details>
+
 
 
 
