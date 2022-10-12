@@ -34,7 +34,7 @@ name = "my_secret-${random_string.suffix.result}"  # or id
 
 ```HCL
 resource "random_pet" "name" {
-  length = 1
+  length = 1  # how many words, separated by -
 }
 
 Name = "web-server-${random_pet.name.id}"
