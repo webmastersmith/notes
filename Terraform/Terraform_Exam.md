@@ -30,7 +30,7 @@
   <b>b. Reusability of the code</b>
   We can reuse the same code <br>
   <b>c. Versioning</b>
-  `We can check it into version control and we get versioning. Now we can see an incremental history of who changed what, how is our infrastructure actually defined at any given point of time, and we have this transparency of documentationIaC makes changes idempotent, consistent, repeatable, and predictable.`
+  ```We can check it into version control and we get versioning. Now we can see an incremental history of who changed what, how is our infrastructure actually defined at any given point of time, and we have this transparency of documentationIaC makes changes idempotent, consistent, repeatable, and predictable.`
   </pre>
   </details><br>
 
