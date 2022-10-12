@@ -1,4 +1,4 @@
-# Terraform Exam
+# Terraform Exam Study Guide
 
 **[Hashicorp Infrastructure Automation Certification](https://www.hashicorp.com/certification/terraform-associate)**
 
@@ -11,8 +11,8 @@
 
 
 ### Understand infrastructure as code (IaC) concepts <br>
-  - Explain what IaC is
-  - Describe the advantages of IaC patterns<br>
+- Explain what IaC is
+- Describe the advantages of IaC patterns<br>
 
 1. **What is Infrastructure as Code?**
     <details>
