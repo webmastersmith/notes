@@ -15,13 +15,13 @@
   - Describe the advantages of IaC patterns<br>
 
 1. **What is Infrastructure as Code?**
-  <details>
-  <summary>show answer</summary>
+    <details>
+    <summary>show answer</summary>
 
-  ```txt
-  You write and execute the code to define, deploy, update, and destroy your infrastructure.
-    ```
-  </details><br>
+    ```txt
+    You write and execute the code to define, deploy, update, and destroy your infrastructure.
+      ```
+    </details><br>
 
 2. **What are the benefits of IaC?**
   <details>
