@@ -109,9 +109,9 @@ resource "aws_dynamodb_table" "example" {
     Managed   = "Terraform"
   }
 }
-
-
 ```
+
+# [Force Unlock](https://developer.hashicorp.com/terraform/language/state/locking#force-unlock)
 
 ### [Terraform Cloud](https://developer.hashicorp.com/terraform/cli/cloud)
 
