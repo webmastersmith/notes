@@ -76,6 +76,7 @@ terraform {
   - terraform cloud # automatic versioning
   - Disable locking
     - `-lock=false` Disable locking of state files during state-related operations
+    - [Force Unlock](https://developer.hashicorp.com/terraform/language/state/locking#force-unlock)
 
 ```hcl
 # S3
@@ -110,8 +111,6 @@ resource "aws_dynamodb_table" "example" {
   }
 }
 ```
-
-### [Force Unlock](https://developer.hashicorp.com/terraform/language/state/locking#force-unlock)
 
 ### [Terraform Cloud](https://developer.hashicorp.com/terraform/cli/cloud)
 
