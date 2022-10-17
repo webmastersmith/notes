@@ -7,7 +7,7 @@
 **for k in obj**
 
 - will iterate over prototype (inherited properties). Use Object.hasOwn(key)
-  - You don't need to check hasOwnProperty when iterating on keys if you're using a simple object (for example one you made yourself with {}).
+  - You don't need to check `hasOwnProperty` when iterating on keys if you're using a simple object (for example one you made yourself with {}).
 
 ```js
 for (const key in obj) {
