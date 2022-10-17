@@ -5,8 +5,13 @@
 **Array to Object\*\***
 
 ```js
+// reduce
 ["a", "b", "c"].reduce((a, v) => ({ ...a, [v]: v }), {}); // { a: "a", b: "b", c: "c" }
+
+// spread
 {...["a", "b", "c"]} // { '0': 'a', '1':'b', '2':'c'}
+
+// Object.assign
 Object.assign({}, ["a", "b", "c"]) // {'0':'a', '1':'b', '2':'c'}
 ```
 
@@ -24,6 +29,8 @@ Object.assign({}, ["a", "b", "c"]) // {'0':'a', '1':'b', '2':'c'}
 ```js
 // spread operator
 [..."abc"]; // ['a','b','c']
+
+// split
 const a = "abc".split(""); // ['a','b','c']
 ```
 
