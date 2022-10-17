@@ -24,10 +24,10 @@
 const a = "abc".split(""); // ['a','b','c']
 ```
 
-**Array to String**
+**[Array to String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join)**
 
 ```js
-const str = [1, 2, 3].join(""); // '123'
+const str = [1, 2, 3].join(""); // '123' // default is ','
 ```
 
 ## Methods and Properties
