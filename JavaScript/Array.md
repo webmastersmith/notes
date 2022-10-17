@@ -4,11 +4,12 @@
 
 **Array to Object\*\***
 
-- Object.assign({}, arr) // {0:'a', 1:'b'}
+-
 
 ```js
 ["a", "b", "c"].reduce((a, v) => ({ ...a, [v]: v }), {}); // { a: "a", b: "b", c: "c" }
 {...["a", "b", "c"]} // { '0': 'a', '1':'b', '2':'c'}
+Object.assign({}, ["a", "b", "c"]) // {'0':'a', '1':'b', '2':'c'}
 ```
 
 - spread
