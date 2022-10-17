@@ -24,6 +24,12 @@
 const a = "abc".split(""); // ['a','b','c']
 ```
 
+**Array to String**
+
+```js
+const str = [1, 2, 3].join(""); // '123'
+```
+
 ## Methods and Properties
 
 - **[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)**
