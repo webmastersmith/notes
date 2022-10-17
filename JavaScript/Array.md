@@ -23,3 +23,7 @@
 [..."abc"]; // ['a','b','c']
 const a = "abc".split(""); // ['a','b','c']
 ```
+
+## Methods and Properties
+
+- **[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)**
