@@ -26,15 +26,15 @@
 
 ## NPM Flags
 
--v = version
--g = global
--l = full help
--S = --save-prod
--D = --save-dev
--O = --save-optional
---no-save
-i = install
-r = uninstall
+- -v = version
+- -g = global
+- -l = full help
+- -S = --save-prod
+- -D = --save-dev
+- -O = --save-optional
+- --no-save
+- i = install
+- r = uninstall
 
 ## Delete node_modules
 
@@ -136,7 +136,9 @@ Clear the cache
 npm cache clear -f
 
 **Clear NPX cache**
-Remove-Item -Recurse -Force $env:LOCALAPPDATA/npm-cache/\_npx
+
+- Windows Powershell
+  - `Remove-Item -Recurse -Force $env:LOCALAPPDATA/npm-cache/\_npx`
 
 **Global install**
 npm install live-server -g
@@ -155,11 +157,3 @@ npm run script-name
     "dev": "webpack --mode development",
     "build": "webpack --mode production"
   },
-
-**NPM Run two consecutive items:**
-pre infront of same name as other script name will run first.
-"scripts": {
-"start": "react-scripts start",
-"predeploy": "npm run build", <----------- #1
-"deploy": "gh-pages -d build", <---------- #2
-},

@@ -4,7 +4,7 @@
 
 ```sh
 npm init
-npm install -D typescript @types/node
+npm install -D typescript @types/node # cannot be global
 ```
 
 [`tsconfig.json`](https://www.typescriptlang.org/tsconfig) // tsc --init -will output default config.
@@ -32,7 +32,7 @@ npm install -D typescript @types/node
 {
   "baseUrl": ".",
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "esnext",
     "esModuleInterop": true,
     "target": "esnext",
     "moduleResolution": "node",
@@ -40,7 +40,7 @@ npm install -D typescript @types/node
     "sourceMap": true,
     "outDir": "dist"
   },
-  "lib": ["es2021"],
+  "lib": ["esnext"],
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
