@@ -34,10 +34,12 @@ npm install -D typescript @types/node # cannot be global
   "compilerOptions": {
     "module": "commonjs",
     "esModuleInterop": true,
-    "target": "esnext",
+    "forceConsistentCasingInFileNames": true,
+    "target": "es2016",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "sourceMap": true,
+    "strict": true,
+    "skipLibCheck": true,
     "outDir": "dist"
   },
   "lib": ["esnext"],
