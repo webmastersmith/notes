@@ -51,7 +51,7 @@ module.exports = {
 }
 ```
 
-**Typescript**
+## Typescript
 
 **tsconfig.json**
 

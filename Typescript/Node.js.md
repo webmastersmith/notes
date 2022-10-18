@@ -32,7 +32,7 @@ npm install -D typescript @types/node # cannot be global
 {
   "baseUrl": ".",
   "compilerOptions": {
-    "module": "esnext",
+    "module": "commonjs",
     "esModuleInterop": true,
     "target": "esnext",
     "moduleResolution": "node",
