@@ -62,6 +62,18 @@ module.exports = {
 "include": ["src"],
 ```
 
+**package.json**
+
+- `npm start`
+- `npm run build`
+
+```json
+"scripts": {
+    "start": "ts-node ./src/index.ts",
+    "build": "tsc-watch --onsuccess \"node dist/index.js\""
+},
+```
+
 Typescript way of exporting is no default exports. To reference anything you can do: import { Todo } from 'action'
 action //folder structure
 |- index.ts
@@ -90,8 +102,8 @@ export enum ActionTypes { ... }
 ```json
 "scripts": {
   "prebuild": "echo I run before the build script",
-"build": "cross-env NODE_ENV=production webpack",
-"postbuild": "echo I run after the build script"
+  "build": "cross-env NODE_ENV=production webpack",
+  "postbuild": "echo I run after the build script"
 }
 ```
 
@@ -101,8 +113,8 @@ export enum ActionTypes { ... }
 
 ```json
 "scripts": {
-"start:build": "tsc -w",
-"start:run": "nodemon build/index.js",
-"start": "concurrently npm:start:\*"
+  "start:build": "tsc -w",
+  "start:run": "nodemon build/index.js",
+  "start": "concurrently npm:start:\*"
 },
 ```
