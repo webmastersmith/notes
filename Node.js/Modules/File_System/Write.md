@@ -59,9 +59,10 @@ const imgUrl = await page.$eval('.\_2UpQX', img => img.src);
 
 ## Synchronous
 
+- https://nodejs.org/api/fs.html#fs_fs_writefilesync_file_data_options
+
 ```js
 fs.writeFileSync()
-https://nodejs.org/api/fs.html#fs_fs_writefilesync_file_data_options
 fs.writeFileSync(file, data[, options])
 
 const data = new Uint8Array(Buffer.from('Hello Node.js'));
@@ -75,17 +76,20 @@ fs.writeFileSync('./newShopData.js', JSON.stringify(newShopData, null, 2))
 fs.writeFile
 
 ```js
-const fs = require("fs/promises");
-
+import { writeFile } from "node:fs/promises";
+// const fs = require("fs/promises");
 async function example() {
   try {
     const content = "Some content!";
-    await fs.writeFile("/Users/joe/test.txt", content);
+    await writeFile("/Users/joe/test.txt", content);
   } catch (err) {
-    console.log(err);
+    if (err instanceof Error) {
+      console.log(err);
+    } else {
+      console.log(String(err));
+    }
   }
 }
-example();
 ```
 
 ## Append File

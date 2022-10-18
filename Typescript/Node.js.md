@@ -1,10 +1,12 @@
 # Typescript Node
 
 - [Digitalocean setting-up-a-node-project-with-typescript](https://www.digitalocean.com/community/tutorials/setting-up-a-node-project-with-typescript)
+- [Node with Typescript](https://blog.appsignal.com/2022/01/19/how-to-set-up-a-nodejs-project-with-typescript.html)
 
 ```sh
 npm init
 npm install -D typescript @types/node # cannot be global
+tsc --init
 ```
 
 [`tsconfig.json`](https://www.typescriptlang.org/tsconfig) // tsc --init -will output default config.
