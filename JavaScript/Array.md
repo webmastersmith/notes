@@ -56,7 +56,7 @@ const str = [1, 2, 3].join(""); // '123' // default is ','
 - converts elements into strings, then get their UTF-16 Unicode code point value with `charCodeAt(0)` (0 is index of character from string).
   - sorts numbers, then alphabetically, Capital first then lowercase.
 - numbers are treated like letters: 9 > 80 // true. -because 9 is bigger than 8.
-  'a' > 'A' // true
+- 'a' > 'A' // true
 
 ```js
 arr.sort((a, b) => a - b); //number sort
