@@ -40,13 +40,13 @@ const a = "abc".split(""); // ['a','b','c']
 const str = [1, 2, 3].join(""); // '123' // default is ','
 ```
 
-## Methods and Properties
-
-- **[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)**
-
 ## Typed Arrays
 
 **[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Indexed_collections#typed_arrays)**
+
+## Methods and Properties
+
+- **[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)**
 
 ## Sort
 
