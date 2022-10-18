@@ -2,7 +2,8 @@
 
 - [Digitalocean setting-up-a-node-project-with-typescript](https://www.digitalocean.com/community/tutorials/setting-up-a-node-project-with-typescript)
 - `npm install -D typescript @types/node`
-- [tsconfig.json](https://www.typescriptlang.org/tsconfig) // tsc --init -will output default config.
+
+`[tsconfig.json](https://www.typescriptlang.org/tsconfig)` // tsc --init -will output default config.
 
 ```json
 {
