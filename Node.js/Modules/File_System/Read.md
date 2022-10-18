@@ -41,6 +41,7 @@ fs.readFile(cartPath, "utf-8", (err, data) => {
 import { readFileSync } from "node:fs";
 // const fs = require('fs')
 
+// you must use 'utf-8' else will get back buffer.
 const data = readFileSync("<directory>", "utf8"); // encoding default: null (buffer).
 ```
 
