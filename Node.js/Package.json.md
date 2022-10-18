@@ -53,8 +53,9 @@ module.exports = {
 
 **Typescript**
 
+**tsconfig.json**
+
 ```json
-tsconfig.json
 "compilerOptions": {
     "baseUrl": "src",
 }
