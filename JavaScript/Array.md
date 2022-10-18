@@ -48,7 +48,7 @@ const str = [1, 2, 3].join(""); // '123' // default is ','
 
 - **[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)**
 
-## Sort
+### Sort
 
 **[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)**
 
