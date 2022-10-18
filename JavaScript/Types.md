@@ -3,7 +3,7 @@
 ## Typeof
 
 - [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof)
-- Returns all 7 types +
+- Returns strings of all 7 types +
   - "function" // classes are functions as well.
   - "object" // all other objects.
 
@@ -11,15 +11,16 @@
 typeof obj; // returns a type as a string
 ```
 
-## Types
+## Types Primitives
 
 - **[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures)**
+- immutable
 
 1. boolean //true, false
 2. null //means absence of value. You assign Null.
 3. undefined //absence of definition. Variable is declared but no value assigned. Undefined is assigned by the system.
 4. number includes floats and integers.
-5. bigInt
+5. bigint
 6. string //any letter or number or special character.
 7. symbol -(ES6 ES2015)
 

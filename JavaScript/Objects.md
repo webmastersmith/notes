@@ -56,3 +56,32 @@ const a = Object.getOwnPropertyNames(object1); // returns array of keys
 
 - [Object.hasOwn(obj)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn) // true || false
 - [Object.hasOwnProperty(key)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty) // true || false
+
+## CRUD
+
+**Create | Update**
+
+-
+
+```js
+const obj = {}; // const is good does not prevent keys from add/remove.
+obj.key = value;
+obj[key] = value;
+```
+
+**Read**
+
+- 'undefined' returned if key does not exist
+
+```js
+obj.key;
+obj[key];
+```
+
+**Delete**
+
+- ret
+
+```js
+delete obj.key(string);
+```
