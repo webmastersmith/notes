@@ -6,7 +6,7 @@
 ```sh
 npm init
 npm install -D typescript @types/node # cannot be global
-tsc --init # output default config
+tsc --init # output default tsconfig.json
 ```
 
 [`tsconfig.json`](https://www.typescriptlang.org/tsconfig)
