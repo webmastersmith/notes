@@ -60,11 +60,11 @@
 
 **[Install by Version](https://nodejs.dev/learn/install-an-older-version-of-an-npm-package)**
 
-- `npm i tailwindcss@1.8.10`
+- `npm i packageName@1.8.10`
 
 **View Package Version**
 
-- `npm view tailwindcss versions`
+- `npm view packageName versions`
 
 **Update or Find Outdated Packages:**
 
@@ -79,7 +79,7 @@
 - `npm update` // -g flag for global
 - to perform safe dependency upgrades.
 - Update single package: npm update @babel/preset-env
-- `npm update -g gatsby-cli`
+- `npm update -g packageName`
 - `npx npm-check-updates -u`, then run npm install to upgrade all dependencies to their latest major versions
 
 **Dependencies vs Dev-Dependencies**
