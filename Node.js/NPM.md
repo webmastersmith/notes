@@ -54,9 +54,9 @@
   - 1 is breaking changes
   - 18 is new features, no breaking changes
   - 11 is bug fixes.
-  - \*1.18.11 // npm update will do breaking changes
-  - ^1.18.11 // npm update new features only
-  - ~1.18.11 // npm update bug fixes only
+  - \*1.18.11 // npm update will do breaking changes -Major Release
+  - ^1.18.11 // npm update new features only -Minor Release
+  - ~1.18.11 // npm update bug fixes only -Patch Release
 
 **[Install by Version](https://nodejs.dev/learn/install-an-older-version-of-an-npm-package)**
 
@@ -72,7 +72,7 @@
   - `ncu` // will tell you latest updates, but no changes.
   - `ncu -g` // global update check
   - `ncu -u` // will edit package.json file with latest updates
-    - `npx npm-check-updates -u`
+    - `npx npm-check-updates -u` // same as `ncu -u`
       - changes package.json file, then run `npm install` to upgrade all dependencies to their latest major versions
     - `npm i` // install all latest packages.
 - NPM
@@ -116,7 +116,7 @@
 ```sh
 # all levels nested folders -I use this one.
 # https://stackoverflow.com/questions/28175200/how-to-delete-node-modules-deep-nested-folder-in-windows/62917293#62917293
-npx rimraf ./\*\*/node_modules //no need to install, just run cmd.
+npx rimraf ./\*\*/node_modules # no need to install, just run cmd.
 
 # package to delete nodeModules
 # https://npkill.js.org/
@@ -139,8 +139,7 @@ FOR /d /r . %d in (node_modules) DO @IF EXIST "%d" rm -rf "%d"
 
 **Global install**
 
-- `npm install live-server -g`
-- `npm i -g|-D postcss-cli`
+- `npm i -g packageName`
 
 **[List All Global Packages](https://medium.com/@alberto.schiabel/npm-tricks-part-1-get-list-of-globally-installed-packages-39a240347ef0)**
 
