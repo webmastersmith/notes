@@ -58,7 +58,7 @@
   - ^1.18.11 // npm update new features only
   - ~1.18.11 // npm update bug fixes only
 
-## [Install by Version](https://nodejs.dev/learn/install-an-older-version-of-an-npm-package)
+**[Install by Version](https://nodejs.dev/learn/install-an-older-version-of-an-npm-package)**
 
 - `npm i tailwindcss@1.8.10`
 
