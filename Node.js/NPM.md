@@ -74,13 +74,13 @@
   - `ncu -u` // will edit package.json file with latest updates
     - `npx npm-check-updates -u`
       - changes package.json file, then run `npm install` to upgrade all dependencies to their latest major versions
-  - `npm i` // install all latest packages.
+    - `npm i` // install all latest packages.
+- NPM
   - [`npm outdated`](https://www.carlrippon.com/upgrading-npm-dependencies/) // -g flag to check global
     - The wanted version is the latest safe version that can be taken (according to the semantic version and the ^ or ~ prefix). The latest version is the latest version available in the npm registry.
   - `npm update` // -g flag for global
   - Update single package:
-    - `npm update packageName`
-    - `npm update -g packageName`
+    - `npm update packageName` // -g for global
 
 **Dependencies vs Dev-Dependencies**
 
