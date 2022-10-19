@@ -6,27 +6,10 @@
 ```sh
 npm init
 npm install -D typescript @types/node # cannot be global
-tsc --init
+tsc --init # output default config
 ```
 
-[`tsconfig.json`](https://www.typescriptlang.org/tsconfig) // tsc --init -will output default config.
-
-```json
-{
-  "baseUrl": ".",
-  "compilerOptions": {
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "target": "es6",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "outDir": "dist"
-  },
-  "lib": ["es2015"],
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
-}
-```
+[`tsconfig.json`](https://www.typescriptlang.org/tsconfig)
 
 **modern**
 
