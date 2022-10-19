@@ -69,18 +69,18 @@
 **Update or Find Outdated Packages:**
 
 - `npm i -g npm-check-updates` // you must install this package
-- ncu //will tell you latest updates, but no changes.
-- ncu -g //global update check
-- ncu -u //will edit package.json file with latest updates
-- npm i //install all latest packages.
-- add ^ to dependencies //means update to latest non-breaking changes. "react": "^17.0.2" -then: npm update
-- [`npm outdated`](https://www.carlrippon.com/upgrading-npm-dependencies/) // -g flag to check global
-- The wanted version is the latest safe version that can be taken (according to the semantic version and the ^ or ~ prefix). The latest version is the latest version available in the npm registry.
-- `npm update` // -g flag for global
-- to perform safe dependency upgrades.
-- Update single package: npm update @babel/preset-env
-- `npm update -g packageName`
-- `npx npm-check-updates -u`, then run npm install to upgrade all dependencies to their latest major versions
+  - `ncu` // will tell you latest updates, but no changes.
+  - `ncu -g` // global update check
+  - `ncu -u` // will edit package.json file with latest updates
+    - `npx npm-check-updates -u`
+      - changes package.json file, then run `npm install` to upgrade all dependencies to their latest major versions
+  - `npm i` // install all latest packages.
+  - [`npm outdated`](https://www.carlrippon.com/upgrading-npm-dependencies/) // -g flag to check global
+    - The wanted version is the latest safe version that can be taken (according to the semantic version and the ^ or ~ prefix). The latest version is the latest version available in the npm registry.
+  - `npm update` // -g flag for global
+  - Update single package:
+    - `npm update packageName`
+    - `npm update -g packageName`
 
 **Dependencies vs Dev-Dependencies**
 
