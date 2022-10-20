@@ -28,7 +28,7 @@ diff
       }
 ````
 
-**create grey background**
+**create grey background with backticks**
 `hello`
 
 **collapsible text**
@@ -47,12 +47,13 @@ diff
 **comment**
 
 ```html
+# must only have two dashes
 <!--Text-->
-//must only have two dashes
 ```
 
 **emoji**
-:star:
+
+- \:star\: :star:
 
 **image + link**
 
