@@ -1,6 +1,6 @@
 # Streams && Events
 
-<img src="./images/stream.png">
+<img src="../../../images/stream.png">
 
 # Events
 
@@ -65,3 +65,4 @@ myEmitter.emit("newSale", 9, "hello"); // 9, hello are the arguments that will b
    2. main methods: `write(), end()`
 3. Duplex Streams
 4. Transform Streams
+   <img src="../../../images/stream.node.png">
