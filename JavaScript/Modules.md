@@ -3,11 +3,6 @@
 # Module
 
 - In JavaScript, every file is a module.
-
-```js
-module.exports = () => {};
-```
-
 - https://magnusbenoni.com/javascript-export-import/
 - https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export
 - https://www.sitepoint.com/understanding-module-exports-exports-node-js/
