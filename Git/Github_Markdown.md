@@ -67,13 +67,12 @@ diff
   - `<img src="images/download.jpg" alt="Download logic to get new or changed repositories" width="800px">`
 
 link
-[`size-limit-node-esbuild`](https://github.com/un-ts/size-limit/tree/main/packages/node-esbuild)
+
+- [`size-limit-node-esbuild`](https://github.com/un-ts/size-limit/tree/main/packages/node-esbuild)
 
 **Line Break**
 
 - some text `<br /><br />` // must be inline with text. Does not always work.
-
-[Github Repositories for Developers](https://dev.to/dhanushnehru/50-github-repositories-for-a-developer-631)
 
 **Github Markdown Rules**
 
@@ -115,3 +114,7 @@ link
 **emojis**
 
 - https://github.com/markdown-templates/markdown-emojis
+
+**Repos**
+
+- [Github Repositories for Developers](https://dev.to/dhanushnehru/50-github-repositories-for-a-developer-631)
