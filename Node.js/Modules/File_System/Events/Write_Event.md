@@ -16,7 +16,6 @@
 - The **first argument is the path of the file.** The path can be in the form of a string, a Buffer object, or an URL object.
 - WriteStreams extend the Writable object, which emits events of its own.
 
-```html
 <ul>
   <li>
     <strong>close</strong> - emitted after file is written. The 'finish' is
@@ -33,7 +32,6 @@
     </ul>
   </li>
 </ul>
-```
 
 - data - when data 'chunk' is ready to write.
 - drain - emitted when buffer is empty and ready for new data.
