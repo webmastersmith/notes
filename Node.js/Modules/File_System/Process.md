@@ -29,3 +29,9 @@ environment.js
 console.log(process.env); // outputs all environment variables.
 console.log(process.env["PWD"]); // returns value as a string
 ```
+
+**Add env**
+
+```js
+process.env.UV_THREADPOOL_SIZE = 4; // default
+```

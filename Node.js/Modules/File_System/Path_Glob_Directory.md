@@ -40,7 +40,7 @@ console.log(path.basename(import.meta.url)) // returns current file name and ext
 console.log(path.basename(import.meta.url, '.mjs')) // returns current file name.
 
 // use these for ES6
-process.cwd() + '/data.json' // data.json file -don't forget the forward slash!.
+fsp.readFile(process.cwd() + '/data.json', 'utf-8') // data.json file -don't forget the forward slash!.
 path.join(process.cwd(), 'data', 'data.json') //data folder/data.json file.
 process.cwd() //current directory of root folder.
 path.dirname(require.main.filename) //outputs main directory -same as process.cwd()
