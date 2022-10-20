@@ -99,7 +99,7 @@
 - The npm uninstall command completely removes the package and its dependencies from the current project. It also updates the package.json file.
 - [uninstall packages](https://docs.npmjs.com/uninstalling-packages-and-dependencies)
 - [npm uninstall](https://www.javascripttutorial.net/nodejs-tutorial/npm-uninstall/)
-- `npm uninstall packageName --save || -D` // the --save updates the package.json
+- `npm uninstall packageName` // updates package.json
 - `npm un packageName` // uninstall
 - `npm rm --save packageName`
 - `npm rm --save-dev packageName` // can use -D
