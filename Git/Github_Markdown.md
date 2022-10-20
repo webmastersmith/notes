@@ -53,7 +53,7 @@ diff
 
 **emoji**
 
-- \:star\: :star:
+- `:star:` :star:
 
 **image + link**
 
