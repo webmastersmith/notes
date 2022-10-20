@@ -16,13 +16,13 @@
 - **end** - write process is done.
 - **error** - error when piping data
   - `autoDestroy: true`, closes write stream when error emitted.
-  - **finish** - after the `stream.end` function is called all data has been written.
-  - **open** - emitted when stream is opened. 'fd' (file descriptor) is passed when with the open event.
-  - **pipe** - emitted when the `stream.pipe` function is called with a readable stream piped to it.
-    - The file specified when creating the ReadStream must exist before piping from it.
-  - **ready** - emitted when `WriteStream` is ready to be used. Fired after immediately after open event.
-  - **unpipe** - emitted when the `stream.unpipe` function is called on the readable stream.
-    - It’s also emitted when the WriteStream emits an error event when a ReadStreanm is piped to it.
+- **finish** - after the `stream.end` function is called all data has been written.
+- **open** - emitted when stream is opened. 'fd' (file descriptor) is passed when with the open event.
+- **pipe** - emitted when the `stream.pipe` function is called with a readable stream piped to it.
+  - The file specified when creating the ReadStream must exist before piping from it.
+- **ready** - emitted when `WriteStream` is ready to be used. Fired after immediately after open event.
+- **unpipe** - emitted when the `stream.unpipe` function is called on the readable stream.
+  - It’s also emitted when the WriteStream emits an error event when a ReadStreanm is piped to it.
 
 **custom emitter**
 
