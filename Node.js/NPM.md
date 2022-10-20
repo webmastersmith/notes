@@ -51,6 +51,7 @@
 - `npm ls`
 - `npm list --depth 0`
 - `node list -g` // list all global packages
+- `ls node_modules` // show all packages in local node_modules folder
 
 ## Version
 
