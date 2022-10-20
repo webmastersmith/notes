@@ -37,31 +37,36 @@
     - It’s also emitted when the WriteStream emits an error event when a ReadStreanm is piped to it.
 
 **Properties**
-byteWritten - number of bytes written by the WriteStream so far. Doesn't include data waiting to be written.
-path - where write to
-pending - true when underlying file has not been opened, before the 'ready' event is emitted.
-There is a maximum number of bytes that can be stored inside a writable stream’s internal buffer called the “highWaterMark” property.
-When the highWaterMark is reached, the write method of createWriteStream will start returning false.
-If it reaches that mark, it stops reading from the source.
-When buffer is empty, will emit 'drain' event.
 
-Methods //const writeable = fs.createWriteStream()
-writeable.write()
-returns boolean value, if true, can write more, if false wait to write.
-When false is returned, will emit 'drain' event when buffer is empty and it can write more.
-https://javascript.info/iterable
-input is an iterable. Array, string,
-writeable.end()
-means no more data to write, close it down. You cannot write after it's called.
-When end() is called, the 'finish' event is emitted.
+- **byteWritten** - number of bytes written by the WriteStream so far. Doesn't include data waiting to be written.
+- **path** - where write to
+- **pending** - true when underlying file has not been opened, before the 'ready' event is emitted.
+- There is a maximum number of bytes that can be stored inside a writable stream’s internal buffer called the “highWaterMark” property.
+  - When the highWaterMark is reached, the write method of createWriteStream will start returning false.
+  - If it reaches that mark, it stops reading from the source.
+  - When buffer is empty, will emit 'drain' event.
 
-Write with drain
+**Methods** //const writeable = fs.createWriteStream()
+
+- `writeable.write()`
+  - returns boolean value, if true, can write more, if false wait to write.
+  - When false is returned, will emit 'drain' event when buffer is empty and it can write more.
+  - https://javascript.info/iterable
+  - input is an iterable. Array, string,
+- `writeable.end()`
+  - means no more data to write, close it down. You cannot write after it's called.
+  - When end() is called, the 'finish' event is emitted.
+
+**Write with drain**
+
+```js
 import _ as fs from 'fs'
 import _ as util from 'util'
 import _ as stream from 'stream'
 import _ as readline from 'readline'
 import { once } from 'events'
-;(async function () {
+
+(async function () {
 const dir = './avoid'
 
 const finished = util.promisify(stream.finished)
@@ -85,7 +90,7 @@ encoding: 'utf-8',
 })
 
 for (let i = 1; i <= 10000000; i++) {
-const data = `Bryon is Wonderful! ${i}\n`
+const data = `Bob is Wonderful! ${i}\n`
 // allow drain when write buffer is full.
 if (!ws.write(data)) { //if buffer full will return false. Then emit drain when buffer empty.
 await once(ws, 'drain')
@@ -114,10 +119,13 @@ console.log(
 )
 console.log(`Total Time: ${(endTime - startTime) / 1000}`)
 })()
+```
 
+```js
 const fs = require("fs");
 const sourceFile = "./files/file.txt";
-const destFile = "./files/newFile.txt";const readStream = fs.createReadStream(sourceFile);
+const destFile = "./files/newFile.txt";
+const readStream = fs.createReadStream(sourceFile);
 const writeStream = fs.createWriteStream(destFile, {
 flags: "w",
 encoding: "utf8",
@@ -150,8 +158,7 @@ const file = fs.createWriteStream('./big.file'); //file will be over 400mb
 for(let i=0; i<= 1e6; i++) {
 file.write('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n');
 }
-
-## file.end();
+file.end();
 
 // server example
 const fs = require('fs');
@@ -165,13 +172,13 @@ src.pipe(res);
 ## server.listen(8000);
 
 // writable stream from fs module
-import \* as fs from 'fs'
+import * as fs from 'fs'
 import { fileURLToPath } from 'url' // url module is included with node
 import path from 'path'
 const **filename = fileURLToPath(import.meta.url)
-const **dirname = path.dirname(\_\_filename)
+const **dirname = path.dirname(__filename)
 
-const writableStream = fs.createWriteStream(path.join(\_\_dirname, 'out.txt'))
+const writableStream = fs.createWriteStream(path.join(__dirname, 'out.txt'))
 writableStream.write('This is dummy text1!!')
 writableStream.write('\n')
 writableStream.write('This is dummy text2!!')
@@ -180,3 +187,4 @@ writableStream.write('This is dummy text3!!')
 writableStream.write('\n')
 
 writableStream.end('Done!!')
+```
