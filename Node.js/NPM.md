@@ -46,9 +46,15 @@
 - URL Unsafe characters
   - < > # % { } | | ^ ~ [ ] `
 
+**List packages**
+
+- `npm ls`
+- `npm list --depth 0`
+- `node list -g` // list all global packages
+
 ## Version
 
-**Version Meaning**
+**[Semantic Versioning](https://semver.org/)**
 
 - 1.18.11
   - 1 is breaking changes
@@ -79,6 +85,7 @@
   - [`npm outdated`](https://www.carlrippon.com/upgrading-npm-dependencies/) // -g flag to check global
     - The wanted version is the latest safe version that can be taken (according to the semantic version and the ^ or ~ prefix). The latest version is the latest version available in the npm registry.
   - `npm update` // -g flag for global
+  - `npm up` // update all packages
   - Update single package:
     - `npm update packageName` // -g for global
 
@@ -96,11 +103,13 @@
 
 **Remove dependencies**
 
+- [NPM](https://docs.npmjs.com/uninstalling-packages-and-dependencies)
 - The npm uninstall command completely removes the package and its dependencies from the current project. It also updates the package.json file.
 - [uninstall packages](https://docs.npmjs.com/uninstalling-packages-and-dependencies)
 - [npm uninstall](https://www.javascripttutorial.net/nodejs-tutorial/npm-uninstall/)
 - `npm uninstall packageName` // updates package.json
 - `npm un packageName` // uninstall
+- `npm un --no-save` // do not remove from package\*.json
 - `npm rm --save packageName`
 - `npm rm --save-dev packageName` // can use -D
 
@@ -137,12 +146,15 @@ FOR /d /r . %d in (node_modules) DO @IF EXIST "%d" rm -rf "%d"
 
 ## Global
 
+- only global installed packages can be called from the cmd line.
+
 **Global install**
 
 - `npm i -g packageName`
 
 **[List All Global Packages](https://medium.com/@alberto.schiabel/npm-tricks-part-1-get-list-of-globally-installed-packages-39a240347ef0)**
 
+- `npm ls -g`
 - `npm list -g --depth 0`
 - `node list -g` // list all global packages
 
