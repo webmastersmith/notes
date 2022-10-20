@@ -32,6 +32,7 @@ import {fn} from './routes'
 
 Event Loop
 event loop keeps running as long as there are listeners registered.
+
 ![Event Loop]('./images/EventLoop.png')
 
 exit
