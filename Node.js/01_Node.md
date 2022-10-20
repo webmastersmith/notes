@@ -33,7 +33,7 @@ import {fn} from './routes'
 Event Loop
 event loop keeps running as long as there are listeners registered.
 
-![Event Loop]('./images/EventLoop.png')
+<img src="./images/EventLoop.png" alt="Event Loop" width="600px">
 
 exit
 process.exit() //stops event loop process. Will exit when at end of event loop and all listeners have run.
