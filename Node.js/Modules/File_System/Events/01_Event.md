@@ -60,7 +60,10 @@ myEmitter.emit("newSale", 9, "hello"); // 9, hello are the arguments that will b
 **4 stream types**
 
 1. Readable Streams
-   1. main emits: `data, end`
+   1. main events: `data, end`
+   2. main methods: `pipe(), read()`
 2. Writeable Streams
+   1. main events: `drain, finish`
+   2. main methods: `write(), end()`
 3. Duplex Streams
 4. Transform Streams
