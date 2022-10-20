@@ -1,10 +1,8 @@
 # Streams && Events
 
-# Events
-
 <img src="./images/stream.png">
 
-**Events**
+# Events
 
 - **close** - emitted after file is written. The 'finish' is emitted when file is written and should be the one monitored.
   - Also emitted when any of its underlying resources like file descriptors have been closed.
@@ -12,7 +10,7 @@
 - **data** - when data 'chunk' is ready to write.
 - **drain** - emitted when buffer is empty and ready for new data.
   - writing to disk is slower than reading, so backpressure will build.
-  - when `data buffer highWaterMark` (default is: 16kb for createWriteStream) is reached, the .write() function will return 'false'.
+  - when `data buffer highWaterMark` (default is: 16kb for createWriteStream) is reached, the .write() function will return `false`.
 - **end** - write process is done.
 - **error** - error when piping data
   - `autoDestroy: true`, closes write stream when error emitted.
