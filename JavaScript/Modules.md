@@ -1,5 +1,7 @@
 # Modules Import Export
 
+- all variables inside module are private
+
 # Module
 
 - In JavaScript, every file is a module.
@@ -16,6 +18,8 @@
 
 **module.exports**
 
+- if you only want to export one single variable, class, or function, use `module.exports`
+- use `exports` to export multiple named variables add them to the `exports` property.
 - you can only have one module.exports, to use many exports turn into object:
 - do not mix with plain exports.
 
