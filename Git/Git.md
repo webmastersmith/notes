@@ -17,6 +17,8 @@
 - software management
 - tracks: what changed, who changed it, why changed.
 
+<img src="./images/git-vs-centralized.png">
+
 ## Git Gui
 
 - Kraken
