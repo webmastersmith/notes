@@ -80,8 +80,17 @@ obj[key];
 
 **Delete**
 
-- ret
+- [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/delete)
+- delete property from object.
+- returns true if property exist or not exist.
+- does not delete property on prototype.
+- `Object.defineProperty()` if property is `non-configurable`, cannot delete.
 
 ```js
-delete obj.key(string);
+delete obj.key;
+delete obj["string"];
 ```
+
+# Methods
+
+- [MDN](https://www.digitalocean.com/community/tutorials/how-to-use-object-methods-in-javascript)

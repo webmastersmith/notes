@@ -53,6 +53,49 @@ server.on("request", (req, res) => {
 - [Node Article](https://nodejs.org/en/docs/guides/backpressuring-in-streams/)
 - `pipeline` allows for error handling with the `pipe()` method.
 
+Manual
+
+- better to use `pipe` or `pipeline`.
+
+```js
+app.get('/movie', (req: Request, res: Response) => {
+  const readStream = fs.createReadStream('file.avi');
+  readStream
+    .on('data', (chunk) => {
+      const canReadNext = res.write('chunk') // returns false when HighWater mark reached.
+      if (!canReadNext) {
+        readStream.pause();
+        res.once('drain', () => readStream.resume())
+      }
+    })
+    .on('end', () => {
+      res.end();
+    })
+    .on('error' (err) => {
+      console.error(err)
+      res.destroy();
+    });
+});
+```
+
+Pipe
+
+- automatically handles backpressure, for error handling use `pipeline`.
+
+```js
+const { pipe } = require("stream");
+const fs = require("fs");
+
+app.get('/movie', (req: Request, res: Response) => {
+  const readStream = fs.createReadStream('file.avi');
+  // pipe handles backpressure automatically.
+  readStream.pipe(res) // res is a WriteStream.
+```
+
+Pipeline
+
+- allows error handling
+
 ```js
 const { pipeline } = require("stream");
 const fs = require("fs");

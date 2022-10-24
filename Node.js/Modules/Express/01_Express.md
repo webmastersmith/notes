@@ -1,45 +1,56 @@
-Express Server
-Friday, September 25, 2020
-1:31 PM
+# Express Server
 
-Find out what process is using a port
+## Troubleshooting
+
+```sh
+# Find out what process is using a port
 sudo lsof -i :3000
-Find process running
+# Find process running
 ps aux | grep node
- Kill process
-The most common kill signals are:
-SIGHUP 1 Hangup
-SIGINT 2 Interrupt from keyboard
-SIGKILL 9 Kill signal // terminate, do not finish
-SIGTERM 15 Termination signal //finish and terminate
-SIGSTOP 17, 19, 23 Stop the process
+# Kill process
+# The most common kill signals are:
+SIGHUP 1 # Hangup
+SIGINT 2 # Interrupt from keyboard
+SIGKILL 9 # Kill signal // terminate, do not finish
+SIGTERM 15 # Termination signal //finish and terminate
+SIGSTOP 17, 19, 23 # Stop the process
 kill -9 3827
-killall -9 chrome //may not kill all process
+killall -9 chrome # may not kill all process
+```
 
-Express
+## Install
+
+- https://www.npmjs.com/package/express
+- https://www.npmjs.com/package/@types/express
+
+```js
 npm i express cookie-session && npm i -D @types/express @types/cookie-session
 //body-parser is included with express now
 typescript
 npm i -D @types/express @types/cookie-session
-https://www.npmjs.com/package/express
-https://www.npmjs.com/package/@types/express
+```
 
-simple server.ts
-import express from 'express'
-import 'dotenv/config'
+**simple server.ts**
 
-const app = express()
+```js
+import express from "express";
+import "dotenv/config";
+
+const app = express();
 app.use((req, res, next) => {
-console.log('im a teapot!')
-next() //process will die here if next() not called. -Generator.
-})
+  console.log("im a teapot!");
+  next(); //process will die here if next() not called. -Generator.
+});
 app.use((req, res, next) => {
-console.log('me too!')
-})
+  console.log("me too!");
+});
 
-app.listen(process.env.PORT)
+app.listen(process.env.PORT);
+```
 
-typescript
+# typescript
+
+```ts
 import { Request, Response, NextFunction } from "express"
 export const getAddProduct = (req: Request, res: Response, next: NextFunction) => {
 console.log('Add-Product page')
@@ -48,101 +59,139 @@ prods: adminData,
 pageTitle: 'Add Product',
 path: '/admin/add-product',
 })
+```
 
-if / else statements need return
+**if / else statements need return**
+
+```js
 if (pwPass) {
-res.status(200).json({ msg: 'User Found!, pw good.' })
-return
-// user pw did not match.
+  res.status(200).json({ msg: "User Found!, pw good." });
+  return;
+  // user pw did not match.
 } else {
-res.status(200).json({ msg: 'Incorrect' })
-return
+  res.status(200).json({ msg: "Incorrect" });
+  return;
 }
+```
 
-app.use()
-allows loose match. '/' will match everytime
-can add path for get,post... paths
-app.use('/admin', adminRoute) //common starting segment in url.
-app.get()
-exact match. '/' only matches itself. More specific
-app.post()
-same path as app.get() can be used.
-app.put()
+## Express Methods
 
-app.delete()
-k
+**app.use()**
 
-res.redirect('/')
+- allows loose match. '/' will match everytime
+- can add path for get,post... paths
+- `app.use('/admin', adminRoute)` //common starting segment in url.
 
-res.send()
-https://stackoverflow.com/questions/29555290/what-is-the-difference-between-res-end-and-res-send/54874227#54874227
-res.send() implements res.write, res.setHeaders and res.end:
-It checks the data you send and sets the correct response headers.
-Then it streams the data with res.write.
-Finally, it uses res.end to set the end of the request.
-There are some cases in which you will want to do this manually, for example, if you want to stream a file or a large data set. In these cases, you will want to set the headers yourself and use res.write to keep the stream flow.
-https://medium.com/gist-for-js/use-of-res-json-vs-res-send-vs-res-end-in-express-b50688c0cddf
+**app.get()**
 
-res.sendFile
-for sending html files over the internet.
-res.sendFile(path.join(\_\_dirname, 'view', '404.html'))
+- `app.get()`
+  - exact match. '/' only matches itself. More specific
 
-res.json()
-res.send() implements res.write, res.setHeaders and res.end:
-It sends a JSON response. This method is identical to res.send() when an object or array is passed, but it also converts non-objects to json.
+**app.post() | app.put()**
 
-res.end()
+- `app.post()`
+  - same path as app.get() can be used.
+- `app.put()`
 
-BodyParser
-built into express
-app.use(express.urlencoded({ extended: true }))
+**app.delete()**
 
-console.log(req.body) //{name: 'string'} //key 'name' is whaterver you called it. value is whatever is sent.
+- `app.delete()`
 
-req.params.id // https://someone.com/:id
+## Response Methods
 
-Public / Static files
-app.use(express.static(path.join(rootDir, 'public')))
+**response**
 
-Dynamic Content -Template Engine
-https://expressjs.com/en/guide/using-template-engines.html
-express looks for 'view engine' setting
-'views' is default folder name. Don't have to set this.
-pug
-https://pugjs.org/api/getting-started.html
-// app.ts
-app.set('view engine', 'pug')
-app.set('views', 'views')
+- `res.redirect('/')`
+- `res.send()`
+  - https://stackoverflow.com/questions/29555290/what-is-the-difference-between-res-end-and-res-send/54874227#54874227
+  - `res.send()` implements res.write, res.setHeaders and res.end:
+  - It sends a JSON response. This method is identical to res.send() when an object or array is passed, but it also converts non-objects to json.
+  - It checks the data you send and sets the correct response headers.
+  - Then it streams the data with res.write.
+  - Finally, it uses `res.end` to set the end of the request.
+  - There are some cases in which you will want to do this manually, for example, if you want to stream a file or a large data set. In these cases, you will want to set the headers yourself and use res.write to keep the stream flow.
+  - https://medium.com/gist-for-js/use-of-res-json-vs-res-send-vs-res-end-in-express-b50688c0cddf
+- `res.sendFile`
+  - for sending html files over the internet.
+  - `res.sendFile(path.join(\_\_dirname, 'view', '404.html'))`
+- `res.json()`
+- `res.end()`
 
-//views shop.pug
+## Request Methods
+
+**BodyParser**
+
+- built into express
+
+```js
+app.use(express.urlencoded({ extended: true })) - console.log(req.body); //{name: 'string'} //key 'name' is whatever you called it. value is whatever is sent.
+```
+
+**Params**
+
+- `req.params.id` // https://someone.com/:id
+
+**Public / Static files**
+
+- `app.use(express.static(path.join(rootDir, 'public')))`
+
+**Dynamic Content -Template Engine**
+
+- https://expressjs.com/en/guide/using-template-engines.html
+- express looks for 'view engine' setting
+- views' is default folder name. Don't have to set this.
+  **pug**
+- https://pugjs.org/api/getting-started.html
+  **app.ts**
+
+```js
+app.set("view engine", "pug");
+app.set("views", "views");
+```
+
+**views shop.pug**
 each product in prods
 h1#{prods.title}
 
-//routes -shop.ts
-res.render('shop', {prods: adminData}) //view folder already set. will look for .pug files, so don't need exstension.
+**routes -shop.ts**
 
-ejs
-https://ejs.co/
-https://www.npmjs.com/package/ejs
-https://github.com/mde/ejs/wiki/Using-EJS-with-Express
-npm i ejs && npm i -D npm i @types/ejs
-// app.ts
-app.set('view engine', 'ejs')
-app.set('views', 'views')
+- `res.render('shop', {prods: adminData})` //view folder already set. will look for .pug files, so don't need exstension.
 
-app.use('/', (req, res, next) => { //points to 404.ejs in views folder
-res.status(404).render('404', { pageTitle: 'Page Not Found' })
-})
+**ejs**
 
-// variables
-//views/shop.ejs -variable
-<title><%= pageTitle%></title>  
- <input type="hidden" name="uuid" value="<%=uuid%>" > //be careful with spaces, can be added to variable.
+- https://ejs.co/
+- https://www.npmjs.com/package/ejs
+- https://github.com/mde/ejs/wiki/Using-EJS-with-Express
+- `npm i ejs && npm i -D npm i @types/ejs`
+  **app.ts**
 
-//raw js
+```ts
+app.set("view engine", "ejs");
+app.set("views", "views");
+
+app.use("/", (req, res, next) => {
+  //points to 404.ejs in views folder
+  res.status(404).render("404", { pageTitle: "Page Not Found" });
+});
+```
+
+**variables**
+
+- views/shop.ejs -variable
+
+```html
+<title><%= pageTitle%></title>
+<input type="hidden" name="uuid" value="<%=uuid%>" /> //be careful with spaces,
+can be added to variable.
+```
+
+**raw js**
+
+```js
 <% if (user) { %>
 ...
 <% } else { %>
+```
 
 //include -duplicate code
 <%- include('path/file.ejs', {uuid})%> //object is optional and used to pass variables.
@@ -150,7 +199,7 @@ res.status(404).render('404', { pageTitle: 'Page Not Found' })
 ---
 
 Setting Up a Server with a Create-React-App build process
-touch server.js //server for REST setup // Restful state transfer -transfering state to app from server.
+touch server.js //server for REST setup // Restful state transfer -transferring state to app from server.
 create-react-app is build in the 'client' folder.
 
 package.json
@@ -291,38 +340,38 @@ const path = require("path")
 const typeDefs = mergeTypes(fileLoader(path.join(**dirname, "./typeDefs")))
 const resolvers = mergeResolvers(fileLoader(path.join(**dirname, './resolvers')))
 
+# Connect to Mongodb
 
+- `npm i mongoose`
+  **server.js**
 
-
-
-Connect to Mongodb
-npm i mongoose
-server.js
-const mongoose = require("mongoose")
+```js
+const mongoose = require("mongoose");
 
 const db = async () => {
-try {
-const sucess = await mongoose.connect(process.env.DATABASE, {
-useNewUrlParser: true,
-useUnifiedTopology: true,
-useCreateIndex: true,
-useFindAndModify: false,
-})
-console.log("Database Connected")
-} catch (err) {
-console.log("Database not connected. ", err)
-}
-}
-db()
+  try {
+    const success = await mongoose.connect(process.env.DATABASE, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+    });
+    console.log("Database Connected");
+  } catch (err) {
+    console.log("Database not connected. ", err);
+  }
+};
+db();
+```
 
 .env
 
 # Replica Set
 
-DATABASE=mongodb://bryon:bryonsmith@127.0.0.1:27011/?replicaSet=m103
+DATABASE=mongodb://bob:bobsever@127.0.0.1:27011/?replicaSet=m103
 
 #Single Mongodb
-DATABASE=mongodb://bryon:bryonsmith@127.0.0.1:27010
+DATABASE=mongodb://bryon:bobsever@127.0.0.1:27010
 
 Node.js Babel Setup
 https://www.robinwieruch.de/minimal-node-js-babel-setup
