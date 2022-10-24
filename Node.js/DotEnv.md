@@ -1,7 +1,18 @@
 # ENV
 
 - No need to wrap your variable value in single or double quotes, unless it has special characters.
-- Do not put semicolon ; or comma , at the end of each line.
+  - .env variables are strings.
+  - if something special about variable, need to single quote it. // **$ is special.**
+  - https://stackoverflow.com/questions/31552125/defining-an-array-as-an-environment-variable-in-node-js
+- Do not put semicolon `;` or comma `,` at the end of each line.
+- Env file has to be in root directory.
+- [NPM](https://www.npmjs.com/package/dotenv)
+- `npm i -D dotenv` // typescript built in.
+- restart server after changes to .env
+
+**.env comment**
+
+- `# this is a comment`
 
 **.env**
 
@@ -10,50 +21,33 @@ KEY=some-key
 INDEX=someThing
 ```
 
-**index.js**
+**app.js**
 
 ```js
 const path = require("path");
+require("dotenv").config();
+// or
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
+// or
+if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
-`${process.env.KEY}`;
-```
-
-**.env comment**
-
-- `# this is a comment`
-
-**dotenv**
-
-- https://www.npmjs.com/package/dotenv
-- `npm i dotenv` //is already type scripted.
-  - restart server after changes to .env
-- https://stackoverflow.com/questions/31552125/defining-an-array-as-an-environment-variable-in-node-js
-  .env variables are strings.
-  if something special about variable, need to single qoute it. // $ is special.
-  server.js
-  require('dotenv').config()
-  or
-  if (process.env.NODE_ENV !== 'production') require('dotenv').config()
-  .env
-  DB_HOST=localhost
-  App.js
-  process.env.DB_HOST
-
-//array
-DB_HOST="localhost, 0.0.0.0, 127.0.0.1"
-process.env.DB_HOST.split(',') //turns into an array.
-
-## ES6
-
-```ts
-import "dotenv/config"; //like this one.
-or;
+// ES6
+import "dotenv/config"; // I like this one.
+// or;
 import dotenv from "dotenv";
 dotenv.config();
+
+// use the hidden variable
+process.env.KEY; // 'some-key'
+
+// Array
+// .env
+DB_HOST = "localhost,0.0.0.0,127.0.0.1";
+// app.js
+process.env.DB_HOST.split(","); //turns into an array.
 ```
 
-**Create react app**
+## Create react app
 
 - Three things to note here
   1. the variable should be prefixed with REACT*APP*
@@ -73,7 +67,3 @@ if (process.env.NODE_ENV === 'development') {
  do something...
 }
 ```
-
-**CORS**
-
-- https://www.npmjs.com/package/cors

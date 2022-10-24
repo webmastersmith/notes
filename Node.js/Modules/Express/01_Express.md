@@ -102,6 +102,8 @@ if (pwPass) {
 **response**
 
 - `res.redirect('/')`
+- `res.status(200)`
+  - `res.status(200).send('hello from the server!');`
 - `res.send()`
   - https://stackoverflow.com/questions/29555290/what-is-the-difference-between-res-end-and-res-send/54874227#54874227
   - `res.send()` implements res.write, res.setHeaders and res.end:
