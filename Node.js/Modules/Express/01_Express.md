@@ -78,7 +78,7 @@ if (pwPass) {
 
 **app.use()**
 
-- allows loose match. '/' will match everytime
+- allows loose match. '/' will match every time.
 - can add path for get,post... paths
 - `app.use('/admin', adminRoute)` //common starting segment in url.
 
@@ -122,19 +122,39 @@ res.json({ api: "my-api", message: "hello" });
 
 - `res.end()`
 
-## Request Methods
+## Middleware
 
 **BodyParser**
 
 - built into express
+- [API](https://expressjs.com/en/api.html)
 
 ```js
-app.use(express.urlencoded({ extended: true })) - console.log(req.body); //{name: 'string'} //key 'name' is whatever you called it. value is whatever is sent.
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+console.log(req.body); //{key: value}
 ```
+
+## Request Methods
+
+- [Request](https://expressjs.com/en/api.html#req)
+- [Includes all the built in Node request methods](https://nodejs.org/api/http.html#http_class_http_incomingmessage)
 
 **Params**
 
-- `req.params.id` // https://someone.com/:id
+- [Node](https://nodejs.org/api/http.html#httprequesturl-options-callback)
+
+```ts
+app.get("/api/v1/tours/:id", (req: Request, res: Response) => {
+  // app.get("/api/v1/tours/:id?", (req: Request, res: Response) => {  // optional variable
+  // :id is the variable.
+  console.log(req.params.id); // http://localhost:8080/api/v1/7 -id = 7
+  // console.log(req.headers);
+  // console.log(req.method);
+  // console.log(req.path);
+});
+```
 
 **Public / Static files**
 
