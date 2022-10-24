@@ -33,6 +33,11 @@ curl -o myFile.json 'https://stats.nba.com/stats/playerdashboardbyyearoveryear?D
 ## POST
 
 ```sh
+# simple POST request with 'URL' values. Header is optional.
+curl -i -d "username=bob&password=secret&website=stack.com" -X POST http://localhost:8080/ -H 'content-type:text/plain'
+# simple POST request with 'JSON' values. Header is required.
+curl -i -d '{ "username": "scott", "password":"secret", "website": "stack.com" }' -X POST http://localhost:8080/ -H 'content-type:application/json'
+# complex
 curl --request POST \
           --url https://api.github.com/repos/${{ github.repository }}/issues \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
@@ -78,7 +83,8 @@ curl --request POST \
 - **-s | --silent** // no output
 - **-T** // upload file content
   - `curl -T uploadedFile.txt https://...`
-- **-X** // HTTP type (GET, PUT, POST)
+- **-X** // HTTP Method (GET, PUT, POST)
+  - must be all capitalized.
   - `curl -X PUT -H "Content-Type: application/json" "http://127.0.0.1:9200/_cluster/settings?pretty" -d '{"persistent": {"cluster.routing.allocation.enable": "primaries"}}'`
   - `curl --request GET/POST/DELETE/PUT https://...`
 - **-v** // verbose -display all step in request and return

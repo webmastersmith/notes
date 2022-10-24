@@ -99,8 +99,6 @@ if (pwPass) {
 
 ## Response Methods
 
-**response**
-
 - `res.redirect('/')`
 - `res.status(200)`
   - `res.status(200).send('hello from the server!');`
@@ -116,7 +114,12 @@ if (pwPass) {
 - `res.sendFile`
   - for sending html files over the internet.
   - `res.sendFile(path.join(\_\_dirname, 'view', '404.html'))`
-- `res.json()`
+    **json**
+
+```js
+res.json({ api: "my-api", message: "hello" });
+```
+
 - `res.end()`
 
 ## Request Methods

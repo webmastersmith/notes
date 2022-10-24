@@ -25,6 +25,7 @@ INDEX=someThing
 
 ```js
 const path = require("path");
+// commonjs
 require("dotenv").config();
 // or
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
