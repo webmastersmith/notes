@@ -103,6 +103,22 @@ define([module1, module2], function (module1Import, module2Import) {
   - `package.json: "type":"module",`
   - `name file.mjs`
 
+### Export Default
+
+- [MDN](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export)
+
+```ts
+// variable, function, class, object, array
+export default function () {} // only one per module.
+```
+
+### Export
+
+```ts
+export * from "module-name";
+export function () {} // variable, function, class, object, array
+```
+
 **TypeScript**
 
 - Typescript way of exporting is no default exports.
@@ -117,12 +133,16 @@ tsconfig.json
 "include": ["src"],
 ```
 
-action //folder structure
+**action folder structure**
+
+```txt
+action
 |- index.ts
 |- todos.ts
 |- types.ts
+```
 
-action/index.ts
+**action/index.ts**
 
 ```js
 export * from "./todos";
@@ -149,19 +169,27 @@ action/types.ts
 export enum ActionTypes { ... }
 ```
 
-Path: Post/index.js
-index.js
-export {default } from './Post.js'
-or
-export \* from './Post.js'
-add index.js file at every stage and you can import {app} from 'components'.
-jsconfig.json
+**Post/index.js**
+**index.js**
+
+```js
+export { default } from "./Post.js";
+or;
+export * from "./Post.js";
+```
+
+**jsconfig.json**
+
+- add index.js file at every stage and you can import {app} from 'components'.
+
+```json
 {
-"compilerOptions": {
-"baseUrl": "src"
-},
-"include": ["src"]
+  "compilerOptions": {
+    "baseUrl": "src"
+  },
+  "include": ["src"]
 }
+```
 
 ## Import ES6
 

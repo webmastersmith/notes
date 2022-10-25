@@ -122,20 +122,6 @@ res.json({ api: "my-api", message: "hello" });
 
 - `res.end()`
 
-## Middleware
-
-**BodyParser**
-
-- built into express
-- [API](https://expressjs.com/en/api.html)
-
-```js
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-console.log(req.body); //{key: value}
-```
-
 ## Request Methods
 
 - [Request](https://expressjs.com/en/api.html#req)
@@ -144,6 +130,7 @@ console.log(req.body); //{key: value}
 **Params**
 
 - [Node](https://nodejs.org/api/http.html#httprequesturl-options-callback)
+- `:id` will be the name of item: `req.params.id`
 
 ```ts
 app.get("/api/v1/tours/:id", (req: Request, res: Response) => {
