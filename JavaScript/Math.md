@@ -26,4 +26,5 @@ parseInt("-12", 13);
 # Coercion
 
 - `+string` same as `Number(string)`
+- `string * 1` // returns number.
   <a href="https://stackoverflow.com/questions/17106681/parseint-vs-unary-plus-when-to-use-which"><img src="./images/parseIntvsplus.png" alt="coercion table"></a>

@@ -44,7 +44,7 @@ const str = [1, 2, 3].join(""); // '123' // default is ','
 
 **[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Indexed_collections#typed_arrays)**
 
-## Methods and Properties
+# Methods and Properties
 
 - **[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)**
 
@@ -96,4 +96,25 @@ function doubleSortObj(objArr, prop1, prop2) {
     }
   });
 }
+```
+
+### Splice
+
+- [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice)
+- mutates
+- returns what is removed in an array.
+- arr.splice(start, deleteCount, element-to-add)
+  - start // inclusive. If negative, starts from end (-1 is last element).
+  - deleteCount // 0 is insert only. >= 1 will remove elements.
+
+```js
+// Insert
+const months = ["Jan", "March", "April", "June"];
+months.splice(1, 0, "Feb"); // ["Jan", "Feb", "March", "April", "June"]
+// Replace
+months.splice(4, 1, "May"); // ["Jan", "Feb", "March", "April", "May"]
+// Delete
+months.splice(-1); // ["Jan", "Feb", "March", "April"] returns ["May"]
+months.splice(1, 1); // ["Jan", "March", "April"] returns ["Feb"]
+months.splice(1); // ["March", "April"] returns ["Jan"] // cuts off everything before index 1.
 ```

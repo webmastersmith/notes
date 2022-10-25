@@ -16,6 +16,7 @@
          1. `curl -X GET http://localhost:8080/tours/6` // READ -one tour
       2. `curl -X POST http://localhost:8080/tours/7` // Create
       3. `curl -X PUT http://localhost:8080/tours/7` // Update
+         1. `curl -X PATCH http://localhost:8080/tours/7` // mutate item
       4. `curl -X DELETE http://localhost:8080/tours/7` // Delete
 4. send data as JSON
    1. see below
