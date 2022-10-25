@@ -70,7 +70,8 @@ module.exports = {
 ```json
 "scripts": {
     "start": "ts-node ./src/index.ts",
-    "build": "tsc-watch --onsuccess \"node dist/index.js\""
+    "build": "tsc-watch --onsuccess \"node dist/index.js\"",
+    "dev": "NODE_ENV=development nodemon ./server.ts"
 },
 ```
 

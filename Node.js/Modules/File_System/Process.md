@@ -18,9 +18,9 @@ stdout
 
 # Enviroment Variables
 
-process.env
+**process.env**
 
-- returns object
+- returns object with all system environment variables inside.
 - `process.env[key]` // returns undefined if not found
 
 environment.js
@@ -34,4 +34,18 @@ console.log(process.env["PWD"]); // returns value as a string
 
 ```js
 process.env.UV_THREADPOOL_SIZE = 4; // default
+```
+
+### Express
+
+- default Express starts in `development` mode.
+- change to `production` when in production
+
+**package.json**
+
+```json
+{
+  "dev": "NODE_ENV=development nodemon ./server.ts",
+  "prod": "NODE_ENV=production nodemon ./server.ts"
+}
 ```
