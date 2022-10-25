@@ -74,12 +74,11 @@ const ipSort = (ipAddressArray) => {
 };
 
 // array of objects
-//small to big
 arrOfObj
-  .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0))
+  .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0)) //small to big
   .reverse(); //big to small
 
-// Double Sort
+// Double Sort IP addresses
 function doubleSortObj(objArr, prop1, prop2) {
   //prop 1 & 2 are 'strings'. 2 is ip.
   return objArr.sort((objA, objB) => {
