@@ -1,4 +1,4 @@
-# Create Read Update Delete
+# SQL Create Read Update Delete
 
 - Use single quotes only!
 
@@ -283,8 +283,14 @@ select \* from cities where id = (select min(id) from cities where population = 
 UPDATE table_name SET column1_name=value, column2_name= value, ....;
 
 UPDATE table_name
-SET column_name = newValue
-WHERE column_name = 'George';
+SET column_name = newValue -- target attributes you want to change.
+WHERE column_name = 'George'; -- specify row or rows you want to change
+
+-- wildcard
+UPDATE table_name
+SET column_name = newValue -- target attributes you want to change.
+WHERE column_name LIKE 'Ge%'; -- specify rows you want to change
+
 ```
 
 **Deleting data**
@@ -292,8 +298,10 @@ WHERE column_name = 'George';
 - permanent memory loss.
 
 ```sql
-DELETE FROM table_name; //all rows deleted!
+DELETE FROM table_name; -- all rows deleted!
 DELETE FROM customers WHERE id = 73;
+DELETE FROM customers WHERE column_name LIKE '7%';
+
 ```
 
 **WHERE**
