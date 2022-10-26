@@ -1,6 +1,6 @@
-SQL Normalization
+# SQL Normalization
 
-Normalization
+**Normalization**
 
 - means to design database in such a way that you have:
 
@@ -16,12 +16,12 @@ Normalization
 - before you normalize a database, you should know what the expectations
   are.
 
-Cons
+**Cons**
 
 - normalizing data may make search parameters take longer to search two
   tables than just one.
 
-First Normal Form
+## First Normal Form
 
 1.  get rid of composite columns.
 
@@ -43,7 +43,7 @@ First Normal Form
 
 1.  have primary key.
 
-Second Normal Form
+## Second Normal Form
 
 - must first achieve first normal form.
 
@@ -55,24 +55,22 @@ Second Normal Form
 
 Customer_Phones
 
-|            |              |
 | ---------- | ------------ |
-| customerId | phone        |
-| 1          | 143-456-7890 |
-| 2          | 345-567-8901 |
-| 2          | 123-456-7890 |
-| 3          | 555-333-4444 |
+| customerId | phone |
+| 1 | 143-456-7890 |
+| 2 | 345-567-8901 |
+| 2 | 123-456-7890 |
+| 3 | 555-333-4444 |
 
 Customers
 
-|            |            |           |
 | ---------- | ---------- | --------- |
 | customerId | first_name | last_name |
-| 1          | John       | Smith     |
-| 2          | Diane      | Smith     |
-| 3          | David      | Davidson  |
+| 1 | John | Smith |
+| 2 | Diane | Smith |
+| 3 | David | Davidson |
 
-Third Normal Form
+## Third Normal Form
 
 - you promise every column will describe the key, the whole key, nothing
   but the key.
@@ -86,19 +84,19 @@ Third Normal Form
 
   - ?
 
-Relationships
+## Relationships
 
-one-to-many //most common
+**one-to-many** //most common
 
 - one-to-many (1:n) //once customer can have many phone numbers.
 - almost always have a foreign key that is a column on the 'many' table.
 
-one-to-one //not often used
+**one-to-one** //not often used
 
 - single row in one table refers to a single row in another table.
 - most cases you would just combine the tables.
 
-many-to-many
+**many-to-many**
 
 - is a new table in the middle of the both tables that is comprised of
   (id's) only.
