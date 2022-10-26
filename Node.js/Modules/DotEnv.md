@@ -7,7 +7,7 @@
 - Do not put semicolon `;` or comma `,` at the end of each line.
 - Env file has to be in root directory.
 - [NPM](https://www.npmjs.com/package/dotenv)
-- `npm i -D dotenv` // typescript built in.
+- `npm i dotenv` // typescript built in.
 - restart server after changes to .env
 
 **.env comment**

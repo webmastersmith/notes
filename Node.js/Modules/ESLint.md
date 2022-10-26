@@ -1,9 +1,12 @@
 # ESLint
 
+- [ESLint Rules](https://eslint.org/docs/latest/rules/)
+
 ### Express
 
 - install
   - `npm i -D eslint prettier eslint-config-prettier eslint-plugin-prettier eslint-config-airbnb eslint-plugin-node eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react`
+  - npm install --save-dev @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint typescript
 - uninstall
   - `npm un eslint prettier eslint-config-prettier eslint-plugin-prettier eslint-config-airbnb eslint-plugin-node eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react `
 
