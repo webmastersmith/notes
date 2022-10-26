@@ -1,59 +1,59 @@
-﻿SQL
+﻿# SQL
 
-Data Organization
+**Data Organization**
 
 - quickly search records
 - everyone needs to access records concurrently.
 - users need the most recent data
 - relation data should be linked (one change in one table that is linked to another table, info should be updated.)
 
-Structured Query Language
+**Structured Query Language**
 
 - programming language used to communicate with data stored in a relational database management system. SQL syntax is similar to the English language, which makes it relatively easy to write, read, and interpret.
 - SQL standard is managed by ANSI (American National Standards Institute)
 - ANSI SQL refers to the pure SQL language.
   - different databases have there own additions.
 
-Naming
+**Naming**
 
 - SQL commands are not case sensitive. Data, however, is case-sensitive.
 
-database
+**database**
 
 - collection of (tables) organized information for easy access to manage, update.
 
-relational database
+**relational database**
 
 - A relational database is a type of database. It uses a structure that allows us to identify and access data in relation to another piece of data in the database. Often, data in a relational database is organized into tables.
 - A **relational database management system (RDBMS)** is a program that allows you to create, update, and administer a relational database. Most relational database management systems use the SQL language to access the database.
 
-query
+**query**
 
 - single SQL statement.
 
-table (relation | file)
+**table (relation | file)**
 
 - can have millions of rows and columns.
 - ex... person table with multiple people, each person is a row, each column is a value (name, age, ...)
 
-rows (entry | tuple | record)
+**rows (entry | tuple | record)**
 
 - called records
 
-columns (attributes)
+**columns (attributes)**
 
 - properties of each record
 
-Table Constraints
+**Table Constraints**
 
 - data normalization
 
-entity
+**entity**
 
 - something of importance that must be represented in a database.
 - represented on single table.
 
-relation
+**relation**
 
 - table - matrix of rows and columns
 - see normalize values.
