@@ -63,7 +63,6 @@ Customer_Phones
 | 3 | 555-333-4444 |
 
 Customers
-| | | |
 | ---------- | ---------- | --------- |
 | customerId | first_name | last_name |
 | 1 | John | Smith |
