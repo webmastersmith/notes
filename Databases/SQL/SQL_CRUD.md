@@ -130,33 +130,37 @@ TRUNCATE TABLE table_name //just remove data.
 
 ### SELECT
 
+- extract data from database.
+- create a new relation
+- feed information into new query.
+
 **Querying data**
 
 ```sql
 ORDER BY table_name; -- sort
 
-SELECT column1,column2, ... From table_name;
+SELECT column1,column2, ... FROM table_name; -- return all data from those columns.
 
   -- * wildcard -select all columns
-    SELECT * FROM customers;
+SELECT * FROM customers;
 
-    Filter with condition
-    SELECT * FROM customers WHERE age > 21;
+-- Filter with condition
+SELECT * FROM customers WHERE age > 21;
 
-    Filter with multiple conditions
-    SELECT * FROM customers WHERE age < 21 AND state = "NY";
+-- Filter with multiple conditions
+SELECT * FROM customers WHERE age < 21 AND state = "NY";
 
-    Filter with IN
-    SELECT * FROM customers WHERE plan IN ("free", "basic");
+-- Filter with IN
+SELECT * FROM customers WHERE plan IN ("free", "basic");
 
-    Select specific columns
-    SELECT name, age FROM customers;
+-- Select specific columns
+SELECT name, age FROM customers;
 
-    Order results
-    SELECT * FROM customers WHERE age > 21 ORDER BY age DESC;
+-- Order results
+SELECT * FROM customers WHERE age > 21 ORDER BY age DESC;
 
-    Transform with CASE
-    SELECT name, CASE WHEN age > 18 THEN "adult" ELSE "minor" END "type" FROM customers;
+-- Transform with CASE
+SELECT name, CASE WHEN age > 18 THEN "adult" ELSE "minor" END "type" FROM customers;
 -- See also: filtering with LIKE, restricting with LIMIT, using ROUND and other core functions.
 ```
 
