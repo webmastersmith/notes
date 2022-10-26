@@ -131,21 +131,21 @@ ALTER TABLE ORDERS
 **ON DELETE CASCADE**
 
 - when you remove item from table, deletes relationship data in other tables
-- CONSTRAINT empFk FOREIGN KEY(empId) REFERENCES Employee(empId) ON DELETE CASCADE,
+- `CONSTRAINT empFk FOREIGN KEY(empId) REFERENCES Employee(empId) ON DELETE CASCADE,`
 
 **ON UPDATE CASCADE**
 
 - when you update foreign key data, data in other relation tables are updated as well.
-- CONSTRAINT skillFk FOREIGN KEY(skillId) REFERENCES Skills(skillId) ON UPDATE CASCADE,
+- `CONSTRAINT skillFk FOREIGN KEY(skillId) REFERENCES Skills(skillId) ON UPDATE CASCADE,`
 
-Select
+**Select**
 
 ```sql
 SELECT column1, column2, columnN FROM table_name;
 SELECT \* FROM table_name;
 ```
 
-Where (condition)
+**Where (condition)**
 
 - appended to end of select statement.
 - The SQL WHERE clause is used to specify a condition while fetching the data from a single table or by joining with multiple tables. If the given condition is satisfied, then only it returns a specific value from the table. You should use the WHERE clause to filter the records and fetching only the necessary records.
@@ -159,7 +159,7 @@ WHERE [condition]
 SELECT CUSTOMERS.AGE from CUSTOMERS where AGE > 20
 ```
 
-Insert
+**Insert**
 
 - The SQL INSERT INTO Statement is used to add new rows of data to a table in the database.
 

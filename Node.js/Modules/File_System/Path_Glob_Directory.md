@@ -98,3 +98,26 @@ const files = glob.sync("**/\*.mdx", {options: optional}); // ** at start means 
 ```
 
 # Directory
+
+**fs.readdir() callback**
+
+```js
+const fs = require('fs'):
+fs.readdir(directoryPath, function (err, files) {
+    //handling error
+    if (err) {
+        return console.log('Unable to scan directory: ' + err);
+    }
+}
+
+// Promises
+import { readdir } from 'node:fs/promises';
+
+try {
+  const files = await readdir(path);
+  for (const file of files)
+    console.log(file);
+} catch (err) {
+  console.error(err);
+}
+```
