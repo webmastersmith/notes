@@ -128,21 +128,9 @@ TRUNCATE TABLE table_name //just remove data.
 
 - Data Manipulation Language - SELECT, INSERT, UPDATE, DELETE //alter data in the table not table itself.
 
-**Inserting data**
-
-```sql
-INSERT INTO table_name (column1_name, column2_name, ...) VALUES (value1, value2, ...)
-if your not adding data to ALL the columns, you must specify what columns you are adding data to.
-
-    Inserting data
-    INSERT INTO customers VALUES (73, 'Brian', 33);  --must enter all data.
-
-    Inserting partial data for named columns
-    INSERT INTO customers (name) VALUES ('Brian');  --age will be null.
-```
+### SELECT
 
 **Querying data**
-**SELECT**
 
 ```sql
 ORDER BY table_name; //sort
@@ -212,7 +200,7 @@ LIKE "S%"; --wildcard
 - custom aggregateFunction or procedure that you have to run everyday.
 
 ```sql
--- example custom funtion
+-- example custom function
 CREATE FUNCTION fn_name (
 input1 type1,
 input2 type2,
@@ -275,7 +263,20 @@ select \* from cities where population = (select min(population) from cities);
 select \* from cities where id = (select min(id) from cities where population = (select min(population) from cities));
 ```
 
-**Updating data**
+### Inserting data
+
+```sql
+INSERT INTO table_name (column1_name, column2_name, ...) VALUES (value1, value2, ...)
+if your not adding data to ALL the columns, you must specify what columns you are adding data to.
+
+    Inserting data
+    INSERT INTO customers VALUES (73, 'Brian', 33);  --must enter all data.
+
+    Inserting partial data for named columns
+    INSERT INTO customers (name) VALUES ('Brian');  --age will be null.
+```
+
+### Updating data
 
 - change data without having to add or remove whole row.
 
@@ -293,7 +294,7 @@ WHERE column_name LIKE 'Ge%'; -- specify rows you want to change
 
 ```
 
-**Deleting data**
+### Deleting data
 
 - permanent memory loss.
 
