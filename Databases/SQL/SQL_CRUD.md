@@ -133,7 +133,7 @@ TRUNCATE TABLE table_name //just remove data.
 **Querying data**
 
 ```sql
-ORDER BY table_name; //sort
+ORDER BY table_name; -- sort
 
 SELECT column1,column2, ... From table_name;
 
@@ -300,8 +300,8 @@ WHERE column_name LIKE 'Ge%'; -- specify rows you want to change
 
 ```sql
 DELETE FROM table_name; -- all rows deleted!
-DELETE FROM customers WHERE id = 73;
-DELETE FROM customers WHERE column_name LIKE '7%';
+DELETE FROM table_name WHERE column_name = 'value';
+DELETE FROM Customers WHERE id LIKE '7%'; -- delete all rows where id value starts with a 7
 
 ```
 
