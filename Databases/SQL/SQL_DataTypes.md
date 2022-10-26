@@ -4,14 +4,14 @@ Data Types
 
 Comment
 
-- \-- //double dash
+- -- //double dash
 
 Data Types
 
 Text Data Types
 
-- VARCHAR(255) //VARCHAR -same as VARCHAR(255) A variable section from
-  0 to 255 characters long.
+- VARCHAR(255) //VARCHAR -same as VARCHAR(255) A variable section from 0
+  to 255 characters long.
 - CHAR(255) A fixed section from 0 to 255 characters long.
 - TINYTEXT A string with a maximum length of 255 characters.
 - TEXT A string with a maximum length of 65535 characters.
@@ -39,7 +39,7 @@ Date / Time data types
 
 Null
 
-- every data type can have a null value. mean "contains no data".
+- every data type can have a null value. mean “contains no data”.
 - NULL //means cell is empty and contains no data.
 - NOT NULL //must have value, even if 0 or empty string.
 
@@ -47,15 +47,14 @@ Others
 
 - CHECK //column value must meet specific condition. (min length, age
   above 0)
-- ENUM To store text value chosen from a list of predefined text
-  values.
+- ENUM To store text value chosen from a list of predefined text values.
 - SET This is also used for storing text values chosen from a list of
   predefined text values. It can have multiple values.
 - BOOL Synonym for TINYINT(1), used to store Boolean values
 - BINARY Similar to CHAR, difference is texts are stored in binary
   format.
-- VARBINARY Similar to VARCHAR, difference is texts are stored in
-  binary format.
+- VARBINARY Similar to VARCHAR, difference is texts are stored in binary
+  format.
 
 Contraints
 
