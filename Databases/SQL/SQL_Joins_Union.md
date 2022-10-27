@@ -9,25 +9,13 @@
 
 <img src="../images/joins.png" alt="sql table joins">
 
-**Join**
+**Outer Join**
 
 ```sql
 -- only return records for empNam and deptName where employee.departmentId matches department.departmentId
 SELECT empName, deptName
 FROM Employee AS E Department AS D
 WHERE E.deptId = D.deptId
-```
-
-**Outer Join**
-
-- rows that do not have a match.
-
-```sql
-SELECT *
-FROM Customers c
-LEFT JOIN Order_History o -- Order_History AS o
-ON c.id = o.id
-WHERE o.id = NULL; -- everything that does not match o.id.
 ```
 
 **Left Outer Join**
@@ -39,6 +27,13 @@ WHERE o.id = NULL; -- everything that does not match o.id.
 SELECT empName, deptName
 FROM Employee E LEFT OUTER JOIN Department D
      ON E.deptID = D.deptId
+
+-- rows that do not have a match.
+SELECT *
+FROM Customers c
+LEFT JOIN Order_History o -- Order_History AS o
+ON c.id = o.id
+WHERE o.id = NULL; -- everything that does not match o.id.
 ```
 
 **Right Outer Join** // opposite of left join.
