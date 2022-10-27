@@ -209,13 +209,6 @@ DELETE FROM Customers WHERE id LIKE '7%'; -- delete all rows where id value star
 
 ```
 
-**WHERE**
-
-- A WHERE clause is used to limit or filter the records affected by a command.
-- Followed by a comparison statement that determines the conditions that need to be met in order for a record to be considered for the SQL command.
-- A WHERE is always used in conjunction with another command.
-- Update and delete must have a 'WHERE' condition.
-
 ## TCL
 
 - Transaction Control Language - SAVEPOINT, ROLLBACK, COMMIT

@@ -52,6 +52,13 @@ SELECT emp_name FROM Employee WHERE deptId LIKE 'Ge%';
 SELECT emp_name, emp_age FROM Employee GROUP BY emp_age HAVING sum(deptId) >= 100;
 ```
 
+## WHERE
+
+- A WHERE clause is used to limit or filter the records affected by a command.
+- Followed by a comparison statement that determines the conditions that need to be met in order for a record to be considered for the SQL command.
+- A WHERE is always used in conjunction with another command.
+- Update and delete must have a 'WHERE' condition.
+
 ## AS
 
 - alias name to reference column_name.
@@ -69,7 +76,7 @@ FROM table_name
 WHERE column_name > 7;
 ```
 
-## Sort
+# Sort
 
 **GROUP BY**
 
@@ -93,7 +100,7 @@ SELECT column_name, aggregateFunction FROM table_name GROUP BY column_name ORDER
 SELECT state, sum(population) AS pop from cities GROUP BY state ORDER BY pop desc;
 ```
 
-## Functions
+# Functions
 
 - [w3schools](https://www.w3schools.com/sql/sql_ref_sqlserver.asp)
 - SUM()
