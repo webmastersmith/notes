@@ -42,48 +42,48 @@ USE db_name  -- postgres  \c db_name
 
 ```sql
 CREATE TABLE customers (
-id      INTEGER     PRIMARY KEY,
-name    TEXT,
-age     INTEGER,
-weight  REAL
+  id      INTEGER     PRIMARY KEY,
+  name    TEXT,
+  age     INTEGER,
+  weight  REAL
 );
 
 -- Using primary keys
 CREATE TABLE Customers (
-customerId    INTEGER   PRIMARY KEY,
-first_name    VARCHAR   NOT NULL,
-last_name     VARCHAR   NOT NULL,
-age           INTEGER   CHECK(age > 18)
+  customerId    INTEGER   PRIMARY KEY,
+  first_name    VARCHAR   NOT NULL,
+  last_name     VARCHAR   NOT NULL,
+  age           INTEGER   CHECK(age > 18)
 )
 -- another way
 CREATE TABLE Customers (
-empId Interger NOT NULL,
-skillId Interger NOT NULL,
-first_name VARCHAR NOT NULL,
-last_name VARCHAR NOT NULL,
-age INTEGER CHECK(age > 18),
-CONSTRAINT empPK PRIMARY KEY(empId, skillId) -- each value in the empId must be unique.
--- or
-CONSTRAINT empPK PRIMARY KEY(empId, skillId) -- Composite key.
+  empId Integer NOT NULL,
+  skillId Integer NOT NULL,
+  first_name VARCHAR NOT NULL,
+  last_name VARCHAR NOT NULL,
+  age INTEGER CHECK(age > 18),
+  CONSTRAINT empPK PRIMARY KEY(empId, skillId) -- each value in the empId must be unique.
+  -- or
+  CONSTRAINT empPK PRIMARY KEY(empId, skillId) -- Composite key.
 )
 
 -- Foreign Key
 CREATE TABLE Customer_Phones (
-customerId INTEGER,
-REFERENCES Customers(customerId), --foreign key to customers
-phone VARCHAR NOT NULL,
-PRIMARY KEY(customerId, phone)
+  customerId INTEGER,
+  REFERENCES Customers(customerId), --foreign key to customers
+  phone VARCHAR NOT NULL,
+  PRIMARY KEY(customerId, phone)
 )
 -- another way
 CREATE TABLE Customers (
-empId Interger NOT NULL,
-skillId Interger NOT NULL,
-first_name VARCHAR NOT NULL,
-last_name VARCHAR NOT NULL,
-age INTEGER CHECK(age > 18),
-CONSTRAINT empPk PRIMARY KEY(empId, skillId), // Composite key.
-CONSTRAINT empFk FOREIGN KEY(empId) REFERENCES Employee(empId),
-CONSTRAINT skillFk FOREIGN KEY(skillId) REFERENCES Skills(skillId),
+  empId Integer NOT NULL,
+  skillId Integer NOT NULL,
+  first_name VARCHAR NOT NULL,
+  last_name VARCHAR NOT NULL,
+  age INTEGER CHECK(age > 18),
+  CONSTRAINT empPk PRIMARY KEY(empId, skillId), // Composite key.
+  CONSTRAINT empFk FOREIGN KEY(empId) REFERENCES Employee(empId),
+  CONSTRAINT skillFk FOREIGN KEY(skillId) REFERENCES Skills(skillId),
 )
 
 -- ON DELETE CASCADE
@@ -92,12 +92,19 @@ CONSTRAINT empFk FOREIGN KEY(empId) REFERENCES Employee(empId) ON DELETE CASCADE
 CONSTRAINT skillFk FOREIGN KEY(skillId) REFERENCES Skills(skillId) ON UPDATE CASCADE,
 ```
 
+### Update
+
+- change field data
+
+```sql
+UPDATE table_name SET column_name = 31 WHERE id=1;
+```
+
 ### ALTER
 
-**sub-commands**
-
+- add or remove columns
 - ADD (column_name data_type) //ADD (column1_name data_type, column2_name...)
-- MODIFY column_name data_type contraint, //sql
+- MODIFY column_name data_type constraint, //sql
 - ALTER COLUMN //other sql dialects
 - DROP COLUMN table_name //remove a column
 - RENAME TO table_name //change table name
@@ -107,21 +114,29 @@ CONSTRAINT skillFk FOREIGN KEY(skillId) REFERENCES Skills(skillId) ON UPDATE CAS
 ```sql
 ALTER TABLE table_name ADD COLUMN new_column_name VARCHAR(30);
 -- or
-ALTER TABLE ORDERS
+ALTER TABLE Orders
   ADD CONSTRAINT empPk PRIMARY KEY (ID);
 -- add foreign key
-ALTER TABLE ORDERS
+ALTER TABLE Orders
   ADD CONSTRAINT empPk FOREIGN KEY (ID)
     REFERENCES Skills(skillId);
+-- DROP foreign key
+ALTER TABLE Orders
+  DROP CONSTRAINT empFk;
+
+-- CHECK CONSTRAINT
+ALTER TABLE Orders
+  ADD CONSTRAINT holidayDates
+  CHECK (startDate < endDate)
 ```
 
 ### DROP
 
-- cannot drop table with contraints
+- cannot drop table with constraints
 
 ```sql
-DROP TABLE table_name //all data will be lost.
-TRUNCATE TABLE table_name //just remove data.
+DROP TABLE table_name -- all data will be lost.
+TRUNCATE TABLE table_name -- just remove data.
 ```
 
 ## DML

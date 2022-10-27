@@ -50,11 +50,10 @@ WHERE o.id = NULL; -- everything that does not match o.id.
 - only return records from both tables that match a condition.
 
 ```sql
--- Inner join
-SELECT customers.name, orders.item FROM customers LEFT OUTER JOIN orders ON customers.id =
-
--- orders.customer_id;
-SELECT customers.name, orders.item FROM customers JOIN orders ON customers.id = orders.customer_id;
+-- Inner join only return matches
+SELECT column_name1, column_name2
+FROM table_1 AS t1, table_2 AS t2 -- including more than one table.
+WHERE t1.deptId = t2.deptId
 ```
 
 ## Union
