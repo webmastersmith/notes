@@ -89,8 +89,8 @@ SELECT column1, column2, AggregateFunction FROM table_name GROUP BY column_name;
 **ORDER BY**
 
 - sort data by column_name
-- asc //default small to big (a-z, 0-9)
-- desc //big to small (z-a, 9-0)
+- asc // default small to big (a-z, 0-9)
+- desc // big to small (z-a, 9-0)
 
 ```sql
 SELECT column_name, aggregateFunction FROM table_name GROUP BY column_name ORDER BY aggregateFunction_results asc;
@@ -201,25 +201,30 @@ EXECUTE procedure_name(params1, ...);
 - parenthesis is necessary to create the subquery.
 - subquery always after comparison operator.
 - If multiple matches, both records will be returned.
-- IN //if the possibility of multiple matches
+- IN // if the possibility of multiple matches
+- `correlated subqueries` will run multiple times.
+- `noncorrelated subqueries` will only run once.
 
 ```sql
 -- Subqueries
 
 SELECT *
 FROM table_name
-WHERE column_name = ( -- can have a problem if two values match query. So use 'IN' in place of '='.
-SELECT column_name
-FROM table_name
-WHERE column_name = (
-SELECT MAX(column_name)
-FROM table_name
-)
-);
+WHERE column_name IN -- can have a problem if two values match query. So use 'IN' in place of '='.
+  (SELECT column_name
+  FROM table_name
+  WHERE column_name IN
+   (SELECT MAX(column_name)
+   FROM table_name
+   )
+  );
 
 -- select lowest population from list of cities.
-select * from cities where population = (select min(population) from cities);
+SELECT * FROM cities WHERE population = (SELECT MIN(population) FROM cities);
 
 -- select lowest population and if two matches, select small id:
-select * from cities where id = (select min(id) from cities where population = (select min(population) from cities));
+SELECT * FROM cities WHERE id IN
+ (SELECT min(id) from cities WHERE population IN
+  (SELECT min(population) from cities)
+ );
 ```
