@@ -30,15 +30,20 @@
 ```sql
 -- WHERE example
 SELECT column_name FROM table_name WHERE column_name = 'value' AND column_name > 'value';
+
 -- return a list of employee names in department 9 or salary greater than '100k'
 SELECT emp_name FROM Employee WHERE deptId = 9 OR salary > '100k';
+
 -- IN -return employee names that are in department 4, 6, and 9.
 SELECT emp_name FROM Employee WHERE deptId IN (4, 6, 9);
+
 -- NOT return employee names not in department 4, 6, and 9.
 SELECT emp_name FROM Employee WHERE deptId NOT IN (4, 6, 9);
+
 -- BETWEEN return employee names in department 4, 5 and 6.
 -- sme as return employee names in department >= 4, and <= 6.
 SELECT emp_name FROM Employee WHERE deptId BETWEEN 4 AND 6;
+
 -- LIKE return employee names starting with 'Ge'.
 SELECT emp_name FROM Employee WHERE deptId LIKE 'Ge%';
 ```
