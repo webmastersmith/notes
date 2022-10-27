@@ -2,6 +2,8 @@
 
 <img src="../../../images/stream.png">
 
+<img src="../../../images/stream-events.png">
+
 # Events
 
 - **close** - emitted after file is written. The 'finish' is emitted when file is written and should be the one monitored.
@@ -25,7 +27,7 @@
 **custom emitter**
 
 ```ts
-import EventEmitter from "events";
+import EventEmitter from 'events';
 
 class Sales extends EventEmitter {
   constructor() {
@@ -36,21 +38,21 @@ class Sales extends EventEmitter {
 // create event
 const myEmitter = new Sales();
 // setup listener
-myEmitter.on("newSale", () => {
-  console.log("New Sale is happening now!");
+myEmitter.on('newSale', () => {
+  console.log('New Sale is happening now!');
 });
 
 // setup listener
-myEmitter.on("newSale", () => {
-  console.log("another new sale!");
+myEmitter.on('newSale', () => {
+  console.log('another new sale!');
 });
 
 // listener with argument
-myEmitter.on("newSale", (stock, greeting) => {
+myEmitter.on('newSale', (stock, greeting) => {
   console.log(stock, greeting);
 });
 // broadcast event
-myEmitter.emit("newSale", 9, "hello"); // 9, hello are the arguments that will be passed.
+myEmitter.emit('newSale', 9, 'hello'); // 9, hello are the arguments that will be passed.
 ```
 
 # Streams

@@ -13,10 +13,10 @@
 ### SQL Statements
 
 - **DDL**
-  - Data Definition Language - CREATE, ALTER, DROP //create/modify the table itself
+  - Data Definition Language - CREATE, ALTER, DROP // create/modify the table itself
   - SQL sub-commands to create, delete, database or tables.
 - **DML**
-  - Data Manipulation Language - SELECT, INSERT, UPDATE, DELETE //alter data in the table not table itself.
+  - Data Manipulation Language - SELECT, INSERT, UPDATE, DELETE // alter data in the table not table itself.
   - basic CRUD commands.
 - **DCL**
   - Data Control Language - GRANT, REVOKE
@@ -24,7 +24,9 @@
   - Transaction Control Language - SAVEPOINT, ROLLBACK, COMMIT
   - allows you to 'undo' your query.
 
-# CRUD
+# DDL
+
+- Data Definition Language - CREATE, ALTER, DROP
 
 ### CREATE
 
@@ -35,7 +37,7 @@
 
 ```sql
 CREATE DATABASE db_name;
-USE db_name  -- postgres  \c db_name
+USE db_name;  -- postgres  \c db_name
 ```
 
 **Table**
@@ -92,14 +94,6 @@ CONSTRAINT empFk FOREIGN KEY(empId) REFERENCES Employee(empId) ON DELETE CASCADE
 CONSTRAINT skillFk FOREIGN KEY(skillId) REFERENCES Skills(skillId) ON UPDATE CASCADE,
 ```
 
-### Update
-
-- change field data
-
-```sql
-UPDATE table_name SET column_name = 31 WHERE id=1;
-```
-
 ### ALTER
 
 - add or remove columns
@@ -139,7 +133,7 @@ DROP TABLE table_name -- all data will be lost.
 TRUNCATE TABLE table_name -- just remove data.
 ```
 
-## DML
+# DML
 
 - Data Manipulation Language - SELECT, INSERT, UPDATE, DELETE //alter data in the table not table itself.
 
@@ -195,7 +189,7 @@ if your not adding data to ALL the columns, you must specify what columns you ar
     INSERT INTO customers (name) VALUES ('Brian');  --age will be null.
 ```
 
-### Updating data
+### Update
 
 - change data without having to add or remove whole row.
 
@@ -205,6 +199,7 @@ UPDATE table_name SET column1_name=value, column2_name= value, ....;
 UPDATE table_name
 SET column_name = newValue -- target attributes you want to change.
 WHERE column_name = 'George'; -- specify row or rows you want to change
+UPDATE table_name SET column_name = 31 WHERE id=1;
 
 -- wildcard
 UPDATE table_name
@@ -224,7 +219,7 @@ DELETE FROM Customers WHERE id LIKE '7%'; -- delete all rows where id value star
 
 ```
 
-## TCL
+# TCL
 
 - Transaction Control Language - SAVEPOINT, ROLLBACK, COMMIT
 - allows you to 'undo' your query.
