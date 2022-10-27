@@ -141,7 +141,7 @@ ORDER BY table_name; -- sort
 
 SELECT column1,column2, ... FROM table_name; -- return all data from those columns.
 
-  -- * wildcard -select all columns
+-- * wildcard -select all columns
 SELECT * FROM customers;
 
 -- Filter with condition
@@ -160,8 +160,11 @@ SELECT name, age FROM customers;
 SELECT * FROM customers WHERE age > 21 ORDER BY age DESC;
 
 -- Transform with CASE
-SELECT name, CASE WHEN age > 18 THEN "adult" ELSE "minor" END "type" FROM customers;
 -- See also: filtering with LIKE, restricting with LIMIT, using ROUND and other core functions.
+SELECT name, CASE WHEN age > 18 THEN "adult" ELSE "minor" END "type" FROM customers;
+
+-- Distinct -remove duplicate rows
+SELECT DISTINCT column_name FROM table_name;
 ```
 
 **Aggregate functions**
@@ -187,7 +190,7 @@ SELECT column_name, AggregateFunction FROM table_name; --must have comma!
 -- See also: restricting results with HAVING.
 
 -- GROUP BY
-allows you to only process certian fields.
+-- allows you to only process certain fields.
 SELECT column_name, SUM(column_name) FROM table_name GROUP BY column_name;
 
 -- WHERE
@@ -195,7 +198,7 @@ SELECT _ FROM table_name WHERE column_name > 25;
 SELECT _ FROM table_name WHERE column_name LIKE "R%"; --any name starts with an 'R'.
 
 -- LOGIC
-AND, OR, OR NOT
+AND, OR, NOT
 LIKE "S%"; --wildcard
 ```
 
@@ -232,7 +235,7 @@ BEGIN
 --logic
 END [procedure_name];
 
-// to run
+-- to run
 CALL procedure_name(params1, ...);
 EXECUTE procedure_name(params1, ...);
 ```
@@ -249,7 +252,7 @@ EXECUTE procedure_name(params1, ...);
 ```sql
 -- Subqueries
 
-SELECT \*
+SELECT *
 FROM table_name
 WHERE column_name = ( -- can have a problem if two values match query. So use 'IN' inplace of '='.
 SELECT column_name
@@ -319,11 +322,37 @@ DELETE FROM Customers WHERE id LIKE '7%'; -- delete all rows where id value star
 **Comparison Operators**
 
 - `age > 30` --greater than
-- `=`
-- `<`
-- `<=`
-- `=` --equal
-- `!=` --not equal
+- `>` // greater than
+- `>=` // greater than equal to
+- `<` // less than
+- `<=` // less than equal to
+- `=` // equal
+- `<>` or `!=` // not equal -some DBMS use one or the other.
+
+**Logic Operators**
+
+- `AND`
+- `OR`
+- `IN`
+- `NOT`
+- `BETWEEN`
+- `LIKE` // used with wildcards.
+
+```sql
+-- WHERE example
+SELECT column_name FROM table_name WHERE column_name = 'value' AND column_name > 'value';
+-- return a list of employee names in department 9 or salary greater than '100k'
+SELECT emp_name FROM Employee WHERE deptId = 9 OR salary > '100k';
+-- IN -return employee names that are in department 4, 6, and 9.
+SELECT emp_name FROM Employee WHERE deptId IN (4, 6, 9);
+-- NOT return employee names not in department 4, 6, and 9.
+SELECT emp_name FROM Employee WHERE deptId NOT IN (4, 6, 9);
+-- BETWEEN return employee names in department 4, 5 and 6.
+-- sme as return employee names in department >= 4, and <= 6.
+SELECT emp_name FROM Employee WHERE deptId BETWEEN 4 AND 6;
+-- LIKE return employee names starting with 'Ge'.
+SELECT emp_name FROM Employee WHERE deptId LIKE 'Ge%';
+```
 
 **AS**
 
@@ -334,10 +363,10 @@ DELETE FROM Customers WHERE id LIKE '7%'; -- delete all rows where id value star
   - can add alias name after table name to give it an alias:
 
 ```sql
-//simple example
+-- simple example
 SELECT cust.id FROM Customers cust;
 
-//complex example
+-- complex example
 SELECT c.id,
 c.lastname,
 o.id,
@@ -346,6 +375,8 @@ FROM Customers c,
 OrderHistory o
 WHERE c.id = o.id;
 ```
+
+## Sort
 
 **GROUP BY**
 
@@ -362,11 +393,11 @@ SELECT column1, column2, AggregateFunction FROM table_name GROUP BY column_name;
 - desc //big to small (z-a, 9-0)
 
 ```sql
-select column_name, aggregateFunction from table_name group by column_name order by aggregateFunction_results asc;
+SELECT column_name, aggregateFunction FROM table_name GROUP BY column_name ORDER BY aggregateFunction_results asc;
 
 
 -- group all state populations and order.
-select state, sum(population) AS pop from cities group by state order by pop desc;
+SELECT state, sum(population) AS pop from cities GROUP BY state ORDER BY pop desc;
 ```
 
 ## TCL
@@ -377,16 +408,16 @@ select state, sum(population) AS pop from cities group by state order by pop des
 **COMMIT**
 
 - queries to database are not 'permanent' immediately.
-- `SET AUTOCOMMIT = OFF;` //turns off autocommit. on by default
-- COMMIT commits all uncommited changes.
-- multiple sql commands can be commited at once.
+- `SET AUTOCOMMIT = OFF;` // turns off auto commit. on by default
+- COMMIT commits all uncommitted changes.
+- multiple sql commands can be committed at once.
 - others may not be able to access data or change data till you commit.
 
 **SAVEPOINT**
 
 - saves a snapshot of database at any point
 - can have multiple save points
-- SAVEPOINT savepoint_name; //creates a snapshot of data.
+- SAVEPOINT savepoint_name; // creates a snapshot of data.
 
 **ROLLBACK**
 
@@ -397,10 +428,10 @@ select state, sum(population) AS pop from cities group by state order by pop des
 
 # Join
 
-- Joins can be faster than SELECT statements working accross muliple tables.
+- Joins can be faster than SELECT statements working across multiple tables.
 - combines information from an operation of two tables. Returns a grid of columns
 - The SQL Joins clause is used to combine records from two or more tables in a database. A JOIN is a means for combining fields from two tables by using values common to each.
-- joining two tables requires that they have some data in common, like sharing a colomn.
+- joining two tables requires that they have some data in common, like sharing a column.
 - Foreign keys are easy to spot an easy way to join on.
 - you can join on any column, but when columns match it's easier.
 
