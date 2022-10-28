@@ -59,7 +59,7 @@ docker run hello-world  # check if docker runs without sudo
 
 - <https://betterprogramming.pub/how-to-differentiate-between-docker-images-containers-stacks-machine-nodes-and-swarms-fd5f7e34eb9f>
 
-<img src="./images/docker-stack.png >
+<img src="./images/docker-stack.png" alt="docker stack">
 
 - A container is the smallest unit of the entire Docker architecture.
   Before a container is launched, it is called as an image. According to
