@@ -128,8 +128,8 @@ docker run hello-world  # check if docker runs without sudo
 - [_https://hub.docker.com/search?q=node_](https://hub.docker.com/search?q=node)
 - node:alpine //which linux distro you want.
 - docker login
-  - docker build . -t bob/node-helloworld:v1 // if you leave tag off will default to 'latest'
-- docker push bob/node-helloworld:v1
+  - `docker build . -t bob/node-helloworld:v1` // if you leave tag off will default to 'latest'
+- `docker push bob/node-helloworld:v1`
 
 - `docker build -t alexellis2/href-counter:latest .`
 - `docker build --target builder -t alexellis2/href-counter:latest .`
@@ -137,31 +137,11 @@ docker run hello-world  # check if docker runs without sudo
   - stop on builder and tag it.
 
 - **filter**
-  - `docker images --filter “label=builder=true” --format '{{.CreatedAt}}\t{{.ID}}' | sort -nr | head -n 1 | cut -f2`
-  - `docker rmi \$(docker images --filter=label=builder=true -q)`
 
-**external image as a stage**
+  - `docker images --filter "label=builder=true" --format '{{.CreatedAt}}\t{{.ID}}' | sort -nr | head -n 1 | cut -f2`
+  - `docker rmi $(docker images --filter=label=builder=true -q)`
 
-```dockerfile
-COPY --from=nginx:latest /etc/nginx/nginx.conf /nginx.conf
-```
-
-Dockerfile ssh //do not use '\~'
-
-```dockerfile
-FROM ubuntu:latest
-
-RUN apt-get update; \
-    apt-get install openssh-server passwd net-tools -y; \
-    mkdir -p /root/.ssh
-WORKDIR /root/.ssh
-COPY ./.ssh/id_rsa.pub ./authorized_keys
-RUN chmod 600 ./authorized_keys
-
-ENTRYPOINT service ssh restart && bash
-```
-
-- `docker build -t test1 .`
+- `docker build -t test1 .` // '.' means Dockerfile in same directory.
 - `docker run -it --rm -dp 8080:80 -p 22:22 --name bob test1 /bin/bash`
 - `ssh -i .ssh/id_rsa root@localhost`
 
@@ -187,11 +167,12 @@ ENTRYPOINT service ssh restart && bash
 - `-p` // **port:map** 80:80 host (your computer port) port : 80 mapped to container port 80
   - `docker run -dp 80:80 image`
   - multiple ports: `docker run -d -p 80:80 -p 8080:80 nginx:latest`
-- `--name` // `docker run --name bob`
+- `--name` // custom container name.
+  - `docker run --name bob`
 - `-q` // only return image name.
 - `--rm` // remove container when exit.
-- `-t` // tag. can be anything. identifies
-  - `docker image` // `docker build -t`
+- `-t` // tag. Tag image when built.
+  - `docker build -t MY_TAG`
 - `-v` // volume `docker run -v yourDirectory:dockerDirectory`
   - You must store the data under `$HOME/docker/volumes/` if you’re using Mac or Linux, and `C:\ProgramData\docker\volumes` if you’re on Windows.
 - `-w` // watch folder
@@ -199,6 +180,8 @@ ENTRYPOINT service ssh restart && bash
 **Docker Commands**
 
 ```sh
+# show running containers
+docker ps
 # list all containers running or not
 docker ps -aq # a=all q=only return image name.
 
@@ -251,15 +234,28 @@ docker stop IMAGE_NAME
   have persistency.
 
 - **ATTACH**
-  - sudo docker attach container_Name
+  - `sudo docker attach container_Name`
   - The attach command can only connect the host streams to those of the command defined as ENTRYPOINT or CMD in the container.
 - **Build/Rebuild Image**
 
   - name/digest
     - mongo**@sha256**:5255f45e7f87b4404388205351ef69e5f6c018976b355729afa01014faf7792a
-  - **remove image**
-    - `docker image rm [options] image`
-  - <https://docs.docker.com/engine/reference/commandline/build/>
+
+```sh
+# if Dockerfile is in same folder
+docker build -t userName/repoName:tag .
+# don't forget the '.'
+docker build -t userName/repoName:tag -f ./docker/Dockerfile.build .
+docker build -t userName/repoName:tag . < Dockerfile
+docker build -t bob/flaskapp-demo:v1 . < Dockerfile
+docker build --target builder -t alex/ho:v1 .
+# curl
+curl example.com/remote/Dockerfile | docker build -f - .
+```
+
+- **remove image**
+  - `docker image rm [options] image`
+- <https://docs.docker.com/engine/reference/commandline/build/>
 
 - **commit**
 
@@ -351,7 +347,7 @@ docker build -t userName/repoName:tag .
 # don't forget the '.'
 docker build -t userName/repoName:tag -f ./docker/Dockerfile.build .
 docker build -t userName/repoName:tag . < Dockerfile
-docker build -t bryonsmith/flaskapp-demo:v1 . < Dockerfile
+docker build -t bob/flaskapp-demo:v1 . < Dockerfile
 docker build --target builder -t alex/ho:v1 .
 # curl
 curl example.com/remote/Dockerfile | docker build -f - .

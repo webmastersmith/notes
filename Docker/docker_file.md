@@ -1,10 +1,31 @@
 # Dockerfile
 
-- Dockerfile build runs as root //can specify: USER root
+**external image as a stage**
+
+```dockerfile
+COPY --from=nginx:latest /etc/nginx/nginx.conf /nginx.conf
+```
+
+**ssh to Dockerfile** // do not use '~/path'
+
+```dockerfile
+FROM ubuntu:latest
+
+RUN apt-get update; \
+    apt-get install openssh-server passwd net-tools -y; \
+    mkdir -p /root/.ssh
+WORKDIR /root/.ssh
+COPY ./.ssh/id_rsa.pub ./authorized_keys
+RUN chmod 600 ./authorized_keys
+
+ENTRYPOINT service ssh restart && bash
+```
+
+- Dockerfile build runs as root // can specify: USER root
 
 - <https://docs.docker.com/engine/reference/builder/>
 
-1. build it: `docker build ./debian_bookworm` // -t NAME for custom id name.
+1. build it: `docker build ./debian_bookworm` // -t NAME for custom image name.
 2. run it detached: `docker run -dp 22:22 --name ansible -it bookworm`
    1. runs in background
 3. attach to it.
