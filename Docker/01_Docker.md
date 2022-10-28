@@ -12,7 +12,7 @@
 - don't need system resources. can run hundreds of containers on single
   machine.
 
-About
+**About**
 
 - docker images are built into containers.
 
@@ -22,7 +22,7 @@ About
     be started with attributes: ports, environment variables, name...
     from images.
 
-Install
+**Install**
 
 - <https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04>
 
@@ -128,8 +128,8 @@ docker run hello-world  # check if docker runs without sudo
 - [_https://hub.docker.com/search?q=node_](https://hub.docker.com/search?q=node)
 - node:alpine //which linux distro you want.
 - docker login
-  - docker build . -t bryonsmith/node-helloworld:v1 //if you leave tag off will default to 'latest'
-- docker push bryonsmith/node-helloworld:v1
+  - docker build . -t bob/node-helloworld:v1 // if you leave tag off will default to 'latest'
+- docker push bob/node-helloworld:v1
 
 - `docker build -t alexellis2/href-counter:latest .`
 - `docker build --target builder -t alexellis2/href-counter:latest .`
@@ -275,7 +275,7 @@ docker stop IMAGE_NAME
   - `docker logs NAME -f` // stream logs
   - `docker logs CONTAINER-ID/NAME` // show all things that have been output to console.
 - `--mount` // options are key-value pairs. Each pair is formatted like this: key=value, with a comma between one pair and the next. Common options:
-  - `type` // mount type. Options are bind, volume, or tmpfs. We’re all about the volume.
+  - `type` // mount type. Options are `bind, volume, or tmpfs`. We’re all about the volume.
   - `source` // source of the mount. For named volumes, this is the name of the volume. For unnamed volumes, this option is omitted. The key can be shortened to src.
   - `destination` // the path where the file or directory is mounted in the container. The key can be shortened to dst or target.
   - `readonly` // mounts the volume as read-only. Optional. Takes no value.
