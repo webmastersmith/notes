@@ -120,4 +120,46 @@ try {
 } catch (err) {
   console.error(err);
 }
+
+// Remove directories
+  const files = fs
+    .readdirSync(src)
+    .filter((file) => !fs.statSync(`${src}/${file}`).isDirectory());
+
+```
+
+### Check if Directory Exist
+
+```js
+// const fs = require("fs")
+import fs from 'fs';
+
+try {
+  if (fs.existsSync('./directory-name')) {
+    console.log('Directory exists.');
+  } else {
+    console.log('Directory does not exist.');
+  }
+} catch (e) {
+  console.log('An error occurred.');
+}
+```
+
+### Create Directory
+
+- [directory]()
+
+```js
+const fs = require('fs');
+const dir = './tmp/but/then/nested';
+
+// callback
+fs.mkdir(dir, { recursive: true }, (err) => {
+  if (err) console.error(err);
+  // if (err) throw err;
+});
+// sync
+if (!fs.existsSync(dir)) {
+  fs.mkdirSync(dir, { recursive: true });
+}
 ```

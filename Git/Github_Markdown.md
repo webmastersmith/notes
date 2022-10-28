@@ -65,6 +65,7 @@ diff
 - `![GIF demo](img/demo.gif)`
 - html
   - `<img src="images/download.jpg" alt="Download logic to get new or changed repositories" width="800px">`
+  - `<img src="image.png" style="width:7.9in;height:5.122in"`
 
 link
 
