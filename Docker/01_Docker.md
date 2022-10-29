@@ -169,7 +169,7 @@ docker run hello-world  # check if docker runs without sudo
   - multiple ports: `docker run -d -p 80:80 -p 8080:80 nginx:latest`
 - `--name` // custom container name.
   - `docker run --name bob`
-- `-q` // only return image name.
+- `-q` // only return `CONTAINER ID`.
 - `--rm` // remove container when exit.
 - `-t` // tag. Tag image when built.
   - `docker build -t MY_TAG`
@@ -197,19 +197,24 @@ docker container rm NAME
 docker rm $(docker ps -aq)
 # remove all images not running
 docker rm $(docker images -q)
-# delete all images running and not running
-docker rmi -f $(docker images -q)
+# delete all containers running or not.
 docker rm -f $(docker ps -aq)
+# delete all images not running - run this after
+docker rmi -f $(docker images -q)
+
+# remove all containers, images running or not. rmi=remove image.
+docker rm -f $(docker ps -aq) && docker rmi -f $(docker images -q)
 
 # Prune
 # remove all orphaned layers
 docker rmi -f $(docker images -f "dangling=true" -q)
-# prune -remove all images and containers that are not running.
+# remove all images and containers that are not running.
 docker system prune -af
 
 
 # Remove Volume
 docker volume remove VOLUME_NAME
+docker rm CONTAINER_NAME -v  # remove volume connected to it.
 
 #  Run
 # combines docker pull and start. Create new container from an image and start it.

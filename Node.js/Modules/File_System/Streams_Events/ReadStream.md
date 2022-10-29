@@ -79,6 +79,88 @@ readable.on('data', (chunk) => {
 - [Events](https://nodejs.org/api/readline.html#class-interfaceconstructor)
 - Events: close, line, history, pause, resume, SIGCONT, SIGINT, SIGSTP
 
+**Synchronous Iteration**
+
+```js
+(async function () {
+  const lr = require('readline/promises').createInterface({
+    input: require('fs').createReadStream('data.json'),
+    crlfDelay: Infinity,
+  });
+  // iterate lines synchronously
+  for await (const line of lr) {
+    await syncP(line);
+  }
+})();
+
+function syncP(line) {
+  return new Promise((res, rej) => {
+    setTimeout(function () {
+      console.log('Line from file:', line);
+      res(true);
+    }, rand(100, 3000));
+  });
+
+  // another one
+  import fs from 'fs';
+  import readline from 'readline/promises';
+
+  export default async function addData(con: any) {
+    const files = ['price', 'type', 'region'];
+
+    for await (const file of files) {
+      const rl = readline.createInterface({
+        input: fs.createReadStream(`./${file}.csv`),
+        crlfDelay: Infinity,
+      });
+      for await (const line of rl) {
+        if (line.includes('id')) {
+          // skip 1st line
+        } else {
+          await new Promise((res) => {
+            // is file price?
+            if (file === 'price') {
+              const sql = `INSERT INTO ${file} VALUES (${line.split(',')})`;
+              res(console.log(sql));
+            } else {
+              const sql = `INSERT INTO ${file} VALUES ('${
+                line.split(',')[1]
+              }')`;
+              res(console.log(file, sql));
+            }
+          });
+        }
+      }
+      rl.on('error', (err) => {
+        console.log(err);
+      });
+    }
+  }
+  addData('temp');
+}
+
+function rand(min, max) {
+  var argc = arguments.length;
+  if (argc === 0) {
+    min = 0;
+    max = 2147483647;
+  } else if (argc === 1) {
+    throw new Error('Warning: rand() expects exactly 2 parameters, 1 given');
+  }
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+// data.json
+// {"id":0,"name":"line 0","value":489}
+// {"id":1,"name":"line 1","value":148}
+// {"id":2,"name":"line 2","value":798}
+// {"id":3,"name":"line 3","value":766}
+// {"id":4,"name":"line 4","value":70}
+// {"id":5,"name":"line 5","value":825}
+// {"id":6,"name":"line 6","value":353}
+// {"id":7,"name":"line 7","value":175}
+// {"id":8,"name":"line 8","value":12}
+```
+
 ```js
 // import * as readline from 'node:readline/promises';
 const fs = require('fs');

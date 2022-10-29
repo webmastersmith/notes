@@ -70,6 +70,7 @@ diff
 link
 
 - [`size-limit-node-esbuild`](https://github.com/un-ts/size-limit/tree/main/packages/node-esbuild)
+- <https://github.com/un-ts/size-limit/tree/main/packages/node-esbuild>
 
 **Line Break**
 

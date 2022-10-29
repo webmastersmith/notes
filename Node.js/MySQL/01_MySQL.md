@@ -1,12 +1,16 @@
 # MySQL Nodejs
 
-```js
-var mysql = require('mysql');
+- [Node MySQL2](https://www.npmjs.com/package/mysql2)
 
-var con = mysql.createConnection({
+```js
+const mysql = require('mysql2');
+
+const con = mysql.createConnection({
   host: 'localhost',
-  user: 'yourusername',
-  password: 'yourpassword',
+  user: 'root',
+  password: 'password',
+  database: 'Avocados',
+  port: 3306,
 });
 
 con.connect(function (err) {

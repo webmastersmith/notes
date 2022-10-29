@@ -1,11 +1,13 @@
 # MySQL
 
-## Stop Server
+- [MariaDB](https://mariadb.org/)
+
+## Stop Server Windows
 
 - cmd prompt
   - `net stop MySQL80`
 
-## Start Server
+## Start Server Windows
 
 - [cmd line](https://dev.mysql.com/doc/refman/8.0/en/windows-start-command-line.html)
   - `C:\> "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld" -p`
@@ -13,7 +15,7 @@
 - cmd prompt
   - `net start MySQL80`
 
-**Import csv**
+**Workbench Import csv**
 
 1. create table
 2. Run import cmd.

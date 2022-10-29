@@ -38,24 +38,45 @@
 ```sql
 CREATE DATABASE db_name;
 USE db_name;  -- postgres  \c db_name
+
+-- show databases
+SELECT name FROM sys.databases; --sql
+SHOW DATABASES; -- mysql
+SELECT datname FROM pg_database; --postgresql
 ```
 
 **Table**
 
 ```sql
+-- show tables
+SHOW TABLES; -- mysql
+\dt -- postgresql
+\dt+ -- postgresql tables with size
+
+-- show table schema
+DESCRIBE yourDatabasename.yourTableName; -- mysql
+SELECT * FROM INFORMATION_SCHEMA.COLUMNS where TABLE_NAME='tableName'; --sql
+
+
+-- schema examples
 CREATE TABLE customers (
-  id      INTEGER     PRIMARY KEY,
-  name    TEXT,
-  age     INTEGER,
-  weight  REAL
+  id      INT NOT NULL AUTO_INCREMENT,
+  name    VARCHAR(255), --characters
+  age     INT,
+  weight  DECIMAL(30, 2), -- DECIMAL(65) total. (before decimal, after decimal)
+  PRIMARY KEY (id)
 );
 
 -- Using primary keys
 CREATE TABLE Customers (
-  customerId    INTEGER   PRIMARY KEY,
-  first_name    VARCHAR   NOT NULL,
-  last_name     VARCHAR   NOT NULL,
-  age           INTEGER   CHECK(age > 18)
+  customerId    INT NOT NULL   PRIMARY KEY,
+  first_name    VARCHAR(255)   NOT NULL,
+  last_name     VARCHAR(255)   NOT NULL,
+  age           INT            CHECK(age > 18)
+  driverid INT NOT NULL,
+  FOREIGN KEY (LOCAL_COLUMN_NAME) REFERENCES TABLE_NAME (COLUMN_NAME),
+  FOREIGN KEY (driverid) REFERENCES drivers (driverid),
+
 )
 -- another way
 CREATE TABLE Customers (
@@ -71,7 +92,7 @@ CREATE TABLE Customers (
 
 -- Foreign Key
 CREATE TABLE Customer_Phones (
-  customerId INTEGER,
+  customerId INT,
   REFERENCES Customers(customerId), --foreign key to customers
   phone VARCHAR NOT NULL,
   PRIMARY KEY(customerId, phone)
@@ -176,17 +197,18 @@ SELECT name, CASE WHEN age > 18 THEN "adult" ELSE "minor" END "type" FROM custom
 SELECT DISTINCT column_name FROM table_name;
 ```
 
-### Inserting data
+### INSERT
 
 ```sql
+-- if your not adding data to ALL the columns, you must specify what columns you are adding data to.
 INSERT INTO table_name (column1_name, column2_name, ...) VALUES (value1, value2, ...)
-if your not adding data to ALL the columns, you must specify what columns you are adding data to.
+-- Inserting data
+INSERT INTO customers VALUES (1973, 'Brian', 33);  --must enter all data.
+-- Inserting partial data for named columns
+INSERT INTO customers (name) VALUES ('Brian');  --year and age will be null.
 
-    Inserting data
-    INSERT INTO customers VALUES (73, 'Brian', 33);  --must enter all data.
-
-    Inserting partial data for named columns
-    INSERT INTO customers (name) VALUES ('Brian');  --age will be null.
+INSERT INTO customers
+VALUES (1950, 'John', 55), (1999, 'Ajax', 5), (1980, 'Bob', 40) -- each will be a new row in 'customers' table.
 ```
 
 ### Update
@@ -217,6 +239,15 @@ DELETE FROM table_name; -- all rows deleted!
 DELETE FROM table_name WHERE column_name = 'value';
 DELETE FROM Customers WHERE id LIKE '7%'; -- delete all rows where id value starts with a 7
 
+```
+
+# DCL
+
+- Data Control Language - GRANT, REVOKE
+
+```sql
+-- change 'password' to your new password.
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';
 ```
 
 # TCL

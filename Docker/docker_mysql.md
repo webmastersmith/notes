@@ -1,9 +1,36 @@
 # Docker MySQL
 
-- [MySQL Docker Image](https://hub.docker.com/r/mysql/mysql-server)
+- [Docker Image](https://hub.docker.com/_/mysql)
+- [MySQL Docker Instructions](https://dev.mysql.com/doc/refman/8.0/en/docker-mysql-getting-started.html)
 
 ```sh
-docker pull mysql/mysql-server:latest
-# will pull and run all in one go.
-docker run --name=server-name -d mysql/mysql-server:latest
+# community edition
+docker run \
+  --name mysql1 \
+  --rm \
+  -v /home/webmaster/mysql/data:/var/lib/mysql \
+  -e MYSQL_ROOT_PASSWORD=password \
+  -e MYSQL_DATABASE=Avocados \
+  -dp 3306:3306 \
+  mysql # latest is default
+
+docker ps # will show STATUS healthy, when ready. NOT STATUS health: starting.
+
+# stream logs
+docker logs mysql1 -f  # stream logs
+
+# if password was not declared and you declared MYSQL_RANDOM_ROOT_PASSWORD=yes -user root
+docker logs mysql1 2>&1 | grep GENERATED
+
+# connect to mysql in container
+docker exec -it mysql1 mysql -uroot -p
+# connect to shell in container
+docker exec -it mysql1 bash
+
+# login
+mysql -u root -p'password' -h '127.0.0.1' -P '3306'
 ```
+
+### Debian -MySQL Shell
+
+- `sudo apt-get install default-mysql-client` // client allow you to connect to server
