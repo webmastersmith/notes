@@ -9,10 +9,12 @@ docker run \
   --name mysql1 \
   --rm \
   -v /home/webmaster/mysql/data:/var/lib/mysql \
-  -e MYSQL_ROOT_PASSWORD=password \
-  -e MYSQL_DATABASE=Avocados \
+  -e MYSQL_ROOT_PASSWORD='password' \
+  -e MYSQL_DATABASE='Avocados' \
   -dp 3306:3306 \
-  mysql # latest is default
+  mysql
+  # latest is default
+  # 'MYSQL_DATABASE' only works if volume is empty on startup.
 
 docker ps # will show STATUS healthy, when ready. NOT STATUS health: starting.
 

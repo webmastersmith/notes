@@ -81,14 +81,46 @@ readable.on('data', (chunk) => {
 
 **Synchronous Iteration**
 
+- read file line by line then write.
+
+```ts
+(async function () {
+  const readStream = require('fs').createReadStream('./price.csv');
+  const rl = require('readline/promises').createInterface({
+    input: readStream,
+    crlfDelay: Infinity,
+  });
+  // open the file in write mode.
+  const fh = await require('fs').promises.open('./test.csv', 'w');
+  try {
+    // iterate lines synchronously
+    for await (const line of rl) {
+      // console.log(line);
+      // await the after write.
+      await fh.write(line + '\n');
+    }
+  } catch (e) {
+    if (e instanceof Error) {
+      console.log(e.message);
+    } else {
+      console.log(String(e));
+    }
+  } finally {
+    await fh.close();
+    console.log('file closed');
+  }
+})();
+```
+
 ```js
 (async function () {
-  const lr = require('readline/promises').createInterface({
+  const rl = require('readline/promises').createInterface({
     input: require('fs').createReadStream('data.json'),
     crlfDelay: Infinity,
   });
   // iterate lines synchronously
-  for await (const line of lr) {
+  for await (const line of rl) {
+    // both 'await' are necessary.
     await syncP(line);
   }
 })();
@@ -96,47 +128,9 @@ readable.on('data', (chunk) => {
 function syncP(line) {
   return new Promise((res, rej) => {
     setTimeout(function () {
-      console.log('Line from file:', line);
-      res(true);
+      res(console.log('Line from file:', line));
     }, rand(100, 3000));
   });
-
-  // another one
-  import fs from 'fs';
-  import readline from 'readline/promises';
-
-  export default async function addData(con: any) {
-    const files = ['price', 'type', 'region'];
-
-    for await (const file of files) {
-      const rl = readline.createInterface({
-        input: fs.createReadStream(`./${file}.csv`),
-        crlfDelay: Infinity,
-      });
-      for await (const line of rl) {
-        if (line.includes('id')) {
-          // skip 1st line
-        } else {
-          await new Promise((res) => {
-            // is file price?
-            if (file === 'price') {
-              const sql = `INSERT INTO ${file} VALUES (${line.split(',')})`;
-              res(console.log(sql));
-            } else {
-              const sql = `INSERT INTO ${file} VALUES ('${
-                line.split(',')[1]
-              }')`;
-              res(console.log(file, sql));
-            }
-          });
-        }
-      }
-      rl.on('error', (err) => {
-        console.log(err);
-      });
-    }
-  }
-  addData('temp');
 }
 
 function rand(min, max) {
@@ -159,7 +153,43 @@ function rand(min, max) {
 // {"id":6,"name":"line 6","value":353}
 // {"id":7,"name":"line 7","value":175}
 // {"id":8,"name":"line 8","value":12}
+
+// another one
+export default async function addData(con: any, file: string) {
+  console.log(`${file} started`);
+  const rl = require('readline/promises').createInterface({
+    input: require('fs').createReadStream(`mysql/${file}.csv`),
+    crlfDelay: Infinity,
+  });
+  let count = 0;
+  // used this way instead of rl.on('line', (line)=>{}), because this is the only way to 'stream' a file synchronously with node. Connection will close before all lines can be read with rl.on('line').
+  for await (const line of rl) {
+    if (count === 0) {
+      // skip 1st line
+      count++;
+    } else {
+      // is file price?
+      if (file === 'price') {
+        const newLine = line.split(',');
+        newLine[0] = `'${newLine[0]}'`;
+        const sql = `INSERT INTO ${file} VALUES (${count++},${newLine});`;
+        await con.execute(sql);
+      } else {
+        const sql = `INSERT INTO ${file} VALUES (${count++},'${
+          line.split(',')[1]
+        }');`;
+        await con.execute(sql);
+      }
+    }
+  }
+  console.log(`${file} ended.`);
+  return;
+}
 ```
+
+### Asynchronous
+
+- must use with pipe to work correctly.
 
 ```js
 // import * as readline from 'node:readline/promises';
@@ -184,7 +214,7 @@ rl.on('close', () => {
 });
 ```
 
-# Examples
+# HTTP
 
 **Simple HTTP Server**
 

@@ -50,8 +50,8 @@ SELECT datname FROM pg_database; --postgresql
 ```sql
 -- show tables
 SHOW TABLES; -- mysql
-\dt -- postgresql
-\dt+ -- postgresql tables with size
+\dt; -- postgresql
+\dt+; -- postgresql tables with size
 
 -- show table schema
 DESCRIBE yourDatabasename.yourTableName; -- mysql

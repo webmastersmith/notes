@@ -107,3 +107,65 @@ function writer() {
 
 clock().pipe(xFormer()).pipe(writer());
 ```
+
+# Class
+
+```js
+(async function () {
+  const { pipeline, Transform } = require('stream');
+  const split2 = require('split2');
+  const fs = require('fs');
+
+  const readStream = fs.createReadStream('./price.csv');
+  const writeStream = fs.createWriteStream('./test.csv');
+
+  class FilterBlastOutput extends Transform {
+    _transform(chunk: any, encoding: string, callback: any) {
+      // console.log(chunk.toString());
+      this.push(chunk + '\r\n');
+      callback();
+    }
+  }
+
+  pipeline(
+    readStream,
+    split2(),
+    new FilterBlastOutput(),
+    writeStream,
+    (err: Error) => {
+      if (err) {
+        console.log('Pipeline failed: ', err);
+      } else {
+        console.log('Pipeline succeeded.');
+      }
+    }
+  );
+})();
+
+// or Transform Constructor.
+(async function () {
+  const { pipeline, Transform } = require('stream');
+  const split2 = require('split2');
+  const fs = require('fs');
+
+  const readStream = fs.createReadStream('./price.csv');
+  const writeStream = fs.createWriteStream('./test.csv');
+
+  function xform() {
+    return new Transform({
+      transform: (chunk: any, encoding: string, cb: any) => {
+        chunk += 'hello\r\n';
+        cb(null, chunk);
+      },
+    });
+  }
+
+  pipeline(readStream, split2(), xform(), writeStream, (err: Error) => {
+    if (err) {
+      console.log('Pipeline failed: ', err);
+    } else {
+      console.log('Pipeline succeeded.');
+    }
+  });
+})();
+```

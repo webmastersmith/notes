@@ -40,3 +40,18 @@ CREATE TABLE Customers (
   name VARCHAR(255)
 );
 ```
+
+# Export to CSV
+
+- may have to run this command to see where safe to copy file to.
+  - `SHOW VARIABLES LIKE "secure_file_priv";`
+- all lines are necessary or MySQL will error.
+
+```sql
+SELECT date,avgprice,totalvol,avo_a,avo_b,avo_c,typeid,regionid FROM price
+INTO OUTFILE '/var/lib/mysql-files/price.csv'
+FIELDS ENCLOSED BY ''
+TERMINATED BY ','
+ESCAPED BY '"'
+LINES TERMINATED BY '\r\n';
+```

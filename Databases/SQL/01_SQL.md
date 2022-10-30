@@ -101,6 +101,9 @@ ALTER TABLE CUSTOMER ADD PRIMARY KEY (ID);
 - A foreign key is a key used to link two tables together. This is sometimes also called as a **referencing key.**
 - A Foreign Key is a column or a combination of columns whose values match a Primary Key in a different table.
 - The relationship between 2 tables matches the Primary Key in one of the tables with a Foreign Key in the second table.
+- Gotchas
+  - before you can reference a table, it must already exist.
+  - before you can populate a table with a `FOREIGN KEY`, the reference table must already be populated.
 
 ```sql
 CREATE TABLE CUSTOMERS(
