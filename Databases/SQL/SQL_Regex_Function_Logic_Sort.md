@@ -2,8 +2,8 @@
 
 ## Wildcards
 
-- `%` // wildcard zero or more matches.
-  - Rotterick, Roger, Rog would all match this query string
+- `%` // wildcard zero or more characters.
+  - `Ro%` Rot, Roger, Rog would all match this query string
   - one or more chars.
 - `_` // underscore. single char.
   - `SELECT column_name FROM table_name WHERE column_name LIKE '657-278-____'`
@@ -54,7 +54,7 @@ SELECT emp_name, emp_age FROM Employee GROUP BY emp_age HAVING sum(deptId) >= 10
 
 ## WHERE
 
-- A WHERE clause is used to limit or filter the records affected by a command.
+- A `WHERE` clause is used to limit or filter the records affected by a command.
 - Followed by a comparison statement that determines the conditions that need to be met in order for a record to be considered for the SQL command.
 - A WHERE is always used in conjunction with another command.
 - Update and delete must have a 'WHERE' condition.
@@ -74,9 +74,19 @@ SELECT MIN(column_name) AS minimum_hours,
        AVG(column_name) AS average_hours
 FROM table_name
 WHERE column_name > 7;
+
+SELECT column_name1 AS 'c', column_name2 AS 'b' from table_name;
 ```
 
-# Sort
+## DISTINCT
+
+- remove duplicates from return.
+
+```sql
+SELECT DISTINCT column_name FROM table_name;
+```
+
+# SORT
 
 **GROUP BY**
 
@@ -93,6 +103,8 @@ SELECT column1, column2, AggregateFunction FROM table_name GROUP BY column_name;
 - desc // big to small (z-a, 9-0)
 
 ```sql
+SELECT * FROM table_name ORDER BY column_name DESC;
+
 SELECT column_name, aggregateFunction FROM table_name GROUP BY column_name ORDER BY aggregateFunction_results asc;
 
 
@@ -124,36 +136,25 @@ WHERE other_column_name > 7;
 **Aggregate functions**
 
 - process input and returns a scalar (single) value.
-- PostgreSQL will create a result table and the aggregate function will name the column after itself unless you provide an alias. //AS
-- AVG(column_name) FROM table_name; //return average value.
-- COUNT(\*) FROM table_name; //returns how many records table has.
-  - COUNT(column_name) FROM table_name; //counts repeats in column name.
-- FIRST/LAST FROM table_name; --first row of table or last row of table.
-- MIN/MAX(age) FROM customers;
+- PostgreSQL will create a result table and the aggregate function will name the column after itself unless you provide an alias. // `AS`
+- `AVG(column_name)` FROM table_name; // return average value.
+- `COUNT(*)` FROM table_name; // returns how many records in table.
+  - `COUNT(column_name) FROM table_name;`
+- `MIN/MAX(age) FROM customers;`
   - work with varchar (a-z) text as well.
-  - SELECT min(column_name) from table_name; //returns lowest integer/char.
-- NOW() //return date-time timestamp.
-- SUM(column_name) FROM table_name; //integer returns sum.
-  - SELECT column, sum(column) AS pop from table_name group by column order by pop desc;
+  - `SELECT min(column_name) from table_name;` // returns lowest integer/char.
+- `NOW()` // return date-time timestamp.
+- `SUM(column_name) FROM table_name;` // integer returns sum.
+  - `SELECT column, sum(column) AS pop FROM table_name GROUP BY column ORDER BY pop DESC;`
   - https://www.postgresqltutorial.com/postgresql-aggregate-functions/postgresql-sum-function/
 
 ```sql
 SELECT column1, column2, AggregateFunction FROM table_name;
-SELECT column_name, AggregateFunction FROM table_name; --must have comma!
-
 -- See also: restricting results with HAVING.
 
 -- GROUP BY
 -- allows you to only process certain fields.
 SELECT column_name, SUM(column_name) FROM table_name GROUP BY column_name;
-
--- WHERE
-SELECT _ FROM table_name WHERE column_name > 25;
-SELECT _ FROM table_name WHERE column_name LIKE "R%"; --any name starts with an 'R'.
-
--- LOGIC
-AND, OR, NOT
-LIKE "S%"; --wildcard
 ```
 
 **Custom Functions**

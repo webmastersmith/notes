@@ -195,6 +195,9 @@ SELECT name, CASE WHEN age > 18 THEN "adult" ELSE "minor" END "type" FROM custom
 
 -- Distinct -remove duplicate rows
 SELECT DISTINCT column_name FROM table_name;
+
+-- Limit
+SELECT * FROM table_name LIMIT 10;
 ```
 
 ### INSERT
@@ -230,7 +233,7 @@ WHERE column_name LIKE 'Ge%'; -- specify rows you want to change
 
 ```
 
-### Deleting data
+### DELETE
 
 - permanent memory loss.
 
@@ -247,7 +250,7 @@ DELETE FROM Customers WHERE id LIKE '7%'; -- delete all rows where id value star
 
 ```sql
 -- change 'password' to your new password.
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'yourNewPassword';
 ```
 
 # TCL

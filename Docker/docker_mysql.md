@@ -31,6 +31,10 @@ docker exec -it mysql1 bash
 
 # login
 mysql -u root -p'password' -h '127.0.0.1' -P '3306'
+# Backup
+mysqldump -u root -p'password' -h '127.0.0.1' -P '3306' database_name > ./db_backup.sql
+# Restore Database -Create database first
+mysql -u root -p'password' -h '127.0.0.1' -P '3306' database_name < ./db_backup.sql
 ```
 
 ### Debian -MySQL Shell
