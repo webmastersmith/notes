@@ -111,9 +111,15 @@ SELECT * FROM table_name ORDER BY column_name DESC;
 
 SELECT column_name, aggregateFunction FROM table_name GROUP BY column_name ORDER BY aggregateFunction_results asc;
 
-
 -- group all state populations and order.
 SELECT state, sum(population) AS pop from cities GROUP BY state ORDER BY pop desc;
+
+-- return name, year, duration of longest album.
+SELECT a.name AS Name, a.release_year AS 'Release Year', sum(s.length) AS Duration FROM albums a
+JOIN songs s ON s.album_id = a.id
+GROUP BY a.name, a.release_year
+ORDER BY Duration DESC LIMIT 1
+
 ```
 
 # Functions
@@ -171,6 +177,14 @@ SELECT column_name, SUM(column_name) FROM table_name GROUP BY column_name;
 SELECT b.name AS band_name, COUNT(*) AS count FROM albums a
 JOIN bands b ON a.band_id = b.id
 GROUP BY b.name
+
+-- double join to filter info.
+SELECT bands.name AS Band, SUM(z.total) FROM bands
+JOIN (SELECT a.name AS album_name, a.band_id, COUNT(s.name) AS total FROM albums a
+JOIN songs s
+WHERE a.id = s.album_id
+GROUP BY a.id) z ON bands.id = z.band_id
+GROUP BY bands.name
 ```
 
 **Custom Functions**

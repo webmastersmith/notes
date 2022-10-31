@@ -224,6 +224,7 @@ UPDATE table_name SET column1_name=value, column2_name= value, ....;
 UPDATE table_name
 SET column_name = newValue -- target attributes you want to change.
 WHERE column_name = 'George'; -- specify row or rows you want to change
+
 UPDATE table_name SET column_name = 31 WHERE id=1;
 
 -- wildcard

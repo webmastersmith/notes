@@ -145,7 +145,7 @@ ALTER TABLE ORDERS
 
 ```sql
 SELECT column1, column2, columnN FROM table_name;
-SELECT \* FROM table_name;
+SELECT * FROM table_name;
 ```
 
 **Where (condition)**

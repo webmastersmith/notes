@@ -40,3 +40,8 @@ mysql -u root -p'password' -h '127.0.0.1' -P '3306' database_name < ./db_backup.
 ### Debian -MySQL Shell
 
 - `sudo apt-get install default-mysql-client` // client allow you to connect to server
+
+### Error
+
+- sql_mode=only_full_group_by // turn off.
+- mysql > `SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));`
