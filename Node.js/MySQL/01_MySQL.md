@@ -4,12 +4,13 @@
 
 ```js
 const mysql = require('mysql2');
+const database = 'Avocados';
 
 const con = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'password',
-  database: 'Avocados',
+  database: database,
   port: 3306,
 });
 
@@ -47,7 +48,7 @@ import avocado_data from './mysql/avocado_data';
     await avocado_schema(con);
 
     const files = ['type', 'region', 'price'];
-    // this is synchronous code. Will go finish file before calling next file.
+    // this is synchronous code. Will finish file before calling next file.
     for (const file of files) {
       await avocado_data(con, file);
     }

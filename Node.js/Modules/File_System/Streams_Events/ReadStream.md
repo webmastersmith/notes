@@ -40,6 +40,7 @@ try {
   - `fs.createReadStream('./fileName.txt', { encoding: 'utf-8' })`
   - `highWaterMark default is 64 * 1024 = 65,536B`
     - `stream.readable default is 16 * 1024 = 16,384B`
+  - Readable.from(str, encoding) can convert async generator into 'readable' stream.
 
 **Events**
 
@@ -75,7 +76,8 @@ readable.on('data', (chunk) => {
 ### Readline
 
 - [Node Readline Module](https://nodejs.org/api/readline.html)
-- read line by line with events.
+- readline by line with events.
+- readline removes the `\r\n` same as `''.split('\r\n')`
 - [Events](https://nodejs.org/api/readline.html#class-interfaceconstructor)
 - Events: close, line, history, pause, resume, SIGCONT, SIGINT, SIGSTP
 
@@ -84,21 +86,21 @@ readable.on('data', (chunk) => {
 - read file line by line then write.
 
 ```ts
-(async function () {
-  const readStream = require('fs').createReadStream('./price.csv');
+(async function (inFile, outFile) {
   const rl = require('readline/promises').createInterface({
-    input: readStream,
+    input: require('fs').createReadStream(inFile),
     crlfDelay: Infinity,
   });
-  // open the file in write mode.
-  const fh = await require('fs').promises.open('./test.csv', 'w');
+  // open the file handle promise in write mode.
+  const fhp = await require('fs').promises.open(outFile, 'w');
   try {
-    // iterate lines synchronously
+    // iterate lines synchronously -transform line. '\r\n' removed by readline.
     for await (const line of rl) {
       // console.log(line);
-      // await the after write.
-      await fh.write(line + '\n');
+      // await the promise after write.
+      await fhp.write(line + '\n');
     }
+    console.log(`${outFile} successfully created.`);
   } catch (e) {
     if (e instanceof Error) {
       console.log(e.message);
@@ -106,11 +108,13 @@ readable.on('data', (chunk) => {
       console.log(String(e));
     }
   } finally {
-    await fh.close();
-    console.log('file closed');
+    await fhp.close();
+    console.log(`${inFile} closed`);
   }
 })();
 ```
+
+**readLine, random wait times, showing synchronous write.**
 
 ```js
 (async function () {
@@ -312,6 +316,13 @@ Pipeline
 - allows error handling
 
 ```js
+import * as stream from 'stream';
+const pipeline = util.promisify(stream.pipeline);
+const writable = fs.createWriteStream(filePath);
+await pipeline(readable, writable);
+```
+
+```js
 const { pipeline } = require('stream');
 const fs = require('fs');
 const zlib = require('zlib');
@@ -352,5 +363,88 @@ async function run() {
   } catch (err) {
     console.error('Pipeline failed', err);
   }
+}
+
+// another one read + transform line + write, through the pipeline.
+(async function () {
+  const { pipeline, Readable } = require('stream');
+  const fs = require('fs');
+
+  const readIterable = fs.createReadStream('./price.csv');
+  const writeStream = fs.createWriteStream('./test.csv');
+
+  // do transform function here.
+  const transformLine = (line: string, lineEnding: string): string => {
+    const words = line.replace(/\r?\n/, '').split(',');
+    words[0] = `'${words[0]}'`;
+    return `(${words.join(',')})${lineEnding}`;
+  };
+
+  // this function splits chunk into lines without lose of broken lines.
+  async function* myTransform(chunkIterable: string) {
+    let count = 0;
+    let previous = '';
+    for await (const chunk of chunkIterable) {
+      let startSearch = previous.length;
+      previous += chunk;
+      while (true) {
+        const eolIndex = previous.indexOf('\n', startSearch);
+        if (eolIndex < 0) break;
+        // line includes the EOL
+        const line = previous.slice(0, eolIndex + 1);
+        // Transform line here ------------------------------------
+        if (count == 0) {
+          yield `INSERT INTO \`price\` VALUES `;
+          count++;
+        }
+        yield transformLine(line, ',');
+        previous = previous.slice(eolIndex + 1);
+        startSearch = 0;
+      }
+    }
+    if (previous.length > 0) {
+      // last line is processed here if there were any split lines in chunk.
+      yield transformLine(previous, '');
+    }
+  }
+
+  pipeline(
+    Readable.from(myTransform(readIterable)),
+    writeStream,
+    (err: Error) => {
+      if (err) {
+        console.log('Pipeline failed: ', err);
+      } else {
+        console.log('Pipeline succeeded.');
+      }
+    }
+  );
+})();
+
+// same as above, about 20% slower
+const transformLine2 = (lines: string[], lineEnding: string): string => {
+  return lines
+    .map((line) => {
+      const words = line.split(',');
+      words[0] = `'${words[0]}'`;
+      return `(${words.join(',')})${lineEnding}`;
+    })
+    .join(lineEnding);
+};
+
+async function* chunkToLines(chunkIterable: string) {
+  let count = 0;
+  let remaining = '';
+  for await (const chunk of chunkIterable) {
+    const lines = (remaining + chunk).split(/\r?\n/);
+    // console.log(lines);
+    remaining = lines.pop() || '';
+    let x = transformLine2(lines, ',');
+    if (count === 0) {
+      x = `INSERT INTO \`price\` VALUES ` + x;
+    }
+    yield* x;
+  }
+  yield transformLine2([remaining], '\n');
 }
 ```

@@ -147,7 +147,7 @@ try {
 
 ### Create Directory
 
-- [directory]()
+- [director tutorial](https://blog.logrocket.com/file-processing-node-js-comprehensive-guide/)
 
 ```js
 const fs = require('fs');
@@ -161,5 +161,41 @@ fs.mkdir(dir, { recursive: true }, (err) => {
 // sync
 if (!fs.existsSync(dir)) {
   fs.mkdirSync(dir, { recursive: true });
+}
+
+// example 1: create a directory
+await fsPromises.mkdir('sampleDir');
+
+// example 2: create multiple nested directories
+await fsPromises.mkdir('nested1/nested2/nested3', { recursive: true });
+
+// example 3: rename a directory
+await fsPromises.rename('sampleDir', 'sampleDirRenamed');
+
+// example 4: remove a directory
+await fsPromises.rmdir('sampleDirRenamed');
+
+// example 5: remove a directory tree
+await fsPromises.rm('nested1', { recursive: true });
+
+// example 6: remove a directory tree, ignore errors if it doesn't exist
+await fsPromises.rm('nested1', { recursive: true, force: true });
+
+// example 1: get names of files and directories
+const files = await fsPromises.readdir('anotherDir');
+for (const file in files) {
+  console.log(file);
+}
+
+// example 2: get files and directories as 'Dirent' directory entry objects
+const dirents = await fsPromises.readdir('anotherDir', { withFileTypes: true });
+for (const entry in dirents) {
+  if (entry.isFile()) {
+    console.log(`file name: ${entry.name}`);
+  } else if (entry.isDirectory()) {
+    console.log(`directory name: ${entry.name}`);
+  } else if (entry.isSymbolicLink()) {
+    console.log(`symbolic link name: ${entry.name}`);
+  }
 }
 ```

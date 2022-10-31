@@ -16,7 +16,7 @@
 - `<` // less than
 - `<=` // less than equal to
 - `=` // equal
-- `<>` or `!=` // not equal -some DBMS use one or the other.
+- `!= | <>` // not equal -some DBMS use one or the other.
 
 ## Logic Operators
 
@@ -59,6 +59,18 @@ SELECT emp_name, emp_age FROM Employee GROUP BY emp_age HAVING sum(deptId) >= 10
 - A WHERE is always used in conjunction with another command.
 - Update and delete must have a 'WHERE' condition.
 
+```sql
+SELECT * FROM albums
+Where release_year = (SELECT min(release_year) FROM albums); -- finds min release_year, then compares.
+
+-- field values with different names.
+SELECT bands.name AS 'Band Name'
+  FROM bands
+  JOIN albums ON bands.id = albums.band_id
+  GROUP BY albums.band_id
+  HAVING COUNT(albums.id) > 0;
+```
+
 ## AS
 
 - alias name to reference column_name.
@@ -87,14 +99,6 @@ SELECT DISTINCT column_name FROM table_name;
 ```
 
 # SORT
-
-**GROUP BY**
-
-- container (group) data.
-
-```sql
-SELECT column1, column2, AggregateFunction FROM table_name GROUP BY column_name;
-```
 
 **ORDER BY**
 
@@ -148,13 +152,25 @@ WHERE other_column_name > 7;
   - `SELECT column, sum(column) AS pop FROM table_name GROUP BY column ORDER BY pop DESC;`
   - https://www.postgresqltutorial.com/postgresql-aggregate-functions/postgresql-sum-function/
 
+**GROUP BY**
+
+- Aggregate Function
+  - groups data blocks to run: `MIN(), MAX(), COUNT(), SUM()...`
+- container (group) data.
+
 ```sql
+SELECT column1, column2, AggregateFunction FROM table_name GROUP BY column_name;
 SELECT column1, column2, AggregateFunction FROM table_name;
 -- See also: restricting results with HAVING.
 
 -- GROUP BY
 -- allows you to only process certain fields.
 SELECT column_name, SUM(column_name) FROM table_name GROUP BY column_name;
+
+-- return how many albums each band has.
+SELECT b.name AS band_name, COUNT(*) AS count FROM albums a
+JOIN bands b ON a.band_id = b.id
+GROUP BY b.name
 ```
 
 **Custom Functions**

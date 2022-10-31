@@ -57,6 +57,10 @@ myEmitter.emit('newSale', 9, 'hello'); // 9, hello are the arguments that will b
 
 # Streams
 
+- [async iterator](https://2ality.com/2019/11/nodejs-streams-async-iteration.html)
+  - stream returns an async iteration. Not a promise.
+  - for await (const line of lines) // designed for async iteration. aka generator functions.
+
 **4 stream types**
 
 1. Readable Streams

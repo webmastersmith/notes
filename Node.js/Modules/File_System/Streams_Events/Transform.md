@@ -28,6 +28,7 @@ function xStream() {
       // last line of file may not have \r\n, so last line get orphaned. Track chunks used to fileSize to determine if stream is on last chunk.
       // track file usage. If fileSizeTracker gets close to fileSize, add brokenLine to last chunk.
       fileSizeTracker += chunkSize;
+      // regex keeps the '\r\n' from being removed, so I can identify broken lines.
       const lines = chunk.toString().split(/(?<=\r?\n)/);
       // if brokenLine has string, add to beginning of lines.
       if (brokenLine) {
@@ -122,7 +123,8 @@ clock().pipe(xFormer()).pipe(writer());
   class FilterBlastOutput extends Transform {
     _transform(chunk: any, encoding: string, callback: any) {
       // console.log(chunk.toString());
-      this.push(chunk + '\r\n');
+      // each chunk is actually a line from split2.
+      this.push(chunk + '\r\n'); // concatenate converts chunk to string in background.
       callback();
     }
   }

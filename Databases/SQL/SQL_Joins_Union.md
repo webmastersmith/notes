@@ -9,6 +9,26 @@
 
 <img src="../images/joins.png" alt="sql table joins">
 
+**Inner Join**
+
+- `JOIN` = `INNER JOIN` // treated same.
+- most common. same as `WHERE` clause.
+- only return records from both tables that match a condition.
+
+```sql
+-- Inner join only return matches
+SELECT column_name1, column_name2
+FROM table_1 AS t1, table_2 AS t2 -- including more than one table.
+WHERE t1.deptId = t2.deptId
+
+SELECT column_name FROM table_name1 JOIN table_name2 ON table1.column = table2.column;
+SELECT t1.column_name FROM table_name1 t1 INNER JOIN table_name2 t2 ON t1.column = t2.column; -- same as JOIN.
+
+SELECT date, avgprice, type FROM price
+JOIN type ON price.typeid = type.typeid
+WHERE type = 'organic' limit 10;
+```
+
 **Outer Join**
 
 ```sql
@@ -43,25 +63,6 @@ WHERE o.id = NULL; -- everything that does not match o.id.
 **Full Outer Join**
 
 - return all records from both tables.
-
-**Inner Join**
-
-- most common.
-- only return records from both tables that match a condition.
-
-```sql
--- Inner join only return matches
-SELECT column_name1, column_name2
-FROM table_1 AS t1, table_2 AS t2 -- including more than one table.
-WHERE t1.deptId = t2.deptId
-
-SELECT column_name FROM table_name1 JOIN table_name2 ON table1.column = table2.column;
-SELECT column_name FROM table_name1 INNER JOIN table_name2 ON table1.column = table2.column; -- same as JOIN.
-
-SELECT date, avgprice, type FROM price
-JOIN type ON price.typeid = type.typeid
-WHERE type = 'organic' limit 10;
-```
 
 ## Union
 

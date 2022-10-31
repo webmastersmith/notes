@@ -8,8 +8,19 @@
   - [Object Mode](https://nodesource.com/blog/understanding-object-streams/)
   - the internal buffering algorithm counts objects rather than bytes. This means if we have a Transform stream with the highWaterMark option set to 5, the stream will only buffer a maximum of 5 objects internally.
   - process.stdout is a regular stream that can only deal with Strings and Buffers.
+  - Events: 'close', 'drain', 'error', 'finish', 'pipe', 'unpipe'
 
 ## Buffer
+
+- [buffer and character encodings](https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings)
+  - 'utf8'
+  - 'utf16le'
+  - 'ascii'
+  - 'latin1'
+  - 'base64'
+  - 'base64url',
+  - 'hex' (each byte as two hexadecimal characters)
+  - 'ucs-2' (same as utf16le)
 
 **Back pressure**
 [Nodejs Backpressure](https://enlear.academy/nodejs-backpressuring-in-streams-52638f505e1b)
@@ -34,8 +45,8 @@ const customReadStream = new CustomStream({
 - `pipe` handles backpressure automatically.
 
 ```js
-import fs from "fs";
-const readableStream = fs.createReadStream("path1");
-const writableStream = fs.createWriteStream("path2");
+import fs from 'fs';
+const readableStream = fs.createReadStream('path1');
+const writableStream = fs.createWriteStream('path2');
 readableStream.pipe(writableStream);
 ```

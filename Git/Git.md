@@ -3,8 +3,8 @@
 - https://github.com/UnseenWizzard/git_training
 - centralized is the other way of doing version control. -centralized database, everyone pulls from one database.
 - more control over who can change what.
-- git is distrubted design system for version control -each person has a complete copy of git.
-- everybody has a copy of the database and sycronized it when back online.
+- git is distributed design system for version control -each person has a complete copy of git.
+- everybody has a copy of the database and synchronized it when back online.
 - more trust on each individual because anyone can change something
 - branching and merging are fast.
 - advantages: database goes down, everyone can still operate.
@@ -157,8 +157,8 @@
 
 **show last commit**
 
-- https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History
-- `git show --sumary`
+- <https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History>
+- `git show --summary`
 - `git log` // returns list of last commits
 - `git log -1 --stat` // show detail about last commit
 - `git log -1` // show last commit
@@ -169,7 +169,7 @@
 - `git log --pretty=medium`
 - `git log --pretty=full`
 - `git log --pretty=fuller`
-- format
+- **format**
   - `git log -1 --pretty=format:"%H"` // show last commit hash only
   - `git log -1 --pretty=format:"%s"` // show last commit message only
 
@@ -177,15 +177,14 @@
 
 **Edges**
 
-- Git maintains 3 snapshots of the files, which are stored in seperate directories.
+- Git maintains 3 snapshots of the files, which are stored in separate directories.
 
-**Working Directory**
+1. **Working Directory**
 
-- not tracked by git until you stage it.
-- git tracks files that are new or need to be modified. If you want to track them, add to staging area.
+- git only tracks files you add to staging area. `git add fileName`.
 - when you delete file, it's shadow is still in the staging area if you had added it.
 
-**Staging Area**
+2. **Staging Area**
 
 - review work before it's committed to repository
 - staging area can be reversed before committing to repository
@@ -194,7 +193,7 @@
   - `git add file1.txt file2.txt` // `git add \*.js | git add .` //all files that have been modified.
 - status
   - `git status -s` //-s short status.
-  - first column is staging area, second column is working directory. //A added, M modifed
+  - first column is staging area, second column is working directory. //A added, M modified
 - show files being tracked
   - `git ls-files`
 - diff
@@ -206,9 +205,13 @@
   - `git rm --cached` //remove from staging area.
   - `git rm --cached .` //remove all cache
 
+3. **Remote Repository**
+
+- online storage area where others can access repo.
+
 **file to large**
 
-- https://stackoverflow.com/questions/19573031/cant-push-to-github-because-of-large-file-which-i-already-deleted
+- <https://stackoverflow.com/questions/19573031/cant-push-to-github-because-of-large-file-which-i-already-deleted>
 
 **git status**
 
@@ -219,128 +222,123 @@
 
 **rename or move files**
 
-- `git mv file1 file2` //copies file1 to file two, removes file1, updates staging area.
+- `git mv file1 file2` // copies file1 to file two, removes file1, updates staging area.
 
-Git Directory Commits (snapshot) //permanent record state
-repository which stores all files in an compressed form.
-snapshot added to our repository.
-commit when you reach a stage you want to restore to.
-git commit -m "something useful"
-git commit -am "something useful" //git add and commit in one line.
-git commit //without message will open default editor to add multi-line comment.
-write message, save, then close file to finish commit.
+**Git Directory Commits** (snapshot) // permanent record state repository which stores all files in an compressed form. snapshot added to our repository. commit when you reach a stage you want to restore to.
 
-Initial setup
+- `git commit -m "something useful"`
+- `git commit -am "something useful"` // git add and commit in one line.
+- `git commit` // without message will open default editor to add multi-line comment. write message, save, then close file to finish commit.
+
+## Initial setup
+
+```sh
 git config --global user.name "your name"
 git config --global user.email "email@example.com"
 echo "hello world" >> Readme.md
-git init //start new repo
-git add files
+git init # start new repo
+git add README.md
 git commit -m "first commit"
 git branch -M main
 git remote add origin https://newrepo.git
 git push -u origin main
 
-Remote
-Check Origin
-git remote -v //show which repository it's pointing to.
-git remote show origin //show more info about origin.
-Remove Origin
-git remote //list the origin. Remote is pointer to some repository not on your device.
-git remote remove origin
-Add Origin
-git remote add origin YourSshFromGithub //must do next line as well.
-git push -u origin main //-u same as --set-upstream //--force to make it work.
-PUSH / PULL
-git pull origin main // always pull from remote before pushing
-git push -u origin main //choose what branch to push to.
-git push //after origin established can just push to repository.
-force //overwrite remote
-git push --force -u origin main
-Merge Abort
-git merge -- abort
-
-…or create a new repository on the command line
-echo "# test" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/webmastersmith/test.git
-git push -u origin main
-
-…or push an existing repository from the command line
+# …or push an existing repository from the command line
 git remote add origin https://github.com/webmastersmith/test.git
 git branch -M main
 git push -u origin main
+```
 
-Branch
-main that points to single commit
-pointer to a commit.
-Branch -all actions happen on local unless 'remote' is used.
-https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches
-https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell
-rename branch
-git branch -m <name>
-assign Branch to push/pull from
-https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
-https://www.nobledesktop.com/learn/git/git-branches
-1 . change to main branch
-git branch -M main 2. set upstream remote
-git remote add origin https://github.com/webmastersmith/aws_ec2_terraform.git
-git push -u origin main //-u same as --set-upstream
-To delete remote and push local
-git push origin main -f //delete remote history
-git push -u origin main
-show remote branch your pointing to
-https://tecadmin.net/list-all-remote-branches-in-git/
-https://git-scm.com/book/en/v2/Git-Branching-Remote-Branches
-git branch //show local
-git branch -r //show remote only
-git branch -a //show remote and local branch info
-git branch -vv //show which local branch your on and last commit message.
-pull from all branches
-git fetch //updates local with all remote branches
-git branch -a //optionally -v to add last commit message.
-show remote only repo
-git ls-remote //list all remote branches
-git remote -v //shows what repository you are pushing to.
-push to remote
-git push <remote-name> <branch-name> //<remote-name> is usually origin
-git push origin newBranchName
-git push --set-upstream origin branchName //-u same as --set-upstream
-git checkout -b gh-pages //create and switch to branch 'gh-pages' -local only
-short for git branch gh-pages //-b create branch.
-short for git checkout gh-pages //move to branch
-To push the current branch
-git push origin <your-new-branch-name> //To publish the new branch you created in GitHub
-To push and set the remote as upstream
-git push --set-upstream origin <branch-name> //<old-branch-name> if you are not in the branch you want to duplicate.
-https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
-this is now the 'head' and controls all pushes.
-switch branch
-git checkout main //switches to main, reverting work on other branch back to main.
-git branch //show what branch your on.
-to merge branch
-https://stackabuse.com/git-merge-branch-into-master/
-git checkout main //locally now you can merge 'new-branch' with 'main' branch
-git merge new-branch //locally merges new-branch into the currently active branch locally.
-this changes local 'main' only, then you have to git push to change remote branch.
-git pull //will pull changes from remote to local.
-Check if branch's need merged:
-git branch --no-merged //find which local branches have not been merged with head.
-git branch --merged //find branches that have been merged
-to delete branch
-https://www.freecodecamp.org/news/how-to-delete-a-git-branch-both-locally-and-remotely/
-git branch -D <name-of-branch> //remove local branches.
-git push origin --delete gh-pages //delete github branch.
-can also: git push origin :gh-pages
-// synchronize branch
-git fetch -p
-The -p flag means "prune". After fetching, branches which no longer exist on the remote, local branch will be deleted.
-git branch -d gh-pages //delete local branch. -D is force even if there are changes.
-Updates were rejected because the tip of your current branch is behind
-git pull origin main --allow-unrelated-histories //will merge and possibly delete some files. Make a backup first.
+# Remote
+
+**Check Remote Origin**
+
+- `git remote -v` // show which repository it's pointing to.
+  - `git remote show origin` // show more info about origin.
+    **Remove Remote Origin**
+- `git remote` // list the origin. Remote is pointer to some repository not on your device.
+- `git remote remove origin`
+  **Add Remote Origin**
+- `git remote add origin YourSshFromGithub` // must do next line as well.
+  - `git push -u origin main` // `-u` same as `--set-upstream` // `--force` to make it work.
+    **PUSH / PULL**
+- `git pull origin main` // always pull from remote before pushing
+- `git push -u origin main` // choose what branch to push to.
+  - `git push --force -u origin main` // force, overwrite remote.
+- `git push` // after origin established can just push to repository.
+  **Merge Abort**
+- `git merge --abort`
+
+# Branch
+
+- main that points to single commit pointer to a commit.
+- Branch -all actions happen on local unless 'remote' is used.
+- <https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches>
+- <https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell>
+- **View Local/Remote Branch**
+  - `git branch (-a | --all)`
+  - `git branch (-l | --list)` // allows regex expression: `git branch list 'main-*'`
+- **rename branch**
+  - `git branch -m <name>`
+- **assign Branch to push/pull from**
+  - <https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging>
+  - <https://www.nobledesktop.com/learn/git/git-branches>
+- **change branch**
+  - `git branch -M main` // set upstream remote
+  - `git remote add origin` // <https://github.com/webmastersmith/aws_ec2_terraform.git>
+  - `git push -u origin main` // `-u` same as `--set-upstream`
+- **To delete remote and push local**
+  - `git push origin main -f` // delete remote history
+  - `git push -u origin main`
+    show remote branch your pointing to
+    https://tecadmin.net/list-all-remote-branches-in-git/
+    https://git-scm.com/book/en/v2/Git-Branching-Remote-Branches
+    git branch //show local
+    git branch -r //show remote only
+    git branch -a //show remote and local branch info
+    git branch -vv //show which local branch your on and last commit message.
+    pull from all branches
+    git fetch //updates local with all remote branches
+    git branch -a //optionally -v to add last commit message.
+    show remote only repo
+    git ls-remote //list all remote branches
+    git remote -v //shows what repository you are pushing to.
+    push to remote
+    git push <remote-name> <branch-name> //<remote-name> is usually origin
+    git push origin newBranchName
+    git push --set-upstream origin branchName //-u same as --set-upstream
+    git checkout -b gh-pages //create and switch to branch 'gh-pages' -local only
+    short for git branch gh-pages //-b create branch.
+    short for git checkout gh-pages //move to branch
+    To push the current branch
+    git push origin <your-new-branch-name> //To publish the new branch you created in GitHub
+    To push and set the remote as upstream
+    git push --set-upstream origin <branch-name> //<old-branch-name> if you are not in the branch you want to duplicate.
+    https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
+    this is now the 'head' and controls all pushes.
+    switch branch
+    git checkout main //switches to main, reverting work on other branch back to main.
+    git branch //show what branch your on.
+    to merge branch
+    https://stackabuse.com/git-merge-branch-into-master/
+    git checkout main //locally now you can merge 'new-branch' with 'main' branch
+    git merge new-branch //locally merges new-branch into the currently active branch locally.
+    this changes local 'main' only, then you have to git push to change remote branch.
+    git pull //will pull changes from remote to local.
+    Check if branch's need merged:
+    git branch --no-merged //find which local branches have not been merged with head.
+    git branch --merged //find branches that have been merged
+    to delete branch
+    https://www.freecodecamp.org/news/how-to-delete-a-git-branch-both-locally-and-remotely/
+    git branch -D <name-of-branch> //remove local branches.
+    git push origin --delete gh-pages //delete github branch.
+    can also: git push origin :gh-pages
+    // synchronize branch
+    git fetch -p
+    The -p flag means "prune". After fetching, branches which no longer exist on the remote, local branch will be deleted.
+    git branch -d gh-pages //delete local branch. -D is force even if there are changes.
+    Updates were rejected because the tip of your current branch is behind
+    git pull origin main --allow-unrelated-histories //will merge and possibly delete some files. Make a backup first.
 
 Cache
 git rm --cached fileName //remove from staging
