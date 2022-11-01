@@ -13,14 +13,14 @@
 
 ```js
 // all return -15
-parseInt("-F", 16);
-parseInt("-0F", 16);
-parseInt("-0XF", 16);
-parseInt("-17", 8);
-parseInt("-15", 10);
-parseInt("-1111", 2);
-parseInt("-15e1", 10);
-parseInt("-12", 13);
+parseInt('-F', 16);
+parseInt('-0F', 16);
+parseInt('-0XF', 16);
+parseInt('-17', 8);
+parseInt('-15', 10);
+parseInt('-1111', 2);
+parseInt('-15e1', 10);
+parseInt('-12', 13);
 ```
 
 # Coercion
@@ -28,3 +28,7 @@ parseInt("-12", 13);
 - `+string` same as `Number(string)`
 - `string * 1` // returns number.
   <a href="https://stackoverflow.com/questions/17106681/parseint-vs-unary-plus-when-to-use-which"><img src="./images/parseIntvsplus.png" alt="coercion table"></a>
+
+# Decimal Math
+
+- [Article](https://thecodebarbarian.com/a-nodejs-perspective-on-mongodb-34-decimal.html)

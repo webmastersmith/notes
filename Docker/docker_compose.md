@@ -7,11 +7,11 @@
 - orchestrate multiple instances of docker containers. Tool for running multi-container applications
 - written in yaml.
 - [https://docs.docker.com/compose/compose-file/](https://docs.docker.com/compose/compose-file/)
-- [https://docs.docker.com/compose/reference/](https://docs.docker.com/compose/reference/)
 - [geek stuff](https://www.thegeekstuff.com/2016/04/docker-compose-up-stop-rm/)
 
 **cmd**
 
+- [https://docs.docker.com/compose/reference/](https://docs.docker.com/compose/reference/)
 - <https://www.thegeekstuff.com/2016/04/docker-compose-up-stop-rm/>
 - <https://docs.docker.com/engine/reference/commandline/compose_down/#related-commands>
 
@@ -22,6 +22,7 @@
 **start**
 
 - `docker compose up -d` // -d must be on end. -d options runs the docker application in the background as a daemon.
+- `sudo docker compose -f ./mongo.yaml up -d`
   - `up | stop`
   - `docker compose -f /path/to/file`
 
@@ -82,9 +83,12 @@ networks:
 
 **mongo example**
 
-- `docker-compose -f mongo.yml up/down` // -f is file. // removes container when down.
+- `sudo docker compose -f ./mongo.yaml up -d`
+  - `-f` is file. // removes container when down.
 
 **mongo-docker-compose.yaml**
+
+- `sudo docker compose -f ./mongo.yaml up -d`
 
 ```yaml
 version: '3' #tag always here
