@@ -5,22 +5,22 @@
 ## Simple Routing
 
 ```ts
-import "dotenv/config";
-import fs from "fs";
-import express, { Request, Response, NextFunction } from "express";
+import 'dotenv/config';
+import fs from 'fs';
+import express, { Request, Response, NextFunction } from 'express';
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const getAllTours = (req: Request, res: Response) => {
-  res.status(200).json({ status: "success", data: { tours } });
+  res.status(200).json({ status: 'success', data: { tours } });
 };
 
-app.route("/api/v1/tours").get(getAllTours).post(createTour);
+app.route('/api/v1/tours').get(getAllTours).post(createTour);
 
 app
-  .route("/api/v1/tours/:id")
+  .route('/api/v1/tours/:id')
   .get(getTour)
   .patch(updateTour)
   .delete(deleteTour);
@@ -37,14 +37,19 @@ app.listen(process.env.PORT, () => {
 
 ```ts
 // Users
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response, NextFunction } from 'express';
 
 const router = express.Router();
-router.route("/").get(getAllUsers).post(createUser);
-router.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
+router.route('/').get(getAllUsers).post(createUser);
+router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
 
 export default router;
 ```
+
+## Query String
+
+- `req.query` // http://someWebSite.com/api/v1/tours?duration=5&difficulty=easy
+  - `{ duration: '5', difficulty: 'easy' }`
 
 ## Params
 
@@ -56,13 +61,13 @@ export const checkId = (
   req: Request,
   res: Response,
   next: NextFunction,
-  value: string
+  value: string // same as req.params.slugName
 ) => {
   const id = +value;
   if (tours.findIndex((el: Data) => el.id === id) < 0) {
     return res.status(404).json({
-      status: "error",
-      data: "ID not found",
+      status: 'error',
+      data: 'ID not found',
     });
   }
   return next();
@@ -70,10 +75,10 @@ export const checkId = (
 
 // tours.ts
 const router = express.Router();
-router.route("/").get(getAllTours).post(createTour);
+router.route('/').get(getAllTours).post(createTour);
 // all :id routes will be checked for valid id before continuing.
-router.param("id", checkId);
-router.route("/:id").get(getTour).patch(updateTour).delete(deleteTour);
+router.param('id', checkId);
+router.route('/:id').get(getTour).patch(updateTour).delete(deleteTour);
 export default router;
 ```
 
@@ -82,5 +87,5 @@ export default router;
 - anything inside the `public` that is asked for will be served.
 
 ```ts
-app.use(express.static(process.cwd() + "/public")); // http://127.0.0.1:8080/img/pin.png
+app.use(express.static(process.cwd() + '/public')); // http://127.0.0.1:8080/img/pin.png
 ```

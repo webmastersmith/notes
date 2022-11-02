@@ -8,7 +8,7 @@
 
 - [Mongoose Schema Types](https://mongoosejs.com/docs/schematypes.html)
 - String, Buffer, Boolean, Mixed, ObjectId, Array, Map
-- Number // { type: Number, min: 18, max: 65 },
+- Number // { type: Number, min: 18, max: 65 }, // Number can be a float so must use logic to make it an integer. [`Math.round(v)`]()
 - Date, // { type: Date, default: Date.now },
 - Decimal128, // same as MongoDB NumberDecimal. Used for floats and currency.
 
@@ -40,8 +40,35 @@ import mongoose from 'mongoose';
       console.log(String(e));
     }
   } finally {
-    db.disconnect();
-    console.log('Closed Client');
+    // db.disconnect(); // for http servers stays running to validate api request.
+    // console.log('Closed Client');
   }
 })();
 ```
+
+# Validators
+
+- [Mongoose](https://mongoosejs.com/docs/validation.html)
+
+# Methods
+
+**Count**
+
+- `await .count()`
+
+**Get All**
+
+- `await SchemaName.find()`
+- returns array of objects.
+
+**Find**
+
+- `findById(id).exec()` // `.exec()` turns query into real Promise.
+  - returns one.
+  - same as mongo findOne()
+- [`find({}).exec()`](https://mongoosejs.com/docs/api.html#model_Model-find) // the `.exec()` turns query into a real `Promise`. Use it when querying.
+  - [without `.exec()`](https://mongoosejs.com/docs/queries.html#queries-are-not-promises)
+
+# Query Casting
+
+- <https://mongoosejs.com/docs/tutorials/query_casting.html>
