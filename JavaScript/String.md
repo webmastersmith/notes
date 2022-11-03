@@ -32,4 +32,7 @@ str.includes('s');
 ```js
 // find and remove blank lines
 split(/\r?\n\s*\r?\n/).join(os.EOL);
+
+// every match replace with function return value.
+str.replace(/\b(lt|lte|gt|gte)\b/g, (m) => `$${m}`);
 ```
