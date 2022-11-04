@@ -100,3 +100,34 @@ ip addr | grep eth0
 - All documents must have unique `_id` // Mongo add's `_id` if you don't.
   - The value of \_id must be unique for each document in a collection, is immutable, and can be of any type other than an array.
 -
+
+# Aggregation Pipeline
+
+- <https://www.mongodb.com/docs/manual/meta/aggregation-quick-reference/>
+- array with objects for each stage of pipeline.
+- `$match` is one step in the pipeline. `$group` is next step.
+
+```js
+const stats = await Tour.aggregate([
+  {
+    $match: { ratingsAverage: { $gte: 4.5 } },
+  },
+  {
+    $group: {
+      _id: { $toUpper: '$difficulty' }, // field to group by.
+      numTours: { $count: {} }, // counts the number in each group. {$sum: 1} // same thing.
+      numRatings: { $sum: '$ratingQuantity' },
+      avgRating: { $avg: '$ratingsAverage' },
+      avgPrice: { $avg: '$price' },
+      minPrice: { $min: '$price' },
+      maxPrice: { $max: '$price' },
+    },
+  },
+  {
+    $sort: { minPrice: 1 },
+  },
+  {
+    $match: { _id: { $ne: 'EASY' } }, // search through again and filter.
+  },
+]);
+```
