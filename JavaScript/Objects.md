@@ -2,6 +2,10 @@
 
 - [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects)
 
+# Prototypes
+
+- `console.log(this.__proto__.pipeline.toString());` // view objects method.
+
 ## Iteration
 
 **for k in obj**
@@ -88,7 +92,7 @@ obj[key];
 
 ```js
 delete obj.key;
-delete obj["string"];
+delete obj['string'];
 ```
 
 # Methods

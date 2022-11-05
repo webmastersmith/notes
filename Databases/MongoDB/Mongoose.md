@@ -76,4 +76,34 @@ import mongoose from 'mongoose';
 
 **Sort**
 
--
+# Virtuals
+
+- cannot use virtuals in a query, because not in mongo database.
+
+```ts
+import { Schema, model } from 'mongoose';
+const tourSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'Name is required.'],
+      unique: true,
+      trim: true,
+    },
+    duration: {
+      type: Number,
+      required: [true, 'Duration is required.'],
+    },
+  },
+  {
+    toJSON: { virtuals: true }, // will exist on output only, not in database.
+    toObject: { virtuals: true }, // if output is object or json.
+  }
+);
+
+tourSchema.virtual('durationWeeks').get(function () {
+  return this.duration / 7;
+});
+
+export const Tour = model('Tour', tourSchema);
+```

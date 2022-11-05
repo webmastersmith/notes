@@ -5,3 +5,5 @@
 
 - always in `strict mode`
 -
+
+- `__propertyName` naming convention for private properties that shouldn't be directly manipulated.

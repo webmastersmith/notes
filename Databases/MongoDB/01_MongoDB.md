@@ -104,6 +104,11 @@ ip addr | grep eth0
 # Aggregation Pipeline
 
 - <https://www.mongodb.com/docs/manual/meta/aggregation-quick-reference/>
+- <https://www.mongodb.com/docs/manual/reference/operator/query/>
+- **Aggregation Stages**
+  - <https://www.mongodb.com/docs/manual/reference/operator/aggregation-pipeline/>
+- **Aggregation Stage Operators**
+  - <https://www.mongodb.com/docs/manual/reference/operator/aggregation/>
 - array with objects for each stage of pipeline.
 - `$match` is one step in the pipeline. `$group` is next step.
 
@@ -131,3 +136,10 @@ const stats = await Tour.aggregate([
   },
 ]);
 ```
+
+# Mongo Middleware
+
+- pre / post hooks.
+- every time event happens, run function.
+- 4 main types of middleware: document, query, aggregate, model.
+  - document
