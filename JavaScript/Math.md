@@ -306,15 +306,15 @@ function rand(min, max) {
 - <https://dinerojs.com/dinero.js.html>
   - Dinero has to be used with minor currency units (aka 'cents'). // $0.30 should be used as 30.
 
+**@dintero/money**
+
+- <https://www.npmjs.com/package/@dintero/money>
+
 **Bigjs**
 
 - <https://mikemcl.github.io/big.js/>
 - 6 KB minified
 - do not use const if you are switching back and forth from Big() object, toNumber().
-
-**@dintero/money**
-
-- <https://www.npmjs.com/package/@dintero/money>
 
 ```js
 import Big from 'big.js';

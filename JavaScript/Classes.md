@@ -141,7 +141,13 @@ export class Product {
     this.fileExist = false; //extra variables
   }
   // All the methods below will be added to the prototype.
-  // Typescript allows you to create variables outside of the constructor, but it is good practice to create properties inside constructor function.
+  // Typescript allows you to create variables outside of the constructor, but it is good practice to create properties inside the constructor function.
+}
+
+class Images extends Product {
+  constructor(title) {
+    super(title); // must be called before any other properties.
+  }
 }
 ```
 

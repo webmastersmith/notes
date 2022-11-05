@@ -2,7 +2,24 @@
 
 - [Express Routes](https://expressjs.com/en/guide/routing.html)
 
+## CatchAll Route
+
+- `app.all()` // matches all http methods: get, post, delete, put, patch...
+
+```ts
+// all unhandled routes -if placed at top of list, all routes would match wildcard.
+app.all('*', (req: Request, res: Response) => {
+  res.status(404).json({
+    status: 'error',
+    results: 0,
+    data: `Cannot find ${req.originalUrl}`,
+  });
+});
+```
+
 ## Simple Routing
+
+- [res.send](https://expressjs.com/en/api.html#res.send)
 
 ```ts
 import 'dotenv/config';
@@ -14,6 +31,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const getAllTours = (req: Request, res: Response) => {
+  // res.status(200).send('<p>some html</p>')
   res.status(200).json({ status: 'success', data: { tours } });
 };
 
@@ -41,6 +59,7 @@ import express, { Request, Response, NextFunction } from 'express';
 
 const router = express.Router();
 router.route('/').get(getAllUsers).post(createUser);
+// slug
 router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
 
 export default router;
