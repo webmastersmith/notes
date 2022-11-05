@@ -50,6 +50,12 @@ import mongoose from 'mongoose';
 
 - [Mongoose](https://mongoosejs.com/docs/validation.html)
 
+**Custom Validators**
+
+```ts
+
+```
+
 # Methods
 
 **Count**
