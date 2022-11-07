@@ -18,6 +18,19 @@ kill -9 3827
 killall -9 chrome # may not kill all process
 ```
 
+**Graceful Shutdown**
+
+```ts
+const server = app.listen(process.env.PORT, () => {
+  console.log(`App running on port ${process.env.PORT}...`);
+});
+server.close(() => {
+  // graceful shutdown of server, then...
+  // console.log('UNHANDLED REJECTION. SERVER SHUTDOWN')
+  // process.exit(1)
+});
+```
+
 ## Install
 
 - https://www.npmjs.com/package/express
@@ -33,16 +46,16 @@ npm i -D @types/express @types/cookie-session
 **simple server.ts**
 
 ```js
-import express from "express";
-import "dotenv/config";
+import express from 'express';
+import 'dotenv/config';
 
 const app = express();
 app.use((req, res, next) => {
-  console.log("im a teapot!");
+  console.log('im a teapot!');
   next(); //process will die here if next() not called. -Generator.
 });
 app.use((req, res, next) => {
-  console.log("me too!");
+  console.log('me too!');
 });
 
 app.listen(process.env.PORT);
@@ -65,11 +78,11 @@ path: '/admin/add-product',
 
 ```js
 if (pwPass) {
-  res.status(200).json({ msg: "User Found!, pw good." });
+  res.status(200).json({ msg: 'User Found!, pw good.' });
   return;
   // user pw did not match.
 } else {
-  res.status(200).json({ msg: "Incorrect" });
+  res.status(200).json({ msg: 'Incorrect' });
   return;
 }
 ```
@@ -117,7 +130,7 @@ if (pwPass) {
     **json**
 
 ```js
-res.json({ api: "my-api", message: "hello" });
+res.json({ api: 'my-api', message: 'hello' });
 ```
 
 - `res.end()`
@@ -133,7 +146,7 @@ res.json({ api: "my-api", message: "hello" });
 - `:id` will be the name of item: `req.params.id`
 
 ```ts
-app.get("/api/v1/tours/:id", (req: Request, res: Response) => {
+app.get('/api/v1/tours/:id', (req: Request, res: Response) => {
   // app.get("/api/v1/tours/:id?", (req: Request, res: Response) => {  // optional variable
   // :id is the variable.
   console.log(req.params.id); // http://localhost:8080/api/v1/7 -id = 7
@@ -157,8 +170,8 @@ app.get("/api/v1/tours/:id", (req: Request, res: Response) => {
   **app.ts**
 
 ```js
-app.set("view engine", "pug");
-app.set("views", "views");
+app.set('view engine', 'pug');
+app.set('views', 'views');
 ```
 
 **views shop.pug**
@@ -178,12 +191,12 @@ h1#{prods.title}
   **app.ts**
 
 ```ts
-app.set("view engine", "ejs");
-app.set("views", "views");
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
-app.use("/", (req, res, next) => {
+app.use('/', (req, res, next) => {
   //points to 404.ejs in views folder
-  res.status(404).render("404", { pageTitle: "Page Not Found" });
+  res.status(404).render('404', { pageTitle: 'Page Not Found' });
 });
 ```
 
@@ -358,7 +371,7 @@ const resolvers = mergeResolvers(fileLoader(path.join(**dirname, './resolvers'))
   **server.js**
 
 ```js
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const db = async () => {
   try {
@@ -368,9 +381,9 @@ const db = async () => {
       useCreateIndex: true,
       useFindAndModify: false,
     });
-    console.log("Database Connected");
+    console.log('Database Connected');
   } catch (err) {
-    console.log("Database not connected. ", err);
+    console.log('Database not connected. ', err);
   }
 };
 db();

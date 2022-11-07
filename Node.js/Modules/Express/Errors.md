@@ -3,6 +3,7 @@
 ### Global Handling Middleware
 
 - express see's four parameters in route and knows it's error handling function.
+- <https://expressjs.com/en/guide/error-handling.html>
 
 ```ts
 app.use((err, req, res, next) => {
@@ -46,13 +47,18 @@ interface ErrorType extends Error {
 export default class ExpressError extends Error implements ErrorType {
   status: string;
   statusCode: number;
+  isOperational: boolean;
   constructor(statusCode: number, msg: string) {
     super(msg);
     this.statusCode = statusCode;
     this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
+    // to determine if Error came from this special class or another error in the system.
+    this.isOperational = true;
+
+    // Stack Trace -to use console.log(err.stack)
+    Error.captureStackTrace(this, this.constructor);
   }
 }
-
 // all unhandled routes -if placed at top of list, would always match route.
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
   // if something passed into next(), express automatically knows it's an error.
@@ -70,6 +76,41 @@ app.use(
     res.status(err.statusCode).json({
       status: err.status,
       message: err.message,
+    });
+  }
+);
+```
+
+# Try Catch
+
+- Higher Order function to cut down try catch blocks.
+
+```ts
+const catchErrors = (
+  errorCode: number,
+  fn: (req: Request, res: Response, next: NextFunction) => Promise<void>
+) => {
+  return function (req: Request, res: Response, next: NextFunction) {
+    fn(req, res, next).catch((e) => {
+      if (e instanceof Error) {
+        next(new ExpressError(errorCode, e.message));
+        // console.log(e.message);
+      } else {
+        console.log(String(e));
+      }
+    });
+  };
+};
+
+// then use it
+export const createTour = catchErrors(
+  400,
+  async (req: Request, res: Response, next: NextFunction) => {
+    await Tour.create(req.body);
+    res.status(201).json({
+      status: 'success',
+      results: await Tour.count(),
+      data: `${req.body?.name ?? 'Tour'} successfully added.`,
     });
   }
 );

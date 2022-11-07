@@ -96,6 +96,10 @@ Try;
 
 # Instanceof
 
+- The instanceof operator checks if the prototype property of the constructor appears in the prototype chain of the object and returns true if it does.
+- [(instanceof) 'X' Only refers to a type, but is being used as a value here](https://bobbyhadz.com/blog/typescript-instanceof-only-refers-to-type-but-is-being-used-as-value)
+  - The error was caused because we used the instanceof operator with a type instead of a value.
+
 # ReturnType<Model.find>
 
 ```ts

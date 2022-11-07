@@ -49,11 +49,39 @@ import mongoose from 'mongoose';
 # Validators
 
 - [Mongoose](https://mongoosejs.com/docs/validation.html)
+- validation is done by 'type' unless custom validator is called.
 
 **Custom Validators**
 
 ```ts
-
+const tourSchema = new Schema({
+  name: {
+    type: String,
+    required: [true, 'Name is required.'],
+    unique: true,
+    trim: true,
+    maxLength: [40, 'Tour name cannot be over 40 characters.'],
+    minLength: [10, 'Tour name cannot be less than 10 characters.'],
+    validate: {
+      validator: function (val: string) {
+        // console.log(this) // logs 'tourSchema' object
+        return validator.isAlphanumeric(val, 'en-US', { ignore: ' ' });
+      },
+      message: (props: { value: string }) =>
+        `${props.value} can only contain numbers and letters.`,
+    },
+  },
+  email: {
+    type: String,
+    maxLength: [40, 'Email cannot be over 40 characters.'],
+    minLength: [3, 'Valid email cannot be less than 3 characters.'],
+    validate: {
+      validator: validator.isEmail,
+      message: (props: { value: string }) =>
+        `${props.value} is not a valid email.`,
+    },
+  },
+});
 ```
 
 # Methods
