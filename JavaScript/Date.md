@@ -9,11 +9,8 @@
 - <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date>
 - <https://www.w3schools.com/jsref/jsref_obj_date.asp>
 - the date is expressed as a number or string. new Date('January 1, 1970 00:00:00')
-- Date object returns: (year, monthIndex \[, day \[, hours \[, minutes \[, seconds \[, milliseconds\]\]\]\]\]);
-- Note: The only correct way to instantiate a new Date object is by
-  using the new operator. If you simply call the Date object directly,
-  such as now = Date(), the returned value is a string rather than a
-  Date object.
+- `new Date()` returns: (year, monthIndex \[, day \[, hours \[, minutes \[, seconds \[, milliseconds\]\]\]\]\]);
+  - Note: The only correct way to instantiate a new Date object is by using the `new` operator. If you simply call the Date object directly, such as now = Date(), the returned value is a string rather than a Date object.
 - An integer value representing the number of milliseconds since 'Unix-Epoch': January 1, 1970, 00:00:00
 - A day is made up of 86,400,000 milliseconds.
   - 86,400 seconds in a day.
@@ -48,25 +45,23 @@ new Date(d[2], d[1] - 1, d[0]); //year, month, day
 - <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date>
 - <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date>
 - **new Date().toDateString().replace(/\s/g, '\_') **//"Wed_Jan_01_2020"
-- new Date().toISOString().split('T')\[0\] //"2022-02-15"
-- **Date() //**When called as a function, returns a string representation of the current date and time, exactly as **new Date().toString()** does.
+- `new Date().toISOString().split('T')\[0\]` // "2022-02-15"
+- `Date()` //When called as a function, returns a string representation of the current date and time, exactly as `new Date().toString()` does.
   - always returns a string.
 - **Date.now()** // 1577920170345 (milliseconds since January 1, 1970 00:00:00 UTC)
-  - The static Date.now() method returns the number of **milliseconds** elapsed since January 1, 1970
+  - The static `Date.now()` method returns the number of **milliseconds** elapsed since January 1, 1970
   - this can be manipulated just as easy as date. // const date = new Date(1577920170345).toLocaleString('default', {month: 'long'}) // January
-- new Date().getTime() //1643665348069 (milliseconds since January 1, 1970 00:00:00 UTC)
+- `new Date().getTime()` // 1643665348069 (milliseconds since January 1, 1970 00:00:00 UTC)
   - <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime>
-- new Date() object to Unix-Epoch milliseconds.
-- new Date().getFullYear() // 2020
-- new Date().getMonth() // 1 (0-11) **new Date().getMonth() + 1 // returns month (1-12)**
-- new Date().getDate() // 1 (shows day of the month, interger 1-31)
-- new Date().getDay() // 3 (0-6)
-- new Date().getHours() // 16 (0-23)
-- new Date().getMinutes() // 47 (0-59)
-- new Date().getSeconds() // 03 (0-59)
-- **new Date().toISOString()** //"2022-02-02T20:02:51.556Z" //**best way to store accurate date info.**
-  - <https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/timestamp.proto>
-  - In JavaScript, one can convert a Date object to this format using the standard
+- `new Date()` object to Unix-Epoch milliseconds.
+- `new Date().getFullYear()` // 2020
+- `new Date().getMonth()` // 1 (0-11) **new Date().getMonth() + 1 // returns month (1-12)**
+- `new Date().getDate()` // 1 (shows day of the month, interger 1-31)
+- `new Date().getDay()` // 3 (0-6)
+- `new Date().getHours()` // 16 (0-23)
+- `new Date().getMinutes()` // 47 (0-59)
+- `new Date().getSeconds()` // 03 (0-59)
+- `new Date().toISOString()` //"2022-02-02T20:02:51.556Z" // **Store as Date object then call this method for accurate date info.**
 
 ```js
 // A Timestamp represents a point in time independent of any time zone or local
@@ -84,7 +79,8 @@ new Date(d[2], d[1] - 1, d[0]); //year, month, day
 // 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.
 ```
 
-- toLocaleString() //toLocaleDateString, toLocaleTimeString do the same thing except they add default info if you don't use options.
+- <https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/timestamp.proto>
+- In JavaScript, one can convert a Date object to this format using the standard `Date().toLocaleString()` // `toLocaleDateString`, `toLocaleTimeString` add extra options.
 - <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#JavaScript_Date_instances>
 - <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString>
 - <https://stackoverflow.com/questions/1643320/get-month-name-from-date/18648314#18648314>

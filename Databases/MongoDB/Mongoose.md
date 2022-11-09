@@ -95,13 +95,29 @@ const tourSchema = new Schema({
 - `await SchemaName.find()`
 - returns array of objects.
 
-**Find**
+## Find
 
+- returns `results` or `null`
 - `findById(id).exec()` // `.exec()` turns query into real Promise.
   - returns one.
   - same as mongo findOne()
 - [`find({}).exec()`](https://mongoosejs.com/docs/api.html#model_Model-find) // the `.exec()` turns query into a real `Promise`. Use it when querying.
   - [without `.exec()`](https://mongoosejs.com/docs/queries.html#queries-are-not-promises)
+- `User.findOne({ email: 'bob50@gmail.com' });` // returns user or null
+
+**Keep fields from showing in results**
+
+```ts
+const userSchema = new Schema<UserType>({
+  password: {
+    type: String,
+    select: false, // prevents field from showing in results
+  },
+});
+
+// to see field.
+user.findOne({ email }).select('+password').exec();
+```
 
 # Query Casting
 

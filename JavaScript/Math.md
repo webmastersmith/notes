@@ -147,6 +147,10 @@ parseInt('-15e1', 10);
 parseInt('-12', 13);
 ```
 
+# HEX
+
+- 0, 1, 2, 3, 5, 6, 7, 8, 9, A, B, C, D, E, F
+
 # Big Int
 
 - <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt>

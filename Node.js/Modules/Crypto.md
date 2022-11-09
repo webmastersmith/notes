@@ -158,3 +158,165 @@ console.log(generateUUID());
 // prettier-ignore
 !function(r){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=r();else if("function"==typeof define&&define.amd)define([],r);else{var e;e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:this,e.uuidv4=r()}}(function(){return function r(e,n,t){function o(f,u){if(!n[f]){if(!e[f]){var a="function"==typeof require&&require;if(!u&&a)return a(f,!0);if(i)return i(f,!0);var d=new Error("Cannot find module '"+f+"'");throw d.code="MODULE_NOT_FOUND",d}var p=n[f]={exports:{}};e[f][0].call(p.exports,function(r){var n=e[f][1][r];return o(n?n:r)},p,p.exports,r,e,n,t)}return n[f].exports}for(var i="function"==typeof require&&require,f=0;f<t.length;f++)o(t[f]);return o}({1:[function(r,e,n){function t(r,e){var n=e||0,t=o;return t[r[n++]]+t[r[n++]]+t[r[n++]]+t[r[n++]]+"-"+t[r[n++]]+t[r[n++]]+"-"+t[r[n++]]+t[r[n++]]+"-"+t[r[n++]]+t[r[n++]]+"-"+t[r[n++]]+t[r[n++]]+t[r[n++]]+t[r[n++]]+t[r[n++]]+t[r[n++]]}for(var o=[],i=0;i<256;++i)o[i]=(i+256).toString(16).substr(1);e.exports=t},{}],2:[function(r,e,n){var t="undefined"!=typeof crypto&&crypto.getRandomValues.bind(crypto)||"undefined"!=typeof msCrypto&&msCrypto.getRandomValues.bind(msCrypto);if(t){var o=new Uint8Array(16);e.exports=function(){return t(o),o}}else{var i=new Array(16);e.exports=function(){for(var r,e=0;e<16;e++)0===(3&e)&&(r=4294967296*Math.random()),i[e]=r>>>((3&e)<<3)&255;return i}}},{}],3:[function(r,e,n){function t(r,e,n){var t=e&&n||0;"string"==typeof r&&(e="binary"===r?new Array(16):null,r=null),r=r||{};var f=r.random||(r.rng||o)();if(f[6]=15&f[6]|64,f[8]=63&f[8]|128,e)for(var u=0;u<16;++u)e[t+u]=f[u];return e||i(f)}var o=r("./lib/rng"),i=r("./lib/bytesToUuid");e.exports=t},{"./lib/bytesToUuid":1,"./lib/rng":2}]},{},[3])(3)});
 ```
+
+# Encrypt / Decrypt
+
+-`crypto.randomBytes(64).toString('hex')` // 64 characters long
+
+**Create Public/Private Keys**
+
+- <https://nodejs.org/api/crypto.html#cryptogeneratekeypairsynctype-options>
+
+```ts
+async function createPemKeys(path: string, secret: string) {
+  const { generateKeyPairSync } = await import('node:crypto');
+  const { publicKey, privateKey } = generateKeyPairSync('rsa', {
+    modulusLength: 4096,
+    publicKeyEncoding: {
+      type: 'spki',
+      format: 'pem',
+    },
+    privateKeyEncoding: {
+      type: 'pkcs8',
+      format: 'pem',
+      cipher: 'aes-256-cbc',
+      passphrase: secret,
+    },
+  });
+  fs.writeFileSync(`${path}.pem`, privateKey);
+  fs.writeFileSync(`${path}.pem.pub`, publicKey);
+  console.log('publicKey', publicKey);
+  console.log('privateKey', privateKey);
+}
+```
+
+**Encrypt & Decrypt messages**
+
+- you need a secret key.
+- [openssl algorithms](https://www.openssl.org/docs/man1.0.2/man1/ciphers.html)
+- [With public/private keys](https://plainenglish.io/blog/rsa-encryption-in-nodejs-with-code-samples-86bb829718e0)
+
+```ts
+// https://www.section.io/engineering-education/data-encryption-and-decryption-in-node-js-using-crypto/
+// crypto module
+import crypto from 'crypto';
+const algorithm = 'aes-256-cbc';
+// generate 16 bytes of random data
+const salt = crypto.randomBytes(16);
+// protected data
+const message = 'This is a secret message';
+// secret key generate 32 bytes of random data
+const Key = crypto.randomBytes(32);
+// the cipher function
+const cipher = crypto.createCipheriv(algorithm, Key, salt);
+// encrypt the message
+// input encoding
+// output encoding
+let encryptedData = cipher.update(message, 'utf-8', 'hex');
+// final method 'seals' the cipher so it can't be used again.
+encryptedData += cipher.final('hex');
+console.log('Encrypted message: ' + encryptedData);
+
+// the decipher function
+const decipher = crypto.createDecipheriv(algorithm, Key, salt);
+let decryptedData = decipher.update(encryptedData, 'hex', 'utf-8');
+decryptedData += decipher.final('utf8');
+console.log('Decrypted message: ' + decryptedData);
+
+// quick functions
+export async function encrypt(
+  data: string,
+  salt: Buffer | string,
+  key: Buffer | string
+): Promise<string> {
+  const crypto = await import('node:crypto');
+  // non async
+  // const crypto = require('crypto');
+  const algorithm = 'aes-256-cbc';
+  // key must be 32 bytes.(aes-256 = key is 256 bits. 256/8 = 32 bytes)  crypto.randomBytes(32)
+  if (typeof salt === 'string') {
+    salt = Buffer.from(salt, 'hex');
+  }
+  if (typeof key === 'string') {
+    key = Buffer.from(key, 'hex');
+  }
+  // returns buffer
+  const cipher = crypto.createCipheriv(algorithm, key, salt);
+  // (data, inputEncoding, outputEncoding)
+  // If no encoding is provided, then a buffer is expected.
+  // If data is a Buffer then input_encoding is ignored.
+  let encrypted = cipher.update(data, 'utf-8', 'hex');
+  // close the cipher, so it cannot be reused.
+  encrypted += cipher.final('hex');
+  return encrypted;
+}
+export async function decrypt(
+  encryptedData: string,
+  salt: Buffer | string,
+  key: Buffer | string
+): Promise<string> {
+  const crypto = await import('node:crypto');
+  // const crypto = require('crypto');
+  // key is utf-8 string
+  const algorithm = 'aes-256-cbc';
+  if (typeof salt === 'string') {
+    salt = Buffer.from(salt, 'hex'); // the original string was encoded to hex.
+  }
+  if (typeof key === 'string') {
+    key = Buffer.from(key, 'hex');
+  }
+
+  const decipher = crypto.createDecipheriv(algorithm, key, salt);
+  let decryptedData = decipher.update(encryptedData, 'hex', 'utf-8');
+  decryptedData += decipher.final('utf8');
+  return decryptedData;
+}
+
+(async function () {
+  const crypto = await import('node:crypto');
+  const path = `${process.cwd()}/../../`;
+
+  require('dotenv').config({ path: `${path}/.env` });
+  const salt = '8574bb84182f47bc154ba223384a0349';
+  // because algorithm is (256/8 = 32). key can only be 32 bytes.
+  // const key = crypto.randomBytes(32);
+
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNjlhMTNlMTEyM2Y1ZmM3MTFhYmY0ZiIsImlhdCI6MTY2Nzg2Njk0MiwiZXhwIjoxNjY3ODc0MTQyfQ.rmjvh-B1J4c51jWqhXoI6si6N5ob3-syWIVuxo5GqB0';
+
+  const key = process.env.JWT_SECRET;
+
+  if (key) {
+    console.log('Token', key);
+    console.time('encryption/decryption time:');
+    const encryptedToken = await encrypt(token, salt, key);
+    console.log('encryptedToken', encryptedToken);
+    const decryptedToken = await decrypt(encryptedToken, salt, key);
+    console.log('decryptedToken', decryptedToken);
+    console.log(
+      'Does Token and DecryptedToken match:',
+      token === decryptedToken
+    );
+    console.timeEnd('encryption/decryption time:');
+  }
+})();
+```
+
+**stream**
+
+```ts
+var fs = require('fs');
+var crypto = require('crypto');
+
+var key = '14189dc35ae35e75ff31d7502e245cd9bc7803838fbfd5c773cdcd79b8a28bbd';
+const salt = crypto.randomBytes(16);
+var cipher = crypto.createCipheriv('aes-256-cbc', key, salt);
+var input = fs.createReadStream('test.txt');
+var output = fs.createWriteStream('test.txt.enc');
+
+input.pipe(cipher).pipe(output);
+
+output.on('finish', function () {
+  console.log('Encrypted file written to disk!');
+});
+```
