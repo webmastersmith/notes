@@ -320,3 +320,26 @@ output.on('finish', function () {
   console.log('Encrypted file written to disk!');
 });
 ```
+
+# Hash
+
+- hash is one way. In most cases you cannot reverse a hash.
+
+```ts
+import crypto from 'crypto';
+const token = crypto.randomBytes(12);
+// this will produce the same results with the same input.
+const hash = crypto.createHash('sha256').update(token).digest('hex'); // output hex values.
+
+// salt hash
+export async function hashPassword(
+  password: string,
+  salt: string
+): Promise<string> {
+  // Hashing user's salt and password with 1000 iterations. This will produce same results given the same salt and password.
+  const hash = crypto
+    .pbkdf2Sync(password, salt, 1000, 64, `sha512`)
+    .toString(`hex`);
+  return hash;
+}
+```

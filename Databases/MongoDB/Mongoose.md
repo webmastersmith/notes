@@ -101,6 +101,7 @@ const tourSchema = new Schema({
 - `findById(id).exec()` // `.exec()` turns query into real Promise.
   - returns one.
   - same as mongo findOne()
+- `Model.findByIdAndUpdate(id, {key: value})`
 - [`find({}).exec()`](https://mongoosejs.com/docs/api.html#model_Model-find) // the `.exec()` turns query into a real `Promise`. Use it when querying.
   - [without `.exec()`](https://mongoosejs.com/docs/queries.html#queries-are-not-promises)
 - `User.findOne({ email: 'bob50@gmail.com' });` // returns user or null
@@ -116,7 +117,7 @@ const userSchema = new Schema<UserType>({
 });
 
 // to see field.
-user.findOne({ email }).select('+password').exec();
+const user = await user.findOne({ email }).select('+password').exec();
 ```
 
 # Query Casting

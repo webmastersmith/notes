@@ -57,6 +57,7 @@ new Date(d[2], d[1] - 1, d[0]); //year, month, day
 - `new Date().getFullYear()` // 2020
 - `new Date().getMonth()` // 1 (0-11) **new Date().getMonth() + 1 // returns month (1-12)**
 - `new Date().getDate()` // 1 (shows day of the month, interger 1-31)
+- `new Date().setDate()` // set day of month.
 - `new Date().getDay()` // 3 (0-6)
 - `new Date().getHours()` // 16 (0-23)
 - `new Date().getMinutes()` // 47 (0-59)
@@ -173,7 +174,48 @@ const day = daysIntoYear(new Date()); //6 -day 6 of 365 days.
 var d = new Date('1975-03-25'); // Mon Mar 24 1975 19:00:00 GMT-0500
 ```
 
-Date Library's
+## Date Library's
+
+**Simple JS Date Adder**
+
+```ts
+// simple date object add.
+const d = new Date();
+const d1 = new Date(d.setMinutes(d.getMinutes() + 30)); // returns number 30 minutes in future, so create new Date object from number.
+
+// Another Add method
+// convert to millisecond then add
+d = new Date.now() + 10 * 60 * 1000; // 10 minutes * 60,0000 milliseconds in a minute.
+
+/**
+ * Adds time to a date. Modelled after MySQL DATE_ADD function.
+ * Example: dateAdd(new Date(), 'minute', 30)  //returns 30 minutes from now.
+ * https://stackoverflow.com/a/1214753/18511
+ *
+ * @param date  Date to start with
+ * @param interval  One of: year, quarter, month, week, day, hour, minute, second
+ * @param units  Number of units of the given interval to add.
+ */
+function dateAdd(date, interval, units) {
+  if (!(date instanceof Date)) return undefined;
+  var ret = new Date(date); //don't change original date
+  // prettier-ignore
+  var checkRollover = function() { if(ret.getDate() != date.getDate()) ret.setDate(0);};
+  // prettier-ignore
+  switch(String(interval).toLowerCase()) {
+    case 'year'   :  ret.setFullYear(ret.getFullYear() + units); checkRollover();  break;
+    case 'quarter':  ret.setMonth(ret.getMonth() + 3*units); checkRollover();  break;
+    case 'month'  :  ret.setMonth(ret.getMonth() + units); checkRollover();  break;
+    case 'week'   :  ret.setDate(ret.getDate() + 7*units);  break;
+    case 'day'    :  ret.setDate(ret.getDate() + units);  break;
+    case 'hour'   :  ret.setTime(ret.getTime() + units*3600000);  break;
+    case 'minute' :  ret.setTime(ret.getTime() + units*60000);  break;
+    case 'second' :  ret.setTime(ret.getTime() + units*1000);  break;
+    default       :  ret = undefined;  break;
+  }
+  return ret;
+}
+```
 
 - [_https://github.com/iamkun/dayjs_](https://github.com/iamkun/dayjs)
 - [_https://momentjs.com/_](https://momentjs.com/)
