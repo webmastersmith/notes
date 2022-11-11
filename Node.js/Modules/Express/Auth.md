@@ -73,3 +73,9 @@ const User = (module.exports = mongoose.model('User', UserSchema));
 - JWTs are only encoded, not encrypted.
 
 **See Crypto Notes**
+
+### Cookies
+
+- `res.cookie('cookieName', cookieToken, objOptions)`
+- attach cookie to response object.
+-
