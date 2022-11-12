@@ -6,6 +6,15 @@
 
 - vscode: `ctrl + shift + p`, then type: `TypeScript: Restart TS Server`
 
+## ignore
+
+```ts
+// @ts-expect-error -same as @ts-ignore, but if no error, alerts to unneeded ignore.
+// @ts-ignore -turn off type checking for line below.
+// @ts-nocheck -disable error checking in 'JS' file.
+// @ts-check -enable error checking in 'JS' file.
+```
+
 # Extend & Type Alias
 
 - <https://stackoverflow.com/questions/41385059/possible-to-extend-types-in-typescript>

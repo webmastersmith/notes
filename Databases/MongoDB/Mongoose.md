@@ -102,7 +102,7 @@ tourSchema.virtual('yourMadeUpKeyName').get(function () {
   return this.duration / 7;
 });
 
-// attach method
+// attach method to document
 userSchema.methods.hasPasswordChanged = async function (
   jwtTimestamp: number
 ): Promise<boolean> {
@@ -173,6 +173,11 @@ const tourSchema = new Schema({
 - `await SchemaName.find()`
 - returns array of objects.
 
+## Create
+
+- <https://mongoosejs.com/docs/api/model.html#model_Model-create>
+- `Model.create({})` inserts a document.
+
 ## Find
 
 - returns `results` or `null`
@@ -208,6 +213,7 @@ const user = await user.findOne({ email }).select('+password').exec();
 # Virtuals
 
 - cannot use virtuals in a query, because not in mongo database.
+- virtuals attach output to query. 'virtual functions' add a 'key' then value to output.
 
 ```ts
 import { Schema, model } from 'mongoose';
@@ -239,7 +245,7 @@ export const Tour = model('Tour', tourSchema);
 
 # Populate
 
-- when a query is done, take id from array, then match them to other collections. Return results all together.
+- when a query is done, take id from array, then match them to other collections. Return results all together. Same as embedding a subDocument in the db, without having duplicate code.
 
 ```ts
 // TourSchema
