@@ -89,6 +89,10 @@ if (pwPass) {
 
 ## Express Methods
 
+- req.body // const { name: 'bob', pw: '1234' } = req.body
+- req.params //:id req.params.id
+- req.query // http://myTLD.com/reviews?sort=name // req.query = sort=name
+
 **app.use()**
 
 - allows loose match. '/' will match every time.

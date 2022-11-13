@@ -178,6 +178,21 @@ const tourSchema = new Schema({
 - <https://mongoosejs.com/docs/api/model.html#model_Model-create>
 - `Model.create({})` inserts a document.
 
+## Indexes
+
+- <https://mongoosejs.com/docs/guide.html#indexes>
+- <https://mongoosejs.com/docs/api/schema.html#schema_Schema-index>
+
+```ts
+const animalSchema = new Schema({
+  name: String,
+  type: String,
+  tags: { type: [String], index: true }, // path level
+});
+
+animalSchema.index({ name: 1, type: -1 }); // schema level
+```
+
 ## Find
 
 - returns `results` or `null`

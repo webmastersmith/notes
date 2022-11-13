@@ -10,5 +10,9 @@ const pipeline = util.promisify(stream.pipeline);
 
 - [Node](https://nodejs.org/api/util.html#utilinspectobject-options)
 - inspect objects.
-- `console.log(util.inspect(obj, { showHidden: true, depth: null }));`
-- `console.log(util.inspect(obj, { compact: true, depth: 5, breakLength: 80 }));`
+
+```js
+import { inspect } from 'node:util';
+console.log(inspect(obj, { showHidden: true, depth: null }));
+console.log(inspect(obj, { compact: true, depth: 5, breakLength: 80 }));
+```
