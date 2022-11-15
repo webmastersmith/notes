@@ -250,6 +250,30 @@ Decimal Problems
 
 - [Article](https://thecodebarbarian.com/a-nodejs-perspective-on-mongodb-34-decimal.html)
 
+**Rounding decimals**
+
+- was on MDN but removed.
+
+```js
+function roundToTwo(num) {
+  return +(Math.round(num + 'e+2') + 'e-2');
+}
+// or
+(num: number, places: number) => Math.round(num * 10 ** places) / 10 ** places;
+
+console.log('1.005 => ', roundToTwo(1.005)); // 1.01
+console.log('10 => ', roundToTwo(10)); // 10
+console.log('1.7777777 => ', roundToTwo(1.7777777)); // 1.78
+console.log('9.1 => ', roundToTwo(9.1)); // 9.1
+console.log('1234.5678 => ', roundToTwo(1234.5678)); //1234.57
+
+// extend Number.prototype.round
+Number.prototype.round = function (places) {
+  return +(Math.round(this + 'e+' + places) + 'e-' + places);
+};
+(8 / 3).round(2); // 2.67 -normally would output: 2.6666666666666665
+```
+
 # Math.Random
 
 - [_https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random_](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random)

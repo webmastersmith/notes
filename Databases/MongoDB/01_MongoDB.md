@@ -103,6 +103,7 @@ ip addr | grep eth0
 
 # Aggregation Pipeline
 
+- <https://www.practical-mongodb-aggregations.com/front-cover.html>
 - <https://www.mongodb.com/docs/manual/meta/aggregation-quick-reference/>
 - <https://www.mongodb.com/docs/manual/reference/operator/query/>
 - **Aggregation Stages**

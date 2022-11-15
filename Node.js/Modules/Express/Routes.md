@@ -188,12 +188,30 @@ export default router;
 
 ## Query String
 
-- `req.query` // http://someWebSite.com/api/v1/tours?duration=5&difficulty=easy
+- query is an object with the query as key:value pairs.
+- `http://someWebSite.com/api/v1/tours?duration=5&difficulty=easy`
+- `req.query`
   - `{ duration: '5', difficulty: 'easy' }`
 
 ## Params
 
-- run before request is given to handlers.
+- key:value run before request is given to handlers.
+- `tours-within/:distance/center/:latlng/unit/:unit`
+- `http://someWebSite.com/api/v1/tours/tours-within/250/center/-35,45/unit/mi`
+- `req.params`
+  - `{ distance: 250, center: '-35,45', unit: 'mi' }`
+
+## req.body
+
+- key:value json
+- `req.body`
+  - {name: "Bob"}
+
+```js
+{
+  "name": "Bob",
+}
+```
 
 ```ts
 // tourController.ts

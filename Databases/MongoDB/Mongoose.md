@@ -46,9 +46,150 @@ import mongoose from 'mongoose';
 })();
 ```
 
+# Schema Middleware
+
+- <https://mongoosejs.com/docs/middleware.html#types-of-middleware>
+- <https://javascripttricks.com/mongoose-middleware-the-javascript-7d23a96bfcbf>
+- `next()` // will not stop code execution below it, in same code block.
+  - does not 'return'.
+- `pre | post`
+  - pre & post must be defined before compiling 'model'.
+  - pre // access document before saved to database.
+  - post // access document after saved to database.
+
+1. Document middleware
+
+   1. pre & post
+      1. `this` is the `HydratedDocument` with all methods & custom methods.
+         1. <https://mongoosejs.com/docs/api/document.html>
+   2. pre
+      1. only parameter is `next()` `schema.pre('save', function(next) { next() })`
+   3. `const myModel = this.constructor as Model<ModelType>`
+      1. gives you access to Model methods, and your custom static methods.
+      2. `const myReview = this.constructor as ModelInterfaceType;`
+         1. `console.log(await myReview.staticMethodName());`
+      3. ` console.log(await ModelName.staticMethodName());`
+   4. post
+      1. the first arg is the same as `this`. `schema.post('save', function(doc) { doc === this // true}`
+      2. second arg is `next()`
+   5. constructor
+      1. gives you access to Model methods, and your custom static methods.
+      2. `const myModel = this.constructor as Model<ModelType>`
+         1. `const myReview = this.constructor as ModelInterfaceType;`
+         2. `console.log(await myReview.staticMethodName());`
+         3. ` console.log(await ModelName.staticMethodName());`
+   6. methods
+      1. `validate(), save(), remove(), updateOne(), deleteOne()`
+
+2. Model middleware
+   1. `insertMany()` static function on the model class
+   2. `insertMany()` is a static function on the model class, whereas `save()` and `validate()` are methods on the model class.
+
+```js
+const schema = Schema({ name: String });
+schema.post('insertMany', function (res) {
+  this === Model; // true
+  res[0] instanceof Model; // true
+  res[0].name; // 'test'
+});
+const Model = mongoose.model('Test', schema); // Triggers `post('insertMany')` hooks
+await Model.insertMany([{ name: 'test' }]);
+```
+
+3. Aggregation middleware
+   1. pre & post
+      1. `this` is an Aggregate object, and `doc` is the **result** of the aggregation call. `doc` is always an array.
+         1. <https://mongoosejs.com/docs/api.html#Aggregate>
+         2. <https://mongoosejs.com/docs/middleware.html#aggregate>
+   2. `_id: string` will not be cast to an `ObjectId`.
+   3. pre
+      1. only has one arg `next`
+   4. post
+      1. first arg `doc` is the returned results.
+      2. second arg is `next`
+
+```js
+const schema = Schema({ name: String, age: Number });
+schema.pre('aggregate', function (next) {
+  this instanceof mongoose.Aggregate; // true
+  const pipeline = this.pipeline();
+  pipeline[0]; // { $match: { age: { $gte: 30 } } }
+  next();
+});
+schema.post('aggregate', function (doc: ModelType, next) {
+  this instanceof mongoose.Aggregate; // true
+  doc.length; // 1
+  doc[0].name; // 'Jean-Luc Picard'
+  next();
+});
+const Model = mongoose.model('Character', schema); // Triggers `pre('aggregate')` and `post('aggregate')`
+await Model.aggregate([{ $match: { age: { $gte: 30 } } }]);
+```
+
+4. Query middleware
+   1. Mongoose doesn't execute a query until you either:
+      1. `await` on the query
+      2. Call `Query#then()`
+      3. Call `Query#exec()`
+      4. `find(), updateOne(), `
+      5. `count, countDocuments`
+   2. pre & post
+      1. `this` is the `Query`.
+      2. <https://mongoosejs.com/docs/api/query.html>
+      3. `this.getFilter()`
+   3. pre
+      1. only parameter is `next()` `schema.pre('save', function(next) { next() })`
+   4. post
+      1. the first arg `doc` is a `HydratedDocument`
+         1. <https://mongoosejs.com/docs/api/document.html>
+         2. `schema.post('save', function(doc, next) { doc === this // true; next() }`
+      2. second arg is `next`
+   5. constructor
+      1. gives you access to Model methods, and your custom static methods.
+      2. `const myModel = this.constructor as Model<ModelType>`
+         1. `const myReview = this.constructor as ModelInterfaceType;`
+         2. `console.log(await myReview.staticMethodName());`
+      3. ` console.log(await ModelName.staticMethodName());`
+   6. methods
+      1. `deleteMany, deleteOne, estimatedDocumentCount`
+      2. `find, findOne, findOneAndDelete, findOneAndRemove, findOneAndReplace, findOneAndUpdate`
+      3. `remove, replaceOne`
+      4. `update, updateOne, updateMany`
+
+```js
+reviewSchema.post(
+  /^findOneAnd/,
+  async function (
+    doc: HydratedDocument<ReviewType, ReviewModel, ReviewTypeMethods>,
+    next
+  ) {
+    await doc.calcAverageRatings(doc.tour._id, doc.constructor as Model<ReviewType, ReviewTypeMethods>);
+    next();
+  }
+);
+```
+
+## HydratedDocument<ModelType>.
+
+- <https://mongoosejs.com/docs/typescript.html>
+- <https://mongoosejs.com/docs/api/document.html>
+- All `Model` methods return a `HydratedDocument`
+- HydratedDocument<ModelType> represents a hydrated Mongoose document, with methods, virtuals, and other Mongoose-specific features.
+
+## Query
+
+- <https://mongoosejs.com/docs/api/query.html>
+- Mongoose doesn't execute a query until you either:
+
+1.  `await` on the query
+2.  Call `Query#then()`
+3.  Call `Query#exec()`
+
 # Model
 
+- The `Model class` is a **subclass** of the `Document class`.
 - The Schema with methods wrapped up in a 'Document'.
+- Document is an instance of 'Model' filled with data.
 
 ```ts
 import { Schema, model, QueryOptions } from 'mongoose';
