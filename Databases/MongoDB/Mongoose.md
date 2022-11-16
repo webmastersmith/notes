@@ -131,12 +131,10 @@ await Model.aggregate([{ $match: { age: { $gte: 30 } } }]);
       1. `await` on the query
       2. Call `Query#then()`
       3. Call `Query#exec()`
-      4. `find(), updateOne(), `
-      5. `count, countDocuments`
    2. pre & post
       1. `this` is the `Query`.
       2. <https://mongoosejs.com/docs/api/query.html>
-      3. `this.getFilter()`
+         1. `this.getFilter()`
    3. pre
       1. only parameter is `next()` `schema.pre('save', function(next) { next() })`
    4. post
@@ -370,6 +368,7 @@ const user = await user.findOne({ email }).select('+password').exec();
 
 - cannot use virtuals in a query, because not in mongo database.
 - virtuals attach output to query. 'virtual functions' add a 'key' then value to output.
+- virtuals work with `populate` to link `Models` in output.
 
 ```ts
 import { Schema, model } from 'mongoose';
@@ -395,6 +394,15 @@ const tourSchema = new Schema(
 tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
+
+// this data will show up as 'null' unless you use 'populate()' fn on the tourController.
+tourSchema.virtual('reviews', {
+  ref: 'Review', // Model name
+  foreignField: 'tour', //look at the 'Review' model 'tour' field.
+  localField: '_id', // if foreignField value match this _id field value, include in output.
+});
+// const tour = await Tour.findOne({ slug: slugName })
+//  .populate({ path: 'reviews', select: 'name, age, rating' })
 
 export const Tour = model('Tour', tourSchema);
 ```

@@ -27,7 +27,7 @@ path.join(**dirname, '', 'somefile.txt') //closed single qoutes.
 import { readFile } from 'fs/promises';
 import { readFileSync } from 'fs';
 // or
-import \* as fs from 'fs'
+import * as fs from 'fs'
 import path from 'path'
 
 // C:\Users\webmaster\Documents\MEGAsync\javascript\nodejs //notice backslashes are windows. -do not use.
@@ -49,8 +49,12 @@ path.join(**dirname, 'fileName.ts') //current working directory, fileName.ts
 // to use **dirname or **filename
 import { fileURLToPath } from 'url'; // url module is included with node
 import path from 'path';
-const **filename = fileURLToPath(import.meta.url);
-const **dirname = path.dirname(**filename);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+// or
+import * as url from 'url';
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 ```
 
 **FileName**
