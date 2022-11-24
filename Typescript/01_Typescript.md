@@ -133,3 +133,25 @@ function printId(id: number | string) {
   }
 }
 ```
+
+# Destructure
+
+- <https://flaviocopes.com/typescript-object-destructuring/>
+  **objects**
+
+```ts
+interface imageType {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  buffer: Buffer;
+  size: number;
+}
+type ImageType = {
+  imageCover?: imageType[];
+  images?: imageType[];
+};
+
+const { imageCover, images }: ImageType = req.files as any;
+```

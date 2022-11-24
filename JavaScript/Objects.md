@@ -98,3 +98,5 @@ delete obj['string'];
 # Methods
 
 - [MDN](https://www.digitalocean.com/community/tutorials/how-to-use-object-methods-in-javascript)
+- Create Object without prototype
+  - `const obj = Object.create(null)` // obj [Object: null prototype]
