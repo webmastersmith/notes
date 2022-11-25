@@ -9,7 +9,8 @@
 - [Mongoose Schema Types](https://mongoosejs.com/docs/schematypes.html)
 - String, Buffer, Boolean, Mixed, ObjectId, Array, Map
 - Number // { type: Number, min: 18, max: 65 }, // Number can be a float so must use logic to make it an integer. [`Math.round(v)`]()
-- Date, // { type: Date, default: Date.now },
+- Date, // `{ type: Date, default:() => new Date() }`,
+  - `() => new Date()` // this will get new Date() when create document.
 - Decimal128, // same as MongoDB NumberDecimal. Used for floats and currency.
 
 ```ts

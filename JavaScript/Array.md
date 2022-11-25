@@ -28,16 +28,16 @@ Object.assign({}, ["a", "b", "c"]) // {'0':'a', '1':'b', '2':'c'}
 
 ```js
 // spread operator
-[..."abc"]; // ['a','b','c']
+[...'abc']; // ['a','b','c']
 
 // split
-const a = "abc".split(""); // ['a','b','c']
+const a = 'abc'.split(''); // ['a','b','c']
 ```
 
 **[Array to String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join)**
 
 ```js
-const str = [1, 2, 3].join(""); // '123' // default is ','
+const str = [1, 2, 3].join(''); // '123' // default is ','
 ```
 
 ## Typed Arrays
@@ -65,8 +65,8 @@ arr.sort((a, b) => (a < b ? -1 : b < a ? 1 : 0)); // numbers and letters
 // ip address
 const ipSort = (ipAddressArray) => {
   return ipAddressArray.sort(function (a, b) {
-    a = a.split(".").map((i) => parseInt(i));
-    b = b.split(".").map((i) => parseInt(i));
+    a = a.split('.').map((i) => parseInt(i));
+    b = b.split('.').map((i) => parseInt(i));
     for (let i = 0; i < a.length; i++) {
       return a[i] < b[i] ? -1 : a[i] > b[i] ? 1 : 0;
     }
@@ -87,14 +87,35 @@ function doubleSortObj(objArr, prop1, prop2) {
     if (a > b) return -1;
     if (a < b) return 1;
     if (a == b) {
-      a = a.split(".").map((i) => parseInt(i));
-      b = b.split(".").map((i) => parseInt(i));
+      a = a.split('.').map((i) => parseInt(i));
+      b = b.split('.').map((i) => parseInt(i));
       for (let i = 0; i < a.length; i++) {
         return a[i] < b[i] ? -1 : a[i] > b[i] ? 1 : 0;
       }
     }
   });
 }
+
+// https://codeburst.io/array-vs-set-vs-map-vs-object-real-time-use-cases-in-javascript-es6-47ee3295329b
+// array of strings in a uniform case without special characters
+const arr = ['sex', 'age', 'job'];
+arr.sort(); //returns ["age", "job", "sex"]// array of numbers
+const arr = [30, 4, 29, 19];
+arr.sort((a, b) => a - b); // returns [4, 19, 29, 30]// array of number strings
+const arr = ['30', '4', '29', '19'];
+arr.sort((a, b) => a - b); // returns ["4", "19", "29", "30"]// array of mixed numerics
+const arr = [30, '4', 29, '19'];
+arr.sort((a, b) => a - b); // returns ["4", "19", 29, 30]// array of non-ASCII strings and also strings
+const arr = ['réservé', 'cliché', 'adieu'];
+arr.sort((a, b) => a.localeCompare(b)); // returns is ['adieu', 'cliché','réservé']// array of objects
+const arr = [
+  { name: 'Sharpe', value: 37 },
+  { name: 'And', value: 45 },
+  { name: 'The', value: -12 },
+];
+// sort by name string
+arr.sort((a, b) => a['name'].localeCompare(b['name'])); // sort by value number
+arr.sort((a, b) => a['value'] - b['value']);
 ```
 
 ### Splice
@@ -108,10 +129,10 @@ function doubleSortObj(objArr, prop1, prop2) {
 
 ```js
 // Insert
-const months = ["Jan", "March", "April", "June"];
-months.splice(1, 0, "Feb"); // ["Jan", "Feb", "March", "April", "June"]
+const months = ['Jan', 'March', 'April', 'June'];
+months.splice(1, 0, 'Feb'); // ["Jan", "Feb", "March", "April", "June"]
 // Replace
-months.splice(4, 1, "May"); // ["Jan", "Feb", "March", "April", "May"]
+months.splice(4, 1, 'May'); // ["Jan", "Feb", "March", "April", "May"]
 // Delete
 months.splice(-1); // ["Jan", "Feb", "March", "April"] returns ["May"]
 months.splice(1, 1); // ["Jan", "March", "April"] returns ["Feb"]
