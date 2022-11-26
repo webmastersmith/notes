@@ -1,5 +1,44 @@
 # CORS
 
+## Definitions
+
+- **CORS -Cross-Origin Resource Sharing**
+  - allows restricted resources on a web page to be requested from another domain outside the domain
+  - Enabling CORS lets the server tell the browser it's permitted to use an additional origin.
+- **origin**
+  - The server notifies client (browser) of what address (domain, port, scheme) is acceptable to receive request from.
+- **preflight request**
+  - The browser (client) initial request sent to server (outside domain, port), asking for permission to access resources.
+  - if server does not respond with client address (origin) in headers, browser will reject the request and not send request to server.
+- **simple request**
+  - `GET POST`
+- **complex request**
+  - `PUT PATCH DELETE` or request with `cookies` or `non standard headers`
+  - require `preflight` for legacy reasons.
+    - browser does a `OPTIONS` request for allowed methods, domains, cookies...
+
+```js
+// node.js
+import cors from 'cors';
+app.use(cors()); // open server to anyone.
+app.use(
+  cors({
+    origin: 'https://www.bob.com', // only allow request from 'www.bob.com'
+  })
+);
+app.options('*', cors()); // allows all routes to have complex request.
+```
+
+<https://web.dev/cross-origin-resource-sharing/>
+
+1. client (browser)
+   1. When the browser is making a cross-origin request, the browser adds an `Origin` header with the current origin (scheme, host, and port).
+2. server response
+   1. On the server side, when a server sees this header, and wants to allow access, it needs to add an `Access-Control-Allow-Origin` header to the response specifying the requesting origin (or \* to allow any origin.)
+3. client (browser)
+   1. When the browser sees this response with an appropriate `Access-Control-Allow-Origin` header, the browser allows the response data to be shared with the client site.
+   2. if sever does not respond with a valid `Access-Control-Allow-Origin`, browser blocks request.
+
 - [DEV CORS](https://dev.to/jpomykala/what-is-cors-11kf)
 - **Cross-Origin Resource Sharing (CORS)** is an HTTP-based security mechanism controlled and enforced by the client (web browser).
 - It allows a service (API) to indicate any origin other than its own from which the client can request resources.
@@ -25,6 +64,29 @@
   - `Access-Control-Allow-Credentials` indicates if sending cookies is allowed. Default: false.
   - `Access-Control-Max-Age` - indicates how long the request result should be cached, in seconds. Default: 0.
 - If you decide to use `Access-Control-Allow-Credentials=true`, then you need to be aware of the fact you **cannot use wildcards _ in Access-Control-Allow-_ headers.** It's required to explicitly list all allowed origins, methods, and headers.
+
+```js
+// simple client request
+fetch('https://example.com', {
+  mode: 'cors',
+  credentials: 'include', // include cookie in request
+});
+
+// server response
+`HTTP/1.1 200 OK
+Access-Control-Allow-Origin: https://example.com
+Access-Control-Allow-Credentials': true`;
+
+// complex request - client
+`OPTIONS /data HTTP/1.1
+Origin: https://example.com
+Access-Control-Request-Method: DELETE`;
+
+// server response
+`HTTP/1.1 200 OK
+Access-Control-Allow-Origin: https://example.com
+Access-Control-Allow-Methods: GET, DELETE, HEAD, OPTIONS`;
+```
 
 **NPM**
 
