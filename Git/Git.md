@@ -30,27 +30,6 @@
 - https://github.com/UnseenWizzard/git_training
 - https://www.atlassian.com/git
 
-**GitIgnore Naming**
-
-- `access.log` // matches file name in any nested directory.
-- `/access.log` // matches file name only in current directory only
-- `build/` // match build directory.
-- `*` wildcard zero or more characters
-  - `build/**` // match all items inside build directory
-  - `**/build` // match any directory with 'build' folder nested in it and 'build' directory.
-  - `foo/**/bar` match any directory starting with 'foo' and having 'bar' in it's path.
-- `?` // match any single character.
-  - `foo??` // match 'fooab', 'foo12'
-- `[]` // match any character inside the brackets
-  - `*.[oa]` // file.o, file.a
-  - `*.[!oa]` // negate file.1, file.b...
-  - `access.[0-2].log` // access.0.log, access.1.log, access.2.log
-  - `file.[a-cx-z].out` // file.a.out, file.b.out, file.c.out, file.x.out, file.y.out, file.z.out
-  - `access.[!0-2].log` // access.3.log, access.4.log...
-- `!`
-  - `*.log` // all .log files will be ignored.
-  - `!error.log` // error.log or logs/error.log will not be ignored
-
 **Credentials**
 
 - https://docs.aws.amazon.com/codecommit/latest/userguide/setting-up-https-unixes.html
@@ -144,6 +123,27 @@
 
 - websearch: javascript.gitignore
 
+**GitIgnore Naming**
+
+- `access.log` // matches file name in any nested directory.
+- `/access.log` // matches file name only in current directory only
+- `build/` // match build directory.
+- `*` wildcard zero or more characters
+  - `build/**` // match all items inside build directory
+  - `**/build` // match any directory with 'build' folder nested in it and 'build' directory.
+  - `foo/**/bar` match any directory starting with 'foo' and having 'bar' in it's path.
+- `?` // match any single character.
+  - `foo??` // match 'fooab', 'foo12'
+- `[]` // match any character inside the brackets
+  - `*.[oa]` // file.o, file.a
+  - `*.[!oa]` // negate file.1, file.b...
+  - `access.[0-2].log` // access.0.log, access.1.log, access.2.log
+  - `file.[a-cx-z].out` // file.a.out, file.b.out, file.c.out, file.x.out, file.y.out, file.z.out
+  - `access.[!0-2].log` // access.3.log, access.4.log...
+- `!`
+  - `*.log` // all .log files will be ignored.
+  - `!error.log` // error.log or logs/error.log will not be ignored
+
 **.gitconfig** //global
 
 - git config --global core.autocrlf true
@@ -223,7 +223,7 @@
 - Remove //remove file and remove file from staging
   - `git rm -h` //show help
   - `git rm file.txt` //removes file and updates staging area.
-  - `git rm --cached` //remove from staging area.
+  - `git rm --cached fileName` //remove filename from staging area only.
   - `git rm --cached .` //remove all cache
 
 3. **Remote Repository**
@@ -276,18 +276,26 @@ git push -u origin main
 
 - `git remote -v` // show which repository it's pointing to.
   - `git remote show origin` // show more info about origin.
-    **Remove Remote Origin**
+
+**Remove Remote Origin**
+
 - `git remote` // list the origin. Remote is pointer to some repository not on your device.
 - `git remote remove origin`
-  **Add Remote Origin**
+
+**Add Remote Origin**
+
 - `git remote add origin YourSshFromGithub` // must do next line as well.
   - `git push -u origin main` // `-u` same as `--set-upstream` // `--force` to make it work.
-    **PUSH / PULL**
+
+**PUSH / PULL**
+
 - `git pull origin main` // always pull from remote before pushing
 - `git push -u origin main` // choose what branch to push to.
   - `git push --force -u origin main` // force, overwrite remote.
 - `git push` // after origin established can just push to repository.
-  **Merge Abort**
+
+**Merge Abort**
+
 - `git merge --abort`
 
 # Branch

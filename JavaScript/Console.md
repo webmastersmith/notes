@@ -16,4 +16,4 @@ console.timeEnd('First Test');
 console.timeEnd('Second Test');
 ```
 
-
+[Console Methods](https://dev.to/lissy93/fun-with-consolelog-3i59)
