@@ -48,6 +48,30 @@ const str = [1, 2, 3].join(''); // '123' // default is ','
 
 - **[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)**
 
+### Find
+
+- find is good for modifying array of objects
+-
+
+```js
+let a = [
+  { a: 1, b: 2 },
+  { a: 2, b: 3 },
+  { a: 4, b: 5 },
+];
+let b = a.find((obj) => obj.a === 2);
+b.b = 9; // modifies the object inside array.
+console.log(a); //  [{ a: 1, b: 2 }, { a: 2, b: 9 }, { a: 4, b: 5 }]
+```
+
+### Map
+
+- modify array of objects in place
+
+```js
+const fixedPosts = posts.map((post) => (post.id === id ? newPost : post));
+```
+
 ### Sort
 
 **[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)**
@@ -122,10 +146,17 @@ arr.sort((a, b) => a['value'] - b['value']);
 
 - [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice)
 - mutates
-- returns what is removed in an array.
-- arr.splice(start, deleteCount, element-to-add)
-  - start // inclusive. If negative, starts from end (-1 is last element).
-  - deleteCount // 0 is insert only. >= 1 will remove elements.
+- returns what is removed in an array in an array.
+- arr.splice(count, deleteCount, element-to-add)
+  - count // exclusive. If negative, starts from end (-1 is last element).
+    - insert
+      - item is inserted after count
+      - arr.splice(1,0, 'element') // after first element, insert 'element'.
+    - remove // 0 is insert only. >= 1 will remove elements.
+      - if only count provided, number of elements to be returned/removed. Negative starts from end.
+      - arr.splice(2) // returns first two elements.
+      - arr.splice() // returns empty array.
+      - arr.splice(0) // returns all elements in array.
 
 ```js
 // Insert
