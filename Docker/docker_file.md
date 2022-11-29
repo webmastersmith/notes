@@ -66,9 +66,10 @@ RUN apt-get update \
     && apt-get install -y cron
 ```
 
-- **COPY** . /home/app //copy executes on host.
+- **COPY** . /home/app // copy executes on host (your computer) at build time.
   - copy local file to host.
-  - .dockerignore //in root directory with Dockerfile
+  - `.dockerignore` // create .dockerignore in root directory with Dockerfile.
+    - docker will not `COPY` files/folders listed in the .dockerignore file.
 
 ```dockerfile
 # All files that don't start with 'n'
@@ -79,21 +80,29 @@ COPY n[^o]*
 COPY no[^d]*
 ```
 
-- **FROM** node AS customName //image to pull from docker hub.
-  - <https://docs.docker.com/engine/reference/builder/#from>
+# INSTRUCTIONS
+
 - **ENV** // add env variables. These will be added to .bashrc of image.
+
   - `ENV MONGO_DB_USERNAME=admin`
   - `ENV MONGO_DB_PWD=password`
+
 - **ENTRYPOINT**
+
   - <https://docs.docker.com/engine/reference/builder/#entrypoint>
   - Default parameters that cannot be overridden when Docker Containers
     run with CLI parameters.
-- EXPOSE
+
+- **EXPOSE**
 
   - `EXPOSE 80/tcp 80/udp`
   - <https://docs.docker.com/engine/reference/builder/#expose>
   - this command does not open ports, but notifies developer what port docker container listens on.
   - `-p` flag overrides `EXPOSE`
+
+- **FROM** node AS customName //image to pull from docker hub.
+
+  - <https://docs.docker.com/engine/reference/builder/#from>
 
 - **Ignore**
   - `.dockerfile`
