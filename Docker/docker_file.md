@@ -1,5 +1,33 @@
 # Dockerfile
 
+## Build
+
+- Dockerfile build runs as root // can specify: USER root
+- <https://docs.docker.com/engine/reference/builder/>
+- **Build/Rebuild Image**
+
+  - name/digest
+    - mongo**@sha256**:5255f45e7f87b4404388205351ef69e5f6c018976b355729afa01014faf7792a
+
+```sh
+# if Dockerfile is in same folder
+docker build . # Dockerfile should be in current directory.
+docker build -t userName/repoName:tag . # if you leave tag off will default to 'latest'
+docker build -t userName/repoName:tag -f ./docker/Dockerfile.build . # don't forget the '.'
+docker build -t userName/repoName:tag . < Dockerfile
+docker build --target builder -t alex/ho:v1 .
+# curl
+curl example.com/remote/Dockerfile | docker build -f - .
+```
+
+1. build it: `docker build ./debian_bookworm` // -t NAME for custom image name.
+2. run it detached: `docker run -dp 22:22 --name ansible -it bookworm`
+   1. runs in background
+3. attach to it.
+   1. <https://docs.docker.com/engine/reference/builder/#format>
+   2. The instruction 'FROM' is not case-sensitive. convention is for them to be UPPERCASE
+   3. Docker runs instructions in a Dockerfile in order. A Dockerfile must begin with a FROM instruction.
+
 **external image as a stage**
 
 ```dockerfile
@@ -20,18 +48,6 @@ RUN chmod 600 ./authorized_keys
 
 ENTRYPOINT service ssh restart && bash
 ```
-
-- Dockerfile build runs as root // can specify: USER root
-
-- <https://docs.docker.com/engine/reference/builder/>
-
-1. build it: `docker build ./debian_bookworm` // -t NAME for custom image name.
-2. run it detached: `docker run -dp 22:22 --name ansible -it bookworm`
-   1. runs in background
-3. attach to it.
-   1. <https://docs.docker.com/engine/reference/builder/#format>
-   2. The instruction 'FROM' is not case-sensitive. convention is for them to be UPPERCASE
-   3. Docker runs instructions in a Dockerfile in order. A Dockerfile must begin with a FROM instruction.
 
 - **ADD**
   - be it a folder or just a file actually part of your image. Anyone who uses the image you've built afterwards will have access to whatever you ADD. you only ADD something at build time and cannot ever ADD at run-time.

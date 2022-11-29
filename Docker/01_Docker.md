@@ -1,6 +1,7 @@
 # Docker
 
 - docker creates isolated containers.
+- Container is a process that has specific resources assigned to it.
 
 - doesn't provision hardware to container. It connects directly to the
   os
@@ -164,7 +165,8 @@ docker run hello-world  # check if docker runs without sudo
 - `-d` // detached mode -run in background
 - `-f` // `docker build --target web -t ngx . -f ./e-commerce-frontend/Dockerfile` // don't forget the period.
 - `-it` // run interactive mode (take you inside the container)
-- `-p` // **port:map** 80:80 host (your computer port) port : 80 mapped to container port 80
+  - `-i` // interactive `-t` // pretty print
+- `-p` // **port:map** 80:8080 host (your computer port) port : 80 mapped to container port 8080
   - `docker run -dp 80:80 image`
   - multiple ports: `docker run -d -p 80:80 -p 8080:80 nginx:latest`
 - `--name` // custom container name.
@@ -192,7 +194,7 @@ docker image rm -f IMAGE
 # remove one container
 docker container rm NAME
 
-# Remove all images, containers
+# Remove images, containers
 # remove all containers not running.
 docker rm $(docker ps -aq)
 # remove all images not running
@@ -201,35 +203,45 @@ docker rm $(docker images -q)
 docker rm -f $(docker ps -aq)
 # delete all images not running - run this after
 docker rmi -f $(docker images -q)
-
 # remove all containers, images running or not. rmi=remove image.
 docker rm -f $(docker ps -aq) && docker rmi -f $(docker images -q)
 
 # Prune
 # remove all orphaned layers
 docker rmi -f $(docker images -f "dangling=true" -q)
-# remove all images and containers that are not running.
+# remove all build cache, images, networks, and containers that are not running.
 docker system prune -af
-
 
 # Remove Volume
 docker volume remove VOLUME_NAME
-docker rm CONTAINER_NAME -v  # remove volume connected to it.
+docker rm CONTAINER_NAME -v  # remove Container and Volume connected to it.
 
 #  Run
-# combines docker pull and start. Create new container from an image and start it.
+# combines docker pull/create and start. Pull image, create container from it and start it.
 docker run -dp6000:22 -it --rm --name bob IMAGE_NAME
 docker run -d -it --rm --name flaskapp -p5000:5000 bob/flaskapp-demo:v1
-docker run --rm -dp 5005:5005 . \< Dockerfile
+docker run --rm -dp 5005:5005 . < Dockerfile
 docker run -it --rm -dp 8080:80 -p 22:22 --name bob test1 /bin/bash
+
+# create
+docker create ImageName  # creates container from image. Does not start it.
 
 # Start
 # for working with containers, not the images. The container will contain all attributes of when it was created. <https://docs.docker.com/engine/reference/commandline/start/>
-docker start NAME
+docker start -a NAME # -a shows terminal output. otherwise container will run without showing terminal output.
 docker run -it --entrypoint=/bin/bash NAME # -it = interactive -keep it running.
 
-# Stop Container
-docker stop IMAGE_NAME
+# Stop/Kill Container
+docker stop CONTAINER_NAME/ID # gives time for processes to stop.
+# Kill
+docker kill CONTAINER_NAME/ID # shut down immediately
+
+# Logs // show saved logs, container does not need to be running.
+docker logs CONTAINER_NAME/ID
+
+# exec -execute commands inside the running container.
+docker exec CONTAINER_NAME/ID CMD
+docker exec CONTAINER_NAME/ID sh # /bin/sh, sh, /bin/bash, bash. Almost every linux version has sh.
 ```
 
 **Containers / Images**
@@ -309,11 +321,17 @@ docker run -d \
 mongo  # mongo is the image name.
 ```
 
+**Share Network**
+
+- run two images same container.
+- `docker exec -it CONTAINER_ID CMD_TO_EXECUTE`
+- `docker exec -it e42d677bd855 redis-cli` // runs redis-cli inside docker redis container
+
 - **Pull**
   - pull image from repo to computer.
   - `docker pull IMAGE`
 - **Rename**
-  - `docker rename CONTAINER_NAME_OR_ID NEW_NAME`
+  - `docker rename CONTAINER_NAME/ID NEW_NAME`
 - `--user | -u`
   - `docker run -u 1000 my_image` // create user at runtime
   - Choose a userid over 500 to avoid running as a default system user.
@@ -374,7 +392,7 @@ echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --p
 ```
 
 ```groovy
-//  pipeline
+//  Jenkins pipeline -'dockerhublogin' is Jenkins environment variable.
 environment {
     DOCKERHUB_CREDENTIALS=credentials('dockerhublogin')
 }
