@@ -1,5 +1,38 @@
 # Docker Node Mongodb
 
+# Build Your Own Container
+
+```Dockerfile
+FROM alpine
+RUN apk add --update nodejs npm
+# RUN node -v
+# RUN npm -v
+# if this folder does not exist, will be created automatically.
+WORKDIR /app
+ENV NODE_ENV=production
+COPY . .
+RUN npm i
+# CMD ["node", "index.js"]
+CMD ["npm", "run", "dev"]RUN node -v
+```
+
+# Cache Busting & Rebuilding
+
+- add your frequently changed files after your package installed files.
+- because everything down stream will have to be re-run of change.
+
+```dockerfile
+COPY ./package.json .
+RUN npm i
+# now when you change something, npm will not have to be run again.
+COPY . .
+# CMD ["node", "index.js"]
+CMD ["npm", "run", "dev"]RUN node -v
+
+```
+
+# Docker Hub Containers
+
 **cmd**
 
 ```sh

@@ -49,11 +49,22 @@ RUN chmod 600 ./authorized_keys
 ENTRYPOINT service ssh restart && bash
 ```
 
+# Commit
+
+- create an image from a running container.
+- not used that often.
+  - `docker commit -c 'CMD ["redis-server"]' RUNNING_CONTAINER_ID`
+
+# INSTRUCTIONS
+
 - **ADD**
   - be it a folder or just a file actually part of your image. Anyone who uses the image you've built afterwards will have access to whatever you ADD. you only ADD something at build time and cannot ever ADD at run-time.
 - **ARG**
   - ARG my-value=3 //\$my-value
-- **CMD** `["node", "/home/app/server.js"]` // entrypoint cmd, only one entrypoint.
+- **CMD** `["node", "/home/app/server.js"]` //
+  - same as `ENTRYPOINT`. Dockerfile can only have one Entrypoint. Entrypoint cannot be overridden.
+  - can have multiple `CMD` statements. Can be overridden.
+  - must be "double quotes"
 - comment: `#`
   - only at the beginning of the line.
   - A `#` marker anywhere else in a line is treated as an argument.
@@ -80,8 +91,6 @@ COPY n[^o]*
 COPY no[^d]*
 ```
 
-# INSTRUCTIONS
-
 - **ENV** // add env variables. These will be added to .bashrc of image.
 
   - `ENV MONGO_DB_USERNAME=admin`
@@ -90,8 +99,7 @@ COPY no[^d]*
 - **ENTRYPOINT**
 
   - <https://docs.docker.com/engine/reference/builder/#entrypoint>
-  - Default parameters that cannot be overridden when Docker Containers
-    run with CLI parameters.
+  - Default parameters that cannot be overridden when Docker Containers run with CLI parameters.
 
 - **EXPOSE**
 
@@ -100,9 +108,10 @@ COPY no[^d]*
   - this command does not open ports, but notifies developer what port docker container listens on.
   - `-p` flag overrides `EXPOSE`
 
-- **FROM** node AS customName //image to pull from docker hub.
+- **FROM** node AS customName // image to pull from docker hub.
 
   - <https://docs.docker.com/engine/reference/builder/#from>
+  -
 
 - **Ignore**
   - `.dockerfile`
@@ -166,6 +175,8 @@ RUN wget -O myfile.tar.gz http://example.com/myfile.tar.gz \
 - **WORKDIR**
   - move to where you show: `WORKDIR /home/jenkins`
   - all 'RUN' commands after this will take place in this `WORKDIR`
+  - creates folder if not exist.
+  - `CMD ["someCmd"]` will run in the last `WORKDIR` destination.
 
 ### Dockerfile Examples
 
