@@ -12,12 +12,33 @@
 ```sh
 # if Dockerfile is in same folder
 docker build . # Dockerfile should be in current directory.
+docker build -t foo . # local tag can only be one name. docker run foo
 docker build -t userName/repoName:tag . # if you leave tag off will default to 'latest'
 docker build -t userName/repoName:tag -f ./docker/Dockerfile.build . # don't forget the '.'
 docker build -t userName/repoName:tag . < Dockerfile
 docker build --target builder -t alex/ho:v1 .
 # curl
 curl example.com/remote/Dockerfile | docker build -f - .
+
+# build and run
+docker run --rm --env-file=.env -p4000:4000 $(docker build -q .) # -q is mandatory.
+docker run --rm -it --env-file=.env -p4000:4000 $(docker build -q .) sh # overrides CMD and starts shell.
+```
+
+```dockerfile
+FROM alpine
+# docker run --env-file=.env IMAGE
+ENV NODE_ENV=$NODE_ENV
+ENV PORT=$PORT
+# if this folder does not exist, will be created automatically.
+WORKDIR /app
+COPY ./package.json ./
+RUN npm i
+# copy other files that change often so 'npm i' will not have to run on update.
+COPY ./server.ts tsconfig.json  ./
+# CMD ["node", "index.js"]
+CMD ["npm", "run", "prod"]
+
 ```
 
 1. build it: `docker build ./debian_bookworm` // -t NAME for custom image name.
@@ -60,7 +81,8 @@ ENTRYPOINT service ssh restart && bash
 - **ADD**
   - be it a folder or just a file actually part of your image. Anyone who uses the image you've built afterwards will have access to whatever you ADD. you only ADD something at build time and cannot ever ADD at run-time.
 - **ARG**
-  - ARG my-value=3 //\$my-value
+  - `ARG my-value=3` // `$my-value`
+  - only available at **build time**.
 - **CMD** `["node", "/home/app/server.js"]` //
   - same as `ENTRYPOINT`. Dockerfile can only have one Entrypoint. Entrypoint cannot be overridden.
   - can have multiple `CMD` statements. Can be overridden.
@@ -77,10 +99,11 @@ RUN apt-get update \
     && apt-get install -y cron
 ```
 
-- **COPY** . /home/app // copy executes on host (your computer) at build time.
+- **COPY** `. /home/app` // copy executes on host (your computer) at build time.
   - copy local file to host.
   - `.dockerignore` // create .dockerignore in root directory with Dockerfile.
     - docker will not `COPY` files/folders listed in the .dockerignore file.
+  - `COPY /path/directory` will only copy file in directory. To copy directory, place in parent folder.
 
 ```dockerfile
 # All files that don't start with 'n'
@@ -93,8 +116,10 @@ COPY no[^d]*
 
 - **ENV** // add env variables. These will be added to .bashrc of image.
 
+  - available at runtime.
   - `ENV MONGO_DB_USERNAME=admin`
-  - `ENV MONGO_DB_PWD=password`
+  - add env variables at runtime.
+    - `docker run --env-file=.env IMAGE_NAME`
 
 - **ENTRYPOINT**
 
@@ -177,6 +202,10 @@ RUN wget -O myfile.tar.gz http://example.com/myfile.tar.gz \
   - all 'RUN' commands after this will take place in this `WORKDIR`
   - creates folder if not exist.
   - `CMD ["someCmd"]` will run in the last `WORKDIR` destination.
+
+#
+
+#
 
 ### Dockerfile Examples
 

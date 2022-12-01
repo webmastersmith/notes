@@ -15,6 +15,23 @@
 // @ts-check -enable error checking in 'JS' file.
 ```
 
+# Types
+
+- <https://www.typescriptlang.org/docs/handbook/2/everyday-types.html>
+- string
+- number
+- boolean
+- null
+- void // no return value
+- never // never expect to return anything.
+- undefined
+- Date
+- function // `() => void` or `fn(): string;`
+- array // string[]
+- tuple `const item: [string, boolean, number] = ['b', true, 1]` // allows self labeling.
+- object // typeof obj
+- class // instanceof class
+
 # Extend & Type Alias
 
 - <https://stackoverflow.com/questions/41385059/possible-to-extend-types-in-typescript>
@@ -53,6 +70,8 @@ type UserEvent = Event & { UserId: string };
 // or
 type TourId = typeof Tour & { id?: number };
 
+// cast to any then type.
+const a = expr as any as T;
 // or
 type Event = {
   name: string;
@@ -62,6 +81,31 @@ type Event = {
 
 interface UserEvent extends Event {
   UserId: string;
+}
+```
+
+# Class
+
+- modifiers:
+  - public - open to all
+  - protected - access only inside class or child class
+  - private - access only in parent class. Child cannot access.
+- fields
+  - d
+- constructor - runs when initialize class.
+  - shortcut
+
+```ts
+class Gender {
+  // gender: string // if you use public you can leave this out
+  constructor(public gender: 'm' | 'f'); // public/private/protected. You don't having to add this.color = color or initialize the field with color: string;
+  // this.gender = gender // if you use public you can leave this out
+}
+class Person extends Gender {
+  constructor(public name: string, gen: 'm' | 'f') {
+    // don't use public on super variable.
+    super(gen);
+  }
 }
 ```
 

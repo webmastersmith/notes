@@ -218,7 +218,7 @@ docker rm CONTAINER_NAME -v  # remove Container and Volume connected to it.
 
 #  Run
 # combines docker pull/create and start. Pull image, create container from it and start it.
-docker run -dp6000:22 -it --rm --name bob IMAGE_NAME
+docker run -dp6000:22 -it --rm --name bob IMAGE_NAME # assign name to container.
 docker run -d -it --rm --name flaskapp -p5000:5000 bob/flaskapp-demo:v1
 docker run --rm -dp 5005:5005 . < Dockerfile
 docker run -it --rm -dp 8080:80 -p 22:22 --name bob test1 /bin/bash
