@@ -2,28 +2,18 @@
 
 - docker creates isolated containers.
 - Container is a process that has specific resources assigned to it.
-
-- doesn't provision hardware to container. It connects directly to the
-  os
-
-  - virtual machine connects directly to the kernel, so it need os,
-    drivers, dedicated resources are provisioned.
+- doesn't provision hardware to container. It connects directly to the os
+  - virtual machine connects directly to the kernel, so it need os, drivers, dedicated resources are provisioned.
   - needs a guest host.
-
-- don't need system resources. can run hundreds of containers on single
-  machine.
+- don't need system resources. can run hundreds of containers on single machine.
 
 **About**
 
 - docker images are built into containers.
+  - The 'Dockerfile' allows complex build instructions for making custom images.
+  - The docker-compose file allows for single or multiple containers to be started with attributes: ports, environment variables, name... from images.
 
-  - The 'Dockerfile' allows complex build instructions for making custom
-    images.
-  - The docker-compose file allows for single or multiple containers to
-    be started with attributes: ports, environment variables, name...
-    from images.
-
-**Install**
+## Install
 
 - <https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04>
 
@@ -179,7 +169,7 @@ docker run hello-world  # check if docker runs without sudo
   - You must store the data under `$HOME/docker/volumes/` if you’re using Mac or Linux, and `C:\ProgramData\docker\volumes` if you’re on Windows.
 - `-w` // watch folder
 
-**Docker Commands**
+## Docker Commands
 
 ```sh
 # show running containers

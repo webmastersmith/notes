@@ -15,6 +15,10 @@
 // @ts-check -enable error checking in 'JS' file.
 ```
 
+## Flags
+
+- `-T` // transpile to JS only, don't type check.
+
 # Types
 
 - <https://www.typescriptlang.org/docs/handbook/2/everyday-types.html>
