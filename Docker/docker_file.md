@@ -29,16 +29,29 @@ docker build --build-arg HTTP_PROXY=http://1.2.3.4:22 --build-arg FTP_PROXY=http
 
 # build.sh
 #!/bin/bash
-# `. build.sh posts` -creates image and push to docker hub.
-# add args to build environment.
-export $(grep -v '^$' .env | xargs)
-# image name
-img=${DOCKER_ID}/${1}:latest
-docker build --build-arg NODE_ENV --build-arg PORT --build-arg DOCKER_ID -t $img .
-docker push $img
+
+# . build.sh posts
+# check if argument was passed in.
+if [[ -n "$1" ]] ;
+  then
+    # make sure build folder reflects code changes.
+    npm run build
+    # add args to build environment.
+    export $(grep -v '^$' .env | xargs)
+    # image name
+    img="${DOCKER_ID}/${1}:latest"
+    docker build --build-arg NODE_ENV --build-arg PORT -t $img .
+    docker push $img
+
+    kubectl rollout restart deployment ${1}-depl
+  else
+    echo "Please supply argument :-)"
+    exit 1
+fi
+
 
 # Dockerfile
-ARG PORT
+ARG PORT # will pick up the build arg automatically from --build-arg.
 ARG NODE_ENV
 ENV NODE_ENV=$NODE_ENV
 ENV PORT=$PORT
@@ -46,18 +59,16 @@ ENV PORT=$PORT
 
 ```dockerfile
 FROM alpine
-# docker run --env-file=.env IMAGE
+RUN apk add --update nodejs npm
+ARG PORT
+ARG NODE_ENV
 ENV NODE_ENV=$NODE_ENV
 ENV PORT=$PORT
-# if this folder does not exist, will be created automatically.
 WORKDIR /app
 COPY ./package.json ./
-RUN npm i
-# copy other files that change often so 'npm i' will not have to run on update.
-COPY ./server.ts tsconfig.json  ./
-# CMD ["node", "index.js"]
-CMD ["npm", "run", "prod"]
-
+RUN npm i --omit=dev
+COPY build build
+CMD ["node", "build/server.js"]
 ```
 
 1. build it: `docker build ./debian_bookworm` // -t NAME for custom image name.

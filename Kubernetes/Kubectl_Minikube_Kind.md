@@ -114,8 +114,13 @@ aws eks --region $(terraform output -raw region) update-kubecofig --name $(terra
   - `(-h | --help)`
 - **logs**
   - <https://kubernetes.io/docs/concepts/cluster-administration/logging/>
+  - <https://spacelift.io/blog/kubectl-logs>
   - `k logs --help`
   - `kubectl logs (--follow | -f) podName` // watch logs.
+  - To watch multiple pod logs
+    - give each pod a special label: `log: checkout`
+    - `kubectl logs -f -n app --all-containers --ignore-errors --tail=10 -l log=checkout`
+      - // `--all-containers` if more than 1 replica.
 - **NodePort**
   - NodePort and LoadBalancer open ports to external world.
     - `k get svc` // 3000:30486/TCP the one over 30,000 you can connect to

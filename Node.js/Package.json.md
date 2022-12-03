@@ -78,6 +78,13 @@ module.exports = {
     // easier. tsconfig.json 'outDir: ./build'. Must install tsc-watch -g.
     "start": "tsc-watch --onSuccess \"node ./build/server.js\"",
 },
+// typical scripts.
+"scripts": {
+  "dev": "NODE_ENV=development tsc-watch --onSuccess \"node ./build/server.js\"",
+  "build": "tsc -p .",
+  "start": "tsc-watch --onSuccess \"node ./build/server.js\""
+},
+
 ```
 
 Typescript way of exporting is no default exports. To reference anything you can do: import { Todo } from 'action'
