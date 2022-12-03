@@ -20,10 +20,10 @@ npm init -y && npm i express cors axios dotenv axios && npm i -D nodemon @types/
 **server.ts**
 
 ```ts
-import express, { Express, Request, Response } from 'express';
+import express, { Application, Request, Response } from 'express';
 import 'dotenv/config';
 
-const app: Express = express();
+const app: Application = express();
 const port = process.env.PORT;
 
 app.get('/', (req: Request, res: Response) => {

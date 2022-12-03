@@ -23,6 +23,25 @@ curl example.com/remote/Dockerfile | docker build -f - .
 # build and run
 docker run --rm --env-file=.env -p4000:4000 $(docker build -q .) # -q is mandatory.
 docker run --rm -it --env-file=.env -p4000:4000 $(docker build -q .) sh # overrides CMD and starts shell.
+
+# env
+docker build --build-arg HTTP_PROXY=http://1.2.3.4:22 --build-arg FTP_PROXY=http://4.5.6.5:67 .
+
+# build.sh
+#!/bin/bash
+# `. build.sh posts` -creates image and push to docker hub.
+# add args to build environment.
+export $(grep -v '^$' .env | xargs)
+# image name
+img=${DOCKER_ID}/${1}:latest
+docker build --build-arg NODE_ENV --build-arg PORT --build-arg DOCKER_ID -t $img .
+docker push $img
+
+# Dockerfile
+ARG PORT
+ARG NODE_ENV
+ENV NODE_ENV=$NODE_ENV
+ENV PORT=$PORT
 ```
 
 ```dockerfile

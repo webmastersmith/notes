@@ -53,6 +53,11 @@
 - `node list -g` // list all global packages
 - `ls node_modules` // show all packages in local node_modules folder
 
+## Install
+
+- only production
+  - `npm install --omit=dev`
+
 ## Version
 
 **[Semantic Versioning](https://semver.org/)**

@@ -113,19 +113,28 @@ docker run hello-world  # check if docker runs without sudo
 - Package tool
   - apt (advanced package tool)
 
-### Docker Hub
+## Docker Hub
 
-- [_https://hub.docker.com/_](https://hub.docker.com/)
-- [_https://hub.docker.com/search?q=node_](https://hub.docker.com/search?q=node)
-- node:alpine //which linux distro you want.
-- docker login
-  - `docker build . -t bob/node-helloworld:v1` // if you leave tag off will default to 'latest'
-- `docker push bob/node-helloworld:v1`
+- [https://hub.docker.com/](https://hub.docker.com/)
+- **Search**
+  - [https://hub.docker.com/search?q=node](https://hub.docker.com/search?q=node)
+- **Login**
+  - Docker Desktop logs you in.
+- **Push Image**
+  - <https://docs.docker.com/engine/reference/commandline/push/>
+  - verify image is pushed to dockerhub
+    - `docker image ls`
+  - `-a` // push all images to dockerhub
 
-- `docker build -t alexellis2/href-counter:latest .`
-- `docker build --target builder -t alexellis2/href-counter:latest .`
+```bash
+# if you leave tag off will default to 'latest'
+docker build -t dockerId/imageName:tag .
+# push image to docker. must be logged in. Docker Desktop logs you in.
+docker push dockerId/imageName:tag
 
-  - stop on builder and tag it.
+# stop on builder and tag it.
+docker build --target targetName -t dockerId/imageName:tag .
+```
 
 - **filter**
 

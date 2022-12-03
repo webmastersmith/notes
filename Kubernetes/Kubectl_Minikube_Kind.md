@@ -39,41 +39,65 @@ kubectl cluster-info dump
 
 ## Config
 
+- [_https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html_](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html)
+- [_https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/_](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/)
+- view current config
+  - kubectl config view
+- update config
+
 ```bash
 kubectl config view # show ~/.kube/config contents
 kubectl config get-contexts # show where your config is pointint to.
 kubectl config use-context docker-desktop # switch to local environment.
+
+# AWS
+aws sts get-caller-identity # whoami for aws
+aws eks update-kubeconfig --region region-code --name my-cluster
+aws eks update-kubeconfig --profile 2206-devops-mehrab --name 2206-devops-cluster --region us-east-1
+kubectl get svc # check external ip
+
+# on aws cluster
+aws eks --region REGION update-kubeconfig --name CLUSTER
+aws eks --region us-east-1 update-kubeconfig --name bryon-cluster
+aws eks --profile profileName --region us-east-1 update-kubeconfig --name my-cluster
+
+# Terraform
+output "region" {
+ description = "AWS region"
+ value = var.region
+}
+output "cluster_name" {
+ description = "Kubernetes Cluster Name"
+ value = local.cluster_name
+}
+# cmd
+aws eks --region $(terraform output -raw region) update-kubecofig --name $(terraform output -raw cluster_name)
 ```
 
 ## Kubectl Methods
 
 - **create** // create a pod
-  - kubectl create -h
-    - kubectl create deployment NAME --image=image -- \[COMMAND\] \[args...\] \[options\]
+  - prefer to use yaml files, because it's a record or your infrastructure.
+  - `kubectl create deployment NAME --image=image -- [COMMAND] [args...] [options]`
 - **delete**
+  - `kubectl delete -f FILE.yaml`
   - point kubectl to your yaml files to remove them running or not.
-    - kubectl delete -f /pathToYamls/ // will delete all running item listed int the yaml files.
-  - kubectl delete deployment deploymentNameFromGetDeployment //only way to add or delete pods.
-  - kubectl delete -f FILE.yaml
-  - kubectl delete all --all -n app
-    - To delete everything from the current namespace (which is normally
-      the default namespace) using kubectl delete
-    - delete everything but kubernetes pod.
-  - kubectl delete ns NAME_SPACE -does not delete some ingress items.
-  - kubectl delete all --all -n {namespace}
-    - To delete everything from a certain namespace you use the -n flag:
+    - `kubectl delete -f /pathToYamls/` // will remove all running pods/services in the yaml directory.
+  - `kubectl delete deployment deploymentName` // only way to add or delete pods.
+  - To delete everything from a certain namespace you use the -n flag:
+    - `kubectl delete ns NAME_SPACE` // does not delete some ingress items.
+    - `kubectl delete all --all -n nameSpace`
 - **describe**
-  - get info about the pod
-  - kubectl describe podNameFromGetPod // if container is not running, can get info about it.
-  - kubectl describe ingress jenkins
+  - get info about the pod/deployment/service.
+  - `kubectl describe optionalNameSpace (podName | deploymentName | serviceName)`
 - **edit**
-  - kubectl edit -h
-    - kubectl edit deployment NAME //**outputs to nano a editable config file. **(if nano default editor.)
+  - `kubectl edit -h`
+  - `kubectl edit deployment NAME` // outputs to nano (default editor) an editable config file.
   - to use nano as editor
-    - .bashrc: export KUBE_EDITOR="/bin/nano"
+    - `.bashrc: export KUBE_EDITOR="/bin/nano"`
 - **endpoints**
   - if no endpoints -means you have no virtual ip address.
-  - kubectl get endpoints -n jenkins
+  - `kubectl get endpoints -n jenkins`
 - **exec**
   - ssh into pod
     - `kubectl exec -it podName -- /bin/bash` // don't forget the '--'.
@@ -86,6 +110,8 @@ kubectl config use-context docker-desktop # switch to local environment.
   - --port // host port you want to connect on
   - --target-port //pod port you want to expose.
   - if ClusterIP it will only available inside cluster private network.
+- **help**
+  - `(-h | --help)`
 - **logs**
   - <https://kubernetes.io/docs/concepts/cluster-administration/logging/>
   - `k logs --help`
@@ -110,7 +136,8 @@ kubectl config use-context docker-desktop # switch to local environment.
     - check dns name.
       - `curl -silent ...eu-west-1.elb.amazonaws.com:80 | grep title`
 - **namespace**
-  - kubectl config set-context --current --namespace=my-namespace // create and switch to namespace.
+  - `(-n | --namespace)`
+  - `kubectl config set-context --current --namespace=my-namespace` // create and switch to namespace.
   - validate current namespace:
     - `kubectl config view | grep namespace`
 
@@ -191,39 +218,13 @@ kubectl config use-context docker-desktop # switch to local environment.
   - or to specific revision
   - kubectl rollout undo deployment nginx-deployment --to-revision=2
 
-**update kube-config**
+## Updating pod version
 
-- [_https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html_](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html)
-
-```sh
-aws sts get-caller-identity # whoami for aws
-aws eks update-kubeconfig --region region-code --name my-cluster
-aws eks update-kubeconfig --profile 2206-devops-mehrab --name 2206-devops-cluster --region us-east-1
-kubectl get svc # check external ip
-
-# on aws cluster
-aws eks --region REGION update-kubeconfig --name CLUSTER
-aws eks --region us-east-1 update-kubeconfig --name bryon-cluster
-aws eks --profile profileName --region us-east-1 update-kubeconfig --name my-cluster
-
-# Terraform
-output "region" {
- description = "AWS region"
- value = var.region
-}
-output "cluster_name" {
- description = "Kubernetes Cluster Name"
- value = local.cluster_name
-}
-# cmd
-aws eks --region $(terraform output -raw region) update-kubecofig --name $(terraform output -raw cluster_name)
-```
-
-- [_https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/_](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/)
-
-- view current config
-
-  - kubectl config view
+- in deployment.yaml `- name: dockerId/podName` leave off tag. It will default to latest.
+- push image to docker hub
+- when using the 'latest' tag, you can tell kubernetes to re-pull image from docker hub.
+  - `kubectl rollout restart deployment deploymentName`
+  - `kubectl rollout restart deployment $(k get all | awk '/deployment/{print $1}' | sed 's/.*\///g')` // auto get deployment name, if only one deployment.
 
 ## volumes
 

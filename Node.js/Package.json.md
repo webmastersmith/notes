@@ -32,9 +32,9 @@ const path = require(`path`);
 module.exports = {
   webpack: {
     alias: {
-      "@": path.resolve(__dirname, "src/"),
-      "@Components": path.resolve(__dirname, "src/components"),
-      "@So_on": path.resolve(__dirname, "src/so_on"),
+      '@': path.resolve(__dirname, 'src/'),
+      '@Components': path.resolve(__dirname, 'src/components'),
+      '@So_on': path.resolve(__dirname, 'src/so_on'),
     },
   },
 };
@@ -71,7 +71,12 @@ module.exports = {
 "scripts": {
     "start": "ts-node ./src/index.ts",
     "build": "tsc-watch --onsuccess \"node dist/index.js\"",
-    "dev": "NODE_ENV=development nodemon ./server.ts"
+    "dev": "NODE_ENV=development nodemon ./server.ts",
+    // nodemon run only production code.
+    "compile": "tsc -p . && node build/server.js",
+    "dev": "nodemon -e ts --exec \"npm run compile\"",
+    // easier. tsconfig.json 'outDir: ./build'. Must install tsc-watch -g.
+    "start": "tsc-watch --onSuccess \"node ./build/server.js\"",
 },
 ```
 
