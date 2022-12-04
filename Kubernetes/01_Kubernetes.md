@@ -107,17 +107,20 @@ kubectl version --short --client
 **Ingress**
 
 - <https://kubernetes.io/docs/concepts/services-networking/ingress/>
-- how to pass information inside the cluster: ssh, ssl...
+- how to pass information inside the cluster: ssh, ssl..., has routing rules to know where traffic should go.
 - give node a domain name: [http://myapp.com](http://myapp.com/) instead of [http://123.245.0.1:8080](http://123.245.0.1:8080/)
 - ingress does the forwarding of request to 'service'
 - load balancer end points.
+- <https://kubernetes.github.io/ingress-nginx/>
 
 **Ingress Controller**
 
-- ingress controller is a pod or group of pods in your node that manages
-  ingress rules.
-- evaluate all the rules
-- manage re-directions
+- [ingress-nginx](https://kubernetes.github.io/ingress-nginx/deploy/)-
+- ingress controller is a pod or group of pods in your node that manages ingress rules.
+- evaluate all the rules. manage re-directions.
+- `kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.5.1/deploy/static/provider/cloud/deploy.yaml`
+
+<img src="images/ingress-nginx.png" alt="Ingress Nginx controller">
 
 **Job**
 
@@ -136,7 +139,7 @@ kubectl version --short --client
 
 **Load Balancer**
 
-- single endpoint
+- single endpoint to internal cluster.
 - handles communication in a way the spreads things evenly.
 - Load Balancer Port
 
