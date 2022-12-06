@@ -204,6 +204,13 @@ docker rm -f $(docker ps -aq)
 docker rmi -f $(docker images -q)
 # remove all containers, images running or not. rmi=remove image.
 docker rm -f $(docker ps -aq) && docker rmi -f $(docker images -q)
+# if no containers, just delete images.
+if [[ -n $(docker ps -aq) ]] ; \
+  then \
+    docker rm -f $(docker ps -aq) && docker rmi -f $(docker images -q) ; \
+  else \
+    docker rmi -f $(docker images -q) ; \
+fi
 
 # Prune
 # remove all orphaned layers
