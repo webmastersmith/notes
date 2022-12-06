@@ -110,6 +110,11 @@ aws eks --region $(terraform output -raw region) update-kubecofig --name $(terra
   - --port // host port you want to connect on
   - --target-port //pod port you want to expose.
   - if ClusterIP it will only available inside cluster private network.
+- **get** //status
+  - `kubectl get (all | nodes | pod(s) | services | deployment | (replicaset | rs) | svc)` // svc show ip. rs=replica set
+  - `kubectl get all -o wide` // show all: service, deployment, pod/pod ip and replicaset.
+  - `kubectl get srv` // check internal and external ip address
+  - `kubectl get deployment -w`
 - **help**
   - `(-h | --help)`
 - **logs**
@@ -145,17 +150,17 @@ aws eks --region $(terraform output -raw region) update-kubecofig --name $(terra
   - `kubectl config set-context --current --namespace=my-namespace` // create and switch to namespace.
   - validate current namespace:
     - `kubectl config view | grep namespace`
+- **scale**
+  - avoid cmd line scale. Use yaml file, creates documentation.
+  - `kubectl scale deployment deploymentNameFromGetDeployments --replicas=3`
+- **service** or svc // same thing
+  - k describe svc nginx-deploy
+  - kubectl get services -w
 
 ### flags
 
 - ns \| -n //namespace
 - -A //--all-namespaces
-
-## get //status
-
-- `kubectl get (all | nodes | pod(s) | services | deployment | (replicaset | rs) | svc)` // svc show ip. rs=replica set
-- kubectl get all -o wide // show all: service, deployment, pod/pod ip and replicaset.
-- kubectl get srv // check internal and external ip address
 
 ## ingress
 
@@ -194,14 +199,6 @@ aws eks --region $(terraform output -raw region) update-kubecofig --name $(terra
 ## run
 
 - k run nginx --image=nginx //nginx is name of pod
-
-## service or svc // same thing
-
-- k describe svc nginx-deploy
-
-## scale
-
-- kubectl scale deployment deploymentNameFromGetDeployments --replicas=3
 
 ## update/rollout
 

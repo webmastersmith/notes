@@ -169,9 +169,10 @@ COPY no[^d]*
   -
 
 - **Ignore**
-  - `.dockerfile`
   - <https://docs.docker.com/engine/reference/builder/#dockerignore-file>
+  - `.dockerignore`
   - ignore files when `COPY` directory.
+  - files and directories that you wish to exclude from the Docker image.
 
 ```dockerfile
 # comment
@@ -181,6 +182,14 @@ COPY no[^d]*
 */*/temp*
 # exclude folder/file named tempa, temb...
 temp?
+
+# React App
+# ignore from any path these directories.
+npm-debug.log
+.dockerignore
+**/.git
+**/.DS_Store
+**/node_modules
 ```
 
 - **Label**
