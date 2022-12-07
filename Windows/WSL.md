@@ -6,3 +6,7 @@
 - `ifconfig -a` //ifconfig eth0
 - `hostname -I | awk '{print $1}'` // returns ip
 - `ip route get 1.2.` ?
+
+host file locations
+
+- `c:\Windows\System32\Drivers\etc\hosts`

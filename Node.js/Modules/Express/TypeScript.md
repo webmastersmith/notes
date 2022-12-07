@@ -11,13 +11,21 @@ npm init -y && npm i express cors axios dotenv axios && npm i -D nodemon @types/
 **package.json**
 
 ```json
+  // "scripts": {
+  //   "dev": "NODE_ENV=development nodemon server.ts",
+  //   "prod": "NODE_ENV=production nodemon server.ts"
+  // },
   "scripts": {
-    "dev": "NODE_ENV=development nodemon server.ts",
-    "prod": "NODE_ENV=production nodemon server.ts"
-  },
+  "dev": "NODE_ENV=development tsc-watch --onSuccess \"node ./build/server.js\"",
+  "build": "tsc -p .",
+  "start": "tsc-watch --onSuccess \"node ./build/server.js\""
+},
+
+// tsconfig.json
+"outDir": "./build",
 ```
 
-**server.ts**
+**index.ts**
 
 ```ts
 import express, { Application, Request, Response } from 'express';
@@ -26,6 +34,7 @@ import 'dotenv/config';
 const app: Application = express();
 const port = process.env.PORT;
 
+app.use(express.json());
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server');
 });
