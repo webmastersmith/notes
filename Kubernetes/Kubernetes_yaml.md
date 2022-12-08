@@ -255,6 +255,29 @@ spec:
                 name: jenkins-ui #should be the same as Service.metadata.name
                 port:
                   number: 8080 # same as Service.spec.ports.port
+
+# Another Example
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-srv
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-cors: 'true'
+    nginx.ingress.kubernetes.io/use-regex: 'true' # to use regex in routes.
+spec:
+  rules:
+    - host: tickets.prod
+      http:
+        paths:
+          - path: /api/v[0-9]{1,3}/users/.+ # regex path.
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-svc
+                port:
+                  number: 80
+
 ```
 
 ## ingress class
