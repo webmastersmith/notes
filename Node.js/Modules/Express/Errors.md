@@ -5,6 +5,8 @@
 - express see's four parameters in route and knows it's error handling function.
 - <https://expressjs.com/en/guide/error-handling.html>
 
+**index.ts**
+
 ```ts
 app.use((err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
@@ -79,6 +81,67 @@ app.use(
     });
   }
 );
+```
+
+### Stephen Grinder
+
+**error.ts**
+
+```ts
+import { Request, Response, NextFunction } from 'express';
+import { ValidationError } from 'express-validator';
+
+export class RequestValidationError extends Error {
+  constructor(public errors: ValidationError[]) {
+    super();
+    Object.setPrototypeOf(this, RequestValidationError.prototype);
+  }
+}
+
+export class DatabaseError extends Error {
+  reason = 'Error connecting to database.';
+  constructor() {
+    super();
+    Object.setPrototypeOf(this, DatabaseError.prototype);
+  }
+}
+
+export const errorHandler = (
+  err: RequestValidationError | DatabaseError,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (err instanceof RequestValidationError) {
+    console.log('requestvalidationerror');
+  }
+  if (err instanceof DatabaseError) {
+    console.log('databaseerror');
+  }
+  // generic error
+
+  res.status(400).json({
+    status: 'error',
+    msg: 'Something went wrong',
+    data: err.message,
+    err,
+  });
+};
+
+// to use
+return next(new RequestValidationError(errors.array()));
+return next(new DatabaseError());
+```
+
+**index.ts**
+
+```ts
+// other code
+app.use(errorHandler);
+
+app.listen(port, () => {
+  console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
+});
 ```
 
 # Try Catch
