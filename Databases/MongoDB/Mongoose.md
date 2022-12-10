@@ -32,8 +32,8 @@ import 'dotenv/config';
 import mongoose from 'mongoose';
 
 (async function () {
-  const db = await mongoose.connect(`${process.env.MONGO_LOGIN}`);
   try {
+    const db = await mongoose.connect(`mongodb://mongo-src:27017`);
   } catch (e) {
     if (e instanceof Error) {
       console.log(e.message);

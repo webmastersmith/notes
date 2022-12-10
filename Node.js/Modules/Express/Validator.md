@@ -25,22 +25,18 @@ export const emailPasswordValidate = [
 **functions.ts**
 
 ```ts
-import { validationResult } from 'express-validator';
+import {
+  RequestValidationError,
+  DatabaseError,
+  httpStatusCodes,
+} from '../errors';
 
 export async function signIn(req: Request, res: Response, next: NextFunction) {
   const errors = validationResult(req);
   if (!errors.isEmpty())
-    return res
-      .status(400)
-      .json({ data: errors.array(), msg: 'Email or Password Error' });
-
-  const { email, password } = req.body;
-  if (!email || !password)
-    return res.status(400).json({ data: 'please provide email and password' });
-  res
-    .status(200)
-    .json({ data: { email, password }, msg: 'Email Password Success!' });
-}
+    return next(
+      new RequestValidationError(httpStatusCodes.BAD_REQUEST, errors.array())
+    );
 ```
 
 **index.ts**

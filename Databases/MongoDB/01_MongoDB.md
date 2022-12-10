@@ -62,7 +62,7 @@
    1. `sudo service mongod start`
 2. **start mongosh shell**
    1. `mongosh`
-   2. default port 27017
+   2. default port `27017`
 3.
 
 ## Security Checklist
@@ -76,7 +76,7 @@
 - Node
   - `mongodb://root:password@127.0.0.1:27017` // no spaces
   - Command Line Args in Node
-    - MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+    - `MongoClient(uri)`
 
 # WSL2
 

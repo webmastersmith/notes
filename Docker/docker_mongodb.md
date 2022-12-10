@@ -47,3 +47,20 @@ services:
 #     name: mongo-network
 #     external: true
 ```
+
+- `docker compose -f ./mongo.yaml up -d`
+
+```yaml
+# docker-compose
+services:
+  mongo:
+    image: mongo
+    restart: always
+    ports: # maps to -p
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - /home/webmaster/mongodb/db:/data/db
+```
