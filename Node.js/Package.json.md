@@ -85,6 +85,15 @@ module.exports = {
   "start": "tsc-watch --onSuccess \"node ./build/server.js\""
 },
 
+//nodemon. Slower to run.
+"main": "src/server.ts",
+"scripts": {
+  "build": "rm -rf build/ && tsc",
+  "start": "node build/server.js"
+},
+// then add outDir : ./build to tsconfig.json.
+// call with npx nodemon, unless nodemon is global, then 'nodemon'
+
 ```
 
 Typescript way of exporting is no default exports. To reference anything you can do: import { Todo } from 'action'

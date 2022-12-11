@@ -11,9 +11,19 @@
 - to use the synchronous error handling `throw new CustomError('some message')`, use **express-async-errors**.
   - <https://www.npmjs.com/package/express-async-errors>
 
+**Wrapper fn**
+
 ```ts
 import express from 'express';
 import 'express-async-errors'; // that's it. call from top level. now you can use 'throw new error()' inside async functions.
+
+// all errors will automatically bubble up to next(err)
+const use =
+  (fn: any) =>
+  (req: Request, res: Response, next: NextFunction): Promise<Router> =>
+    Promise.resolve(fn(req, res, next)).catch(next);
+// all routes use this
+app.use('/api/v1/users', use(usersRouter));
 ```
 
 **index.ts**

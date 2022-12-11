@@ -3,6 +3,13 @@
 - [NPM](https://www.npmjs.com/package/mongoose)
 - [Docs](https://mongoosejs.com/docs/guide.html)-
 - Mongoose is ORM (Object Data Modeling). Sits on top of MongoDB.
+- Mongoose can also do schema validation, but may be easier to use a dedicated schema validation library like `joi`.
+
+**Architecture**
+
+- model - where schema is stored
+- controller - where functions are stored
+- routes - where routes are stored.
 
 # Schema Types
 
@@ -33,7 +40,17 @@ import mongoose from 'mongoose';
 
 (async function () {
   try {
-    const db = await mongoose.connect(`mongodb://mongo-src:27017`);
+    // with kubernetes
+    const db = await mongoose.connect(
+      `mongodb://root:password@mongo-src:27017/AuthDB`,
+      { authSource: 'admin', w: 'majority', retryWrites: true }
+    );
+
+    // with external
+    const db = await mongoose.connect(
+      `mongodb://root:password@localhost:27017/AuthDB`,
+      { authSource: 'admin', w: 'majority', retryWrites: true }
+    );
   } catch (e) {
     if (e instanceof Error) {
       console.log(e.message);

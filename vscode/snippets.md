@@ -1,6 +1,9 @@
 # Snippets
 
-- `f1 -> Snippets: Configure user snippets -> typescript.json` // only add shortcut to typescript files.
+[vscode snippets](https://code.visualstudio.com/docs/editor/userdefinedsnippets)
+
+- `f1 -> Snippets: Configure user snippets -> jsonc.json` // only add shortcut to typescript files.
+  - pick your language snippet will show up in.
 - copy everything into temp file.
   - search `ModelName` and replace with `${1:ModelName}` // use `tab` to switch next variable.
   - search `modelName` and replace with `${2:variableName}`
@@ -13,11 +16,22 @@
 {
   "CRUD Mongo": {
     "prefix": "crudmongocontroller",
-    "body": ["add copy pasted code here"]
+    "body": ["add copy pasted code here"],
+    "description": ""
   },
   "another function": {
     "prefix": "name_to_choose_snippet",
     "body": []
+  }
+}
+
+
+// another example
+{
+  "For Loop": {
+    "prefix": ["for", "for-const"], // multiple prefixes.
+    "body": ["for (const ${2:element} of ${1:array}) {", "\t$0", "}"],
+    "description": "A for loop."
   }
 }
 ```
