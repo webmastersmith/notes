@@ -285,23 +285,33 @@ export const User = model('User', userSchema);
 
 - [Mongoose](https://mongoosejs.com/docs/validation.html)
 - validation is done by 'type' unless custom validator is called.
+- <https://mongoosejs.com/docs/schematypes.html#string-validators>
+- <https://mongoosejs.com/docs/validation.html#built-in-validators>
+- Custom Error Message
+  - There are two equivalent ways to set the validator error message:
+    - Array syntax: min: `[6, 'Must be at least 6, got {VALUE}']`
+    - Object syntax: enum: `{ values: ['Coffee', 'Tea'], message: '{VALUE} is not supported' }`
 
 **Custom Validators**
+
+- <https://mongoosejs.com/docs/validation.html#custom-validators>
+- <https://mongoosejs.com/docs/api/schematype.html#schematype_SchemaType-validate>
 
 ```ts
 const tourSchema = new Schema({
   name: {
     type: String,
-    required: [true, 'Name is required.'],
+    required: () => (this.onSale ? [true, 'Name is required.'] : false),
     unique: true,
     trim: true,
     maxLength: [40, 'Tour name cannot be over 40 characters.'],
     minLength: [10, 'Tour name cannot be less than 10 characters.'],
     validate: {
-      validator: function (val: string) {
-        // console.log(this) // logs 'tourSchema' object
-        return validator.isAlphanumeric(val, 'en-US', { ignore: ' ' });
-      },
+      // console.log(this) // complete object with user info
+      // name // value from this.name.
+      validator: (name: string) =>
+        validator.isAlphanumeric(name, 'en-US', { ignore: ' ' }),
+      // 'this' is not available, so use props.value.
       message: (props: { value: string }) =>
         `${props.value} can only contain numbers and letters.`,
     },
@@ -311,7 +321,7 @@ const tourSchema = new Schema({
     maxLength: [40, 'Email cannot be over 40 characters.'],
     minLength: [3, 'Valid email cannot be less than 3 characters.'],
     validate: {
-      validator: validator.isEmail,
+      validator: (email: string) => validator.isEmail(email),
       message: (props: { value: string }) =>
         `${props.value} is not a valid email.`,
     },
@@ -335,19 +345,18 @@ const tourSchema = new Schema({
 - <https://mongoosejs.com/docs/api/model.html#model_Model-create>
 - `Model.create({})` inserts a document.
 
-## Indexes
-
-- <https://mongoosejs.com/docs/guide.html#indexes>
-- <https://mongoosejs.com/docs/api/schema.html#schema_Schema-index>
-
 ```ts
-const animalSchema = new Schema({
-  name: String,
-  type: String,
-  tags: { type: [String], index: true }, // path level
+const { name } = req.body;
+const author = await Author.create({ name }); // combines schema and save.
+// or
+const author = Author({
+  _id: new mongoose.Types.ObjectId(),
+  name,
 });
-
-animalSchema.index({ name: 1, type: -1 }); // schema level
+return author
+  .save()
+  .then((author) => res.status(201).json({ author }))
+  .catch((e) => res.status(500).json({ error }));
 ```
 
 ## Find
@@ -374,6 +383,33 @@ const userSchema = new Schema<UserType>({
 // to see field.
 const user = await user.findOne({ email }).select('+password').exec();
 ```
+
+## Indexes
+
+- <https://mongoosejs.com/docs/guide.html#indexes>
+- <https://mongoosejs.com/docs/api/schema.html#schema_Schema-index>
+
+```ts
+const animalSchema = new Schema({
+  name: String,
+  type: String,
+  tags: { type: [String], index: true }, // path level
+});
+
+animalSchema.index({ name: 1, type: -1 }); // schema level
+```
+
+## Select
+
+- add or remove data from results
+
+```ts
+Model.findById(id)
+  .populate('author') // search author field and match to author name.
+  .select('-__v'); // everything but __v
+```
+
+---
 
 # Query Casting
 

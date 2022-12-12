@@ -38,6 +38,7 @@
 
 - https://docs.mongodb.com/manual/reference/bson-types/#bson-types
 - Double, String, Object, Array, Binary Data, ObjectId, Boolean, Date, Null, Regular Expression, JavaScript, JavaScript (with scope), 32-bit Integer, Timestamp, 64-bit Integer, Decimal128, Min Key, and Max Key.
+  - ObjectId must be `24 hex characters`. `/^[0-9a-f]{24}$/i`
 
 ## Install
 
