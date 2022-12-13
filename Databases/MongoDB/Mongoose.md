@@ -7,8 +7,13 @@
 
 **Architecture**
 
+- Schema is the Model
+- Document is one Model filled with info.
+
+**Folders**
+
 - model - where schema is stored
-- controller - where functions are stored
+- controller - where route functions are stored
 - routes - where routes are stored.
 
 # Schema Types
@@ -247,7 +252,9 @@ const userSchema = new Schema<UserType>(
       default: true,
       select: false, // don't show this field to client.
     },
+    // !!!!!!!!!!!!!!!!! Join !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     guides: [{ type: mongoose.Types.ObjectId, ref: 'User' }], // reference to 'User' Model.
+    // can now use ".populate('guides')" will join documents data to query.
   },
   {
     toJSON: { virtuals: true },
@@ -255,26 +262,43 @@ const userSchema = new Schema<UserType>(
   }
 );
 // perform function only on output results.
+// const user = User.findOne({name: 'bob'})
+// user.yourMadeUpKeyName
 tourSchema.virtual('yourMadeUpKeyName').get(function () {
   return this.duration / 7;
 });
 
-// attach method to document
+// User.findByName('bob') -attach fn directly to Model.
+userSchema.statics.findByName = function (name: string) {
+  // this
+  return this.where({ name: new RegExp(name, 'i') });
+};
+// User.find().byName('bob') -attach method to query object
+userSchema.query.byName = function (name: string) {
+  return this.where({ name: new RegExp(name, 'i') });
+};
+// attach method to document. Must use 'function' to have access to 'this'.
 userSchema.methods.hasPasswordChanged = async function (
   jwtTimestamp: number
 ): Promise<boolean> {
   return true;
 };
-// check for password change
+// Middleware
+// check for password change -before save to database.
 userSchema.pre('save', async function (next) {
   // if password not modified, just return.
   if (!this.isModified('password')) return next();
   return next();
 });
-// populate any tour find query with 'guides'
+// populate all find queries with 'guides'
 tourSchema.pre(/^find/, function (next) {
   // 'this' points to what was passed in.
   this.populate({ path: 'guides', select: '-__v -passwordChangedAt' });
+  return next();
+});
+tourSchema.post(/^save/, function (doc, next) {
+  // access to doc that was saved.
+  console.log(doc.hasPasswordChanged());
   return next();
 });
 
@@ -287,6 +311,9 @@ export const User = model('User', userSchema);
 - validation is done by 'type' unless custom validator is called.
 - <https://mongoosejs.com/docs/schematypes.html#string-validators>
 - <https://mongoosejs.com/docs/validation.html#built-in-validators>
+- **validation only runs with the `create` or `save` method**.
+  - `findByIdAndUpdate, update` do not validate info. Only `save()` validates.
+  - `findById().save()` will use validation.
 - Custom Error Message
   - There are two equivalent ways to set the validator error message:
     - Array syntax: min: `[6, 'Must be at least 6, got {VALUE}']`
@@ -347,7 +374,7 @@ const tourSchema = new Schema({
 
 ```ts
 const { name } = req.body;
-const author = await Author.create({ name }); // combines schema and save.
+const author = await Author.create({ name }); // combines schema and save and findOne(id). Returns author.
 // or
 const author = Author({
   _id: new mongoose.Types.ObjectId(),
@@ -359,16 +386,45 @@ return author
   .catch((e) => res.status(500).json({ error }));
 ```
 
-## Find
+## Date
+
+- run only when you add date.
+
+```ts
+date: () => Date.now(),
+```
+
+## Delete
+
+-
+
+```ts
+const { acknowledged, deleteCount } = await Author.deleteOne({ name: 'bob' }); // deletes first document finds with name: bob. returns object: {acknowledged: true, deleteCount: 1}
+const { acknowledged, deleteCount } = await Author.deleteMany({ name: 'bob' }); // deletes all documents finds with name: bob. returns object: {acknowledged: true, deleteCount: 1}
+```
+
+## Find / Where
 
 - returns `results` or `null`
-- `findById(id).exec()` // `.exec()` turns query into real Promise.
+- `findById(id, "title slug content").exec()`
+  - `.exec()` turns query into real Promise.
   - returns one.
-  - same as mongo findOne()
+  - same as mongo `findOne({id: Object.id()})`
+  - second option is will only return fields `title, slug, content`.
+    - can be an object, string, string[].
 - `Model.findByIdAndUpdate(id, {key: value})`
-- [`find({}).exec()`](https://mongoosejs.com/docs/api.html#model_Model-find) // the `.exec()` turns query into a real `Promise`. Use it when querying.
+  - finds document, then inserts key:value, overwriting value if key exist.
+- [`find({}).exec()`](https://mongoosejs.com/docs/api.html#model_Model-find)
+  - the `.exec()` turns query into a real `Promise`. Use it when querying.
+  - returns array.
   - [without `.exec()`](https://mongoosejs.com/docs/queries.html#queries-are-not-promises)
-- `User.findOne({ email: 'bob50@gmail.com' });` // returns user or null
+- `User.findOne({ email: 'bob50@gmail.com' });`
+  - returns user document or null
+
+```ts
+// same as findOne
+const author = await Author.where('name').equals('bob');
+```
 
 **Keep fields from showing in results**
 

@@ -51,6 +51,10 @@ UserSchema.methods.isPasswordValid = function (password) {
 
 // Exporting module to allow it to be imported in other files
 const User = (module.exports = mongoose.model('User', UserSchema));
+
+// function to attach to static method.
+export const hashPassword = async (password: string, salt: string) =>
+  crypto.pbkdf2Sync(password, salt, 1000, 64, `sha512`).toString(`hex`);
 ```
 
 # JWT

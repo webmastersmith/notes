@@ -356,6 +356,7 @@ import mongoose, { Schema, model, Model, QueryOptions, Types } from 'mongoose';
 import crypto from 'crypto';
 import { config } from '../config';
 
+// Document Types
 export interface ${1}Type {
   _id: Types.ObjectId;
   id: string;
@@ -363,13 +364,16 @@ export interface ${1}Type {
   password: string;
 }
 
-export interface ${1}TypeMethods {}
+// document methods
+export interface ${1}DocumentMethods {}
 
-export interface ${1}Model extends Model<${1}Type, {}, ${1}TypeMethods> {
+// Model methods
+export interface ${1}Model extends Model<${1}Type, {}, ${1}DocumentMethods> {
   hashMyPassword: (pw: string, salt: string) => Promise<string>;
+  build(attrs: ${1}Type): Promise<${1}Type>;
 }
 
-const ${1}Schema = new Schema<${1}Type, ${1}Model, ${1}TypeMethods>({
+const ${1}Schema = new Schema<${1}Type, ${1}Model, ${1}DocumentMethods>({
   email: {
     type: String,
     required: [true, 'Email is required.'],
@@ -388,13 +392,16 @@ const ${1}Schema = new Schema<${1}Type, ${1}Model, ${1}TypeMethods>({
 export const hashPassword = async (password: string, salt: string) => crypto.pbkdf2Sync(password, salt, 1000, 64, `sha512`).toString(`hex`);
 
 ${1}Schema.static('hashPassword', hashPassword);
+// create Model with typescript validation. Model.build({ email, password })
+${1}Schema.static('build', (attrs: ${1}Type) => new ${1}(attrs));
+
 
 ${1}Schema.pre('save', async function (next) {
   this.password = await hashPassword(this.password, config.password.salt);
   return next();
 });
 
-export const Auth = model<${1}Type, ${1}Model>('${1}s', ${1}Schema);
+export const ${1} = model<${1}Type, ${1}Model>('${1}s', ${1}Schema);
 EOF
 
 
