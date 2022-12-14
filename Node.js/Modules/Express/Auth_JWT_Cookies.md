@@ -57,6 +57,20 @@ export const hashPassword = async (password: string, salt: string) =>
   crypto.pbkdf2Sync(password, salt, 1000, 64, `sha512`).toString(`hex`);
 ```
 
+# Scrypt
+
+```ts
+import { scrypt, randomBytes } from 'crypto';
+import { promisify } from 'util';
+const scryptAsync = promisify(scrypt);
+
+async function hash(pw: string) {
+  const salt = randomBytes(16).toString('hex');
+
+  const buf = (await scryptAsync(pw, salt, 64)) as Buffer;
+}
+```
+
 # JWT
 
 - Json Web Tokens

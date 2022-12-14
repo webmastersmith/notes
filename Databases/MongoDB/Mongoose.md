@@ -252,7 +252,7 @@ const userSchema = new Schema<UserType>(
       default: true,
       select: false, // don't show this field to client.
     },
-    // !!!!!!!!!!!!!!!!! Join !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // !!!!!!!!!!!!!!!!! ODM Join !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     guides: [{ type: mongoose.Types.ObjectId, ref: 'User' }], // reference to 'User' Model.
     // can now use ".populate('guides')" will join documents data to query.
   },

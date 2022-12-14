@@ -8,7 +8,7 @@ cd "$1" # -------------------------------------------------
 
 # install npm packages
 npm init -y
-npm i chalk cors dotenv express express-async-errors express-validator mongoose
+npm i chalk cors dotenv express express-async-errors joi mongoose
 npm i -D @types/cors @types/express @types/node ts-node 
 
 # package.json 
