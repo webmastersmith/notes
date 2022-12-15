@@ -92,7 +92,9 @@ obj[key];
 
 ```js
 delete obj.key;
-delete obj['string'];
+delete obj['key'];
+// ts
+delete obj?.key;
 ```
 
 # Methods

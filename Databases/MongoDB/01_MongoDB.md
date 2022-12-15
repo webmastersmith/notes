@@ -145,3 +145,12 @@ const stats = await Tour.aggregate([
 - every time event happens, run function.
 - 4 main types of middleware: document, query, aggregate, model.
   - document
+
+# Custom Functions
+
+- <https://floqast.com/engineering-blog/post/problem-solving-mongoose-validators-dont-run-on-update-queries/>
+-
+
+# Transactions
+
+- <https://blog.tericcabrel.com/how-to-use-mongodb-transaction-in-node-js/>

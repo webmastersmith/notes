@@ -73,6 +73,9 @@ import mongoose from 'mongoose';
 
 - <https://mongoosejs.com/docs/middleware.html#types-of-middleware>
 - <https://javascripttricks.com/mongoose-middleware-the-javascript-7d23a96bfcbf>
+- any request made through mongoose, you can intercept it, modify it, send it to database.
+  - `pre` middleware has access to `this` -the document before saving to database.
+  - `post` middleware has access to `doc` -the returned document.
 - `next()` // will not stop code execution below it, in same code block.
   - does not 'return'.
 - `pre | post`
@@ -314,6 +317,8 @@ export const User = model('User', userSchema);
 - **validation only runs with the `create` or `save` method**.
   - `findByIdAndUpdate, update` do not validate info. Only `save()` validates.
   - `findById().save()` will use validation.
+  - <https://floqast.com/engineering-blog/post/problem-solving-mongoose-validators-dont-run-on-update-queries/>
+    - create your own methods to always `save` for validators to run.
 - Custom Error Message
   - There are two equivalent ways to set the validator error message:
     - Array syntax: min: `[6, 'Must be at least 6, got {VALUE}']`
@@ -412,7 +417,7 @@ const { acknowledged, deleteCount } = await Author.deleteMany({ name: 'bob' }); 
   - same as mongo `findOne({id: Object.id()})`
   - second option is will only return fields `title, slug, content`.
     - can be an object, string, string[].
-- `Model.findByIdAndUpdate(id, {key: value})`
+- `Model.findByIdAndUpdate(id, {key: value})` // will not run the validation.
   - finds document, then inserts key:value, overwriting value if key exist.
 - [`find({}).exec()`](https://mongoosejs.com/docs/api.html#model_Model-find)
   - the `.exec()` turns query into a real `Promise`. Use it when querying.
