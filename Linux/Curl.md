@@ -71,6 +71,7 @@ curl --request POST \
 - **-I | --head** // only fetch the HTTP headers (HEAD method) of a particular page or resource.
   - `curl -I http://` // response headers only
   - `curl --head http://` // response headers only
+- **-k | --insecure** // ignore ssl error
 - **-L | --location** // follow redirection if page has moved.
   - `curl -L http://`
 - **-o | --output** //save file with predetermined name

@@ -116,6 +116,12 @@ export async function protect(req: Request, res: Response, next: NextFunction) {
 - [NPM Jose](https://www.npmjs.com/package/jose)
 - All traffic happens over `https`.
 - Client logs in. Server validates, sends back a JWT. Server forgets about client. When client is ready to respond, they send back the key with response. Sever validates JWT.
+- have to be managed manually.
+- always used for authentication/authorization.
+- The token is transported by:
+  - 'Authorization' header
+  - attached to body.
+  - stored in a cookie.
 - JWT has 3 parts
   - header
     - metadata about token
@@ -128,10 +134,37 @@ export async function protect(req: Request, res: Response, next: NextFunction) {
 - any JWT string can be decoded, even without knowing the secret. The secret only lets you verify that the JWT was correctly signed.
 - JWTs are only encoded, not encrypted.
 
-**See Crypto Notes**
+- npm i jsonwebtoken
+
+```ts
+import JWT from 'jsonwebtoken';
+// See Crypto Notes
+// crypto.randomBytes(32).toString('hex')
+const JWT_KEY = 49326389eae6287603867f47b9e2532e42da9f71d8a9f76709b70276c040bc22
+// 2 hours = hours, minutes, seconds, milliseconds
+const expiresIn = new Date(Date.now() + 2 * 60 * 60 * 1000), // 36e5 same as 3,600,000 same as 60*60*1000.
+
+// SIGN TOKEN
+const token = JWT.sign({ id: user.id }, JWT_KEY, { expiresIn:'2h',  });
+
+//
+type jwt_type = {
+  id: string;
+  iat: number;
+  exp: number;
+};
+// verify key matches user id.
+// If expired, will throw Error('jwt expired') //error.name: "TokenExpiredError"
+// iat = issue at time: when token created.
+// exp = when token expires.
+const { id, iat, exp } = JWT.verify(decryptedToken, JWT_KEY) as jwt_type;
+```
 
 ### Cookies
 
 - `res.cookie('cookieName', cookieToken, objOptions)`
-- attach cookie to response object.
--
+- attach cookie to response object. Browser stores cookie, then send it with each request.
+- Main purpose is to transport info.
+  - cookies can move any kind of data.
+- server tracks cookie validity.
+- automatically managed by browser.

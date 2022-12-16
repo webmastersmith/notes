@@ -5,6 +5,15 @@
 - Built by google for speeding up development with kubernetes.
 - watches multiple folders for changes.
 
+```bash
+skaffold init # build initial yaml file in root
+skaffold dev # run dev.
+
+# .bashrc -delete old dangling images
+alias skaf="skaffold dev --no-prune=false --cache-artifacts=false"
+# skaf  // runs everything.
+```
+
 ```yaml
 apiVersion: skaffold/v4beta1
 kind: Config

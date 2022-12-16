@@ -44,16 +44,16 @@ new Date(d[2], d[1] - 1, d[0]); //year, month, day
 - <https://www.w3schools.com/jsref/jsref_obj_date.asp>
 - <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date>
 - <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date>
-- **new Date().toDateString().replace(/\s/g, '\_') **//"Wed_Jan_01_2020"
+- **new Date().toDateString().replace(/\s/g, '\_')**//"Wed_Jan_01_2020"
 - `new Date().toISOString().split('T')\[0\]` // "2022-02-15"
-- `Date()` //When called as a function, returns a string representation of the current date and time, exactly as `new Date().toString()` does.
+- `Date()` // When called as a function, returns a string representation of the current date and time, exactly as `new Date().toString()` does.
   - always returns a string.
-- **Date.now()** // 1577920170345 (milliseconds since January 1, 1970 00:00:00 UTC)
+- `Date.now()` // **1577920170345** (milliseconds since January 1, 1970 00:00:00 UTC)
   - The static `Date.now()` method returns the number of **milliseconds** elapsed since January 1, 1970
   - this can be manipulated just as easy as date. // const date = new Date(1577920170345).toLocaleString('default', {month: 'long'}) // January
 - `new Date().getTime()` // 1643665348069 (milliseconds since January 1, 1970 00:00:00 UTC)
   - <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime>
-- `new Date()` object to Unix-Epoch milliseconds.
+- `new Date()` // object to Unix-Epoch milliseconds.
 - `new Date().getFullYear()` // 2020
 - `new Date().getMonth()` // 1 (0-11) **new Date().getMonth() + 1 // returns month (1-12)**
 - `new Date().getDate()` // 1 (shows day of the month, interger 1-31)
@@ -185,7 +185,11 @@ const d1 = new Date(d.setMinutes(d.getMinutes() + 30)); // returns number 30 min
 
 // Another Add method
 // convert to millisecond then add
-d = new Date.now() + 10 * 60 * 1000; // 10 minutes * 60,0000 milliseconds in a minute.
+// 60,000 milliseconds in a minute = 6e4
+// 3,600,000 milliseconds in a hour = 36e5.
+// 86,400,000 milliseconds in a day = 8.64e7
+// (hours, minutes, seconds, milliseconds.)
+d = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes * 60,0000 milliseconds in a minute.
 
 /**
  * Adds time to a date. Modelled after MySQL DATE_ADD function.

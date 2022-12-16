@@ -228,23 +228,23 @@ const hugeBin = BigInt(
   3. `7..toString()`
   4. `7 .toString()` // space before dot
 
-Decimal Problems
+# Format
+
+- `(2 * 36e5).toLocaleString()` // '7,200,000'
+
+# Decimal Problems
 
 - <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/EPSILON>
 - <https://stackoverflow.com/questions/11832914/how-to-round-to-at-most-2-decimal-places-if-necessary>
 
-<table>
-<tbody>
-<tr class="odd">
-<td><p>// trying to round to two places</p>
-<p>const <strong>fixed2</strong> = (num) =&gt; +(Math.round(num + "e+2")
-+ "e-2") //works good. <strong>fixed2</strong>(0.1 + 0.2) //0.3</p>
-<p>// 0.1 + 0.2 //0.30000000000000004</p>
-<p>or</p>
-<p>Math.round((num + Number.EPSILON) * 100) / 100</p></td>
-</tr>
-</tbody>
-</table>
+```js
+// trying to round to two places
+const fixed2 = (num) =< +(Math.round(num + "e+2")+ "e-2") // works good.
+fixed2(0.1 + 0.2) //0.3
+// 0.1 + 0.2 //0.30000000000000004
+// or
+Math.round((num + Number.EPSILON) * 100) / 100
+```
 
 # Decimal Math
 

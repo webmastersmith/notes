@@ -1,8 +1,10 @@
-Kubernetes Deployment Config
+# Kubernetes Yaml
 
-vscode linter
+- `kubectl apply -f file.yaml`
 
-disable limits warning //setting.json
+**Deployment Config**
+
+- vscode linter - disable limits warning //setting.json
 
 ```json
 {
@@ -190,24 +192,24 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment  //display name of Deployment when: kubectl get deployments
+  name: nginx-deployment  # display name of Deployment when: kubectl get deployments
   labels:
-    app: nginx  //name of the pods
-spec:  //define how many pods and replicas.
+    app: nginx  # name of the pods
+spec:  # define how many pods and replicas.
   replicas: 1
-  selector:  //define how Deployment should find pods.
-    matchLabels:  //find pod by matching key and value.
+  selector:  # define how Deployment should find pods.
+    matchLabels:  # find pod by matching key and value.
       app: nginx
-  template:  //describe how to build the pod. Rollout triggered only if this is changed.
+  template:  # describe how to build the pod. Rollout triggered only if this is changed.
     metadata:
-      labels:  //label each pod with
+      labels:  # label each pod with
         app: nginx
-    spec:  //describe how many containers should run in a pod
+    spec:  # describe how many containers should run in a pod
       containers:
-      - name: nginx-depl  //container name.  spec.template.spec.containers[0].name field.
+      - name: nginx-depl  # container name.  spec.template.spec.containers[0].name field.
         image: nginx:alpine
         ports:
-          - containerPort: 80  //port app is listening on.
+          - containerPort: 80  # port app is listening on.
 ```
 
 # environment variables
@@ -354,21 +356,21 @@ metadata:
 **mongo-secret.yaml**
 
 - this must be made first. because deployment will need secret to start.
-  - kubectl apply -f mongo-secret.yaml
+  - `kubectl apply -f mongo-secret.yaml`
 - <https://kubernetes.io/docs/concepts/configuration/secret/>
 - your secrets go here.
 - values must be encrypted
-  - echo -n 'mongo' \| base64 //output base64
+  - `echo -n 'mongo' | base64` // output base64 encoded
 
 ```yaml
 apiVersion: v1
 kind: Secret
 metadata:
   name: mongo-secret
-  namespace: default # can only be used inside this namespace.
+  # namespace: default # can only be used inside this namespace.
 type: Opaque # value type: tls,  https://kubernetes.io/docs/concepts/configuration/secret/#secret-types
 data:
-  # secret need to be BASE64_ENCODED_VALUE  # echo -n 'password' | base 64  //do not print newline
+  # secret need to be BASE64_ENCODED_VALUE  # echo -n 'password' | base 64  // '-n' do not print newline
   mongo-root-username: bW8= # mongo
   mongo-root-password: cG3Q= # password
 ```
@@ -403,13 +405,32 @@ containers:
             key: mongo-root-password
 ```
 
-**docker secrets**
+**manual secrets**
+
+- <https://kubernetes.io/docs/concepts/configuration/secret/#opaque-secrets>
 
 ```bash
 kubectl create secret docker-registry dockerhub \
 --docker-server=docker.io \
 --docker-username=YOUR_DOCKER_HUB_USERNAME \
 --docker-password=YOUR_DOCKER_HUB_PASSWORD
+
+# or
+# 'generic' is same as 'Opaque' -means plain secret text. No special format.
+kubectl create secret generic 'secret-name' --from-literal='env-name'='secret'  # you do not need quotes.
+
+# get secret
+kubectl get secret 'secret-name' # quotes not needed.
+
+# to use the secret
+# deploy.yaml
+#  image: some-image:latest
+#  env:
+#    - name: JWT_SECRET # the name used in the env file.
+#      valueFrom:
+#        secretKeyRef:
+#          name: secret-name # name of Secret.metadata.name
+#          key: env-name # Secret.data.key = mongo-root-username
 ```
 
 # Service
@@ -492,11 +513,10 @@ spec:
 - <https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/>
 - <https://kubernetes.io/docs/concepts/storage/volumes/>
 - <https://kubernetes.io/docs/concepts/storage/persistent-volumes/>
-- attach to another source to persist data. Cloud storage, local storage
-  or outside kubernetes cluster.
-- PV are not namespaced. There available to all cluster.
+- replica sets in kubernetes is hard to keep database in sync. Attach to another source to persist data. Cloud storage, local storage or outside kubernetes cluster.
+  - k8s does not track data for you, that is why mongodb replica sets do not do well in cluster.
+- PersistentVolume (PV) are not namespaced. There available to all cluster.
 - survive if cluster crashes.
-- k8s does not track data for you.
 
 **PersistentVolume**
 
@@ -523,7 +543,7 @@ spec:
     server: 172.17.0.2
 ```
 
-## PersistentVolumeClaim //works with the storage class api
+## PersistentVolumeClaim // works with the storage class api
 
 - <https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims>
 - They are namespaced

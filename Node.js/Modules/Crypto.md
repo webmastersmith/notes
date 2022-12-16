@@ -60,7 +60,7 @@ function uuidv4() {
 }
 // "7e915b42-75f6-414a-8281-6f99c6312909"   //superfast 0.275ms
 
-or;
+// or;
 // @ts-ignore
 // prettier-ignore
 export const uuid = (a) => (a?(a^Math.random()*16>>a/4).toString(16):([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,uuid)) //"fbde1c8e-31da-4df0-9248-70200ba1fb1b"  -uuid('') -satify typescript compiler
@@ -68,7 +68,7 @@ or;
 export const uid = () =>
   new Date().getTime() + Math.random().toString(16).slice(2); //uid()
 //string: "163380665338445d6299b29e4d8"  //use this one for simple random react components.
-or;
+// or;
 function rid() {
   return window.crypto.getRandomValues(new Uint32Array(4)).join('');
 } //"419212951391108662738037954822683400208"
