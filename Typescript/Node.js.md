@@ -4,9 +4,32 @@
 - [Node with Typescript](https://blog.appsignal.com/2022/01/19/how-to-set-up-a-nodejs-project-with-typescript.html)
 
 ```sh
-npm init
+npm init -y
 npm install -D typescript @types/node # cannot be global
 tsc --init # output default tsconfig.json
+```
+
+## Setup
+
+```bash
+npm init -y && npm i ts-node dotenv && npm i -D @types/node && npx tsc --init
+```
+
+**package.json**
+
+```json
+  // "scripts": {
+  //   "dev": "NODE_ENV=development nodemon index.ts",
+  //   "prod": "NODE_ENV=production nodemon index.ts"
+  // },
+  "scripts": {
+  "dev": "NODE_ENV=development tsc-watch --onSuccess \"node ./build/index.js\"",
+  "build": "tsc -p .",
+  "start": "tsc-watch --onSuccess \"node ./build/index.js\""
+},
+
+// tsconfig.json
+"outDir": "./build",
 ```
 
 [`tsconfig.json`](https://www.typescriptlang.org/tsconfig)
@@ -48,20 +71,20 @@ tsc --init # output default tsconfig.json
 **Then in your file.ts**
 
 ```ts
-import \* as data from "./data.map.json"; //must be complete file name.
+import * as data from './data.map.json'; //must be complete file name.
 ```
 
 **Template**
 
 ```json
 {
-"compilerOptions": {
-/_ Visit https://aka.ms/tsconfig.json to read more about this file _/
+  "compilerOptions": {
+    //_ Visit https://aka.ms/tsconfig.json to read more about this file _/
 
     /* Basic Options */
     // "incremental": true,                   /* Enable incremental compilation */
-    "target": "es2017",                          /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */
-    "module": "esnext",                     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */
+    "target": "es2017" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */,
+    "module": "esnext" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */,
     // "lib": [],                             /* Specify library files to be included in the compilation. */
     // "allowJs": true,                       /* Allow javascript files to be compiled. */
     // "checkJs": true,                       /* Report errors in .js files. */
@@ -81,7 +104,7 @@ import \* as data from "./data.map.json"; //must be complete file name.
     // "isolatedModules": true,               /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */
 
     /* Strict Type-Checking Options */
-    "strict": true,                           /* Enable all strict type-checking options. */
+    "strict": true /* Enable all strict type-checking options. */,
     // "noImplicitAny": true,                 /* Raise error on expressions and declarations with an implied 'any' type. */
     // "strictNullChecks": true,              /* Enable strict null checks. */
     // "strictFunctionTypes": true,           /* Enable strict checking of function types. */
@@ -104,7 +127,7 @@ import \* as data from "./data.map.json"; //must be complete file name.
     // "typeRoots": [],                       /* List of folders to include type definitions from. */
     // "types": [],                           /* Type declaration files to be included in compilation. */
     // "allowSyntheticDefaultImports": true,  /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
-    "esModuleInterop": true,                  /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
+    "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
     // "preserveSymlinks": true,              /* Do not resolve the real path of symlinks. */
     // "allowUmdGlobalAccess": true,          /* Allow accessing UMD globals from modules. */
 
@@ -119,9 +142,8 @@ import \* as data from "./data.map.json"; //must be complete file name.
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
 
     /* Advanced Options */
-    "skipLibCheck": true,                     /* Skip type checking of declaration files. */
-    "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
-
-}
+    "skipLibCheck": true /* Skip type checking of declaration files. */,
+    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
+  }
 }
 ```

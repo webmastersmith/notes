@@ -1,5 +1,9 @@
 # Puppeteer
 
+## Docs
+
+- <https://pptr.dev/>
+
 ## Training
 
 - <https://try-puppeteer.appspot.com/>
@@ -17,10 +21,47 @@
 **Chrome Developer Tools** // `CTRL + F` shows search feature in dev tools.
 
 - <https://peter.sh/experiments/chromium-command-line-switches/#user-agent>
-- npm i puppeteer // npm i puppeteer-core //without chrome
+- npm i puppeteer
 - <https://www.npmjs.com/package/puppeteer>
 - **Without Chromium**
   - npm i puppeteer-core
+
+## Setup
+
+```bash
+npm init -y && npm i ts-node dotenv puppeteer && npm i -D @types/node && npx tsc --init
+```
+
+**package.json**
+
+```json
+  // "scripts": {
+  //   "dev": "NODE_ENV=development nodemon index.ts",
+  //   "prod": "NODE_ENV=production nodemon index.ts"
+  // },
+  "scripts": {
+  "dev": "NODE_ENV=development tsc-watch --onSuccess \"node ./build/index.js\"",
+  "build": "tsc -p .",
+  "start": "tsc-watch --onSuccess \"node ./build/index.js\""
+},
+
+// tsconfig.json
+"outDir": "./build",
+```
+
+## simplest
+
+```ts
+import puppeteer from 'puppeteer';
+
+(async () => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.goto('https://www.google.com');
+  // other actions...
+  await browser.close();
+})();
+```
 
 ## Simple Puppeteer setup
 
@@ -192,6 +233,15 @@ await page.exposeFunction('fetch', fetch); // expose it
 await page.evaluate(`fetch()`); // use it
 ```
 
+## JSON Data
+
+```ts
+// I would leave this here as a fail safe
+await page.content();
+const innerText = await page.$eval('body', (e) => JSON.parse(e.innerText));
+console.log(JSON.stringify(innerText, null, 2));
+```
+
 ## Documentation
 
 - <https://github.com/puppeteer/puppeteer/blob/main/docs/api.md>
@@ -225,9 +275,6 @@ response.json();
 const res = await response._request._url;
 if (res.includes('image')) {
 }
-```
-
-```ts
 // don't load font's or images
 await page.setRequestInterception(true);
 page.on('request', (req) => {
@@ -235,9 +282,26 @@ page.on('request', (req) => {
     ? req.abort()
     : req.continue();
 });
+
+// from docs
+// https://pptr.dev/guides/request-interception
+const browser = await puppeteer.launch();
+const page = await browser.newPage();
+await page.setRequestInterception(true);
+page.on('request', (interceptedRequest) => {
+  if (interceptedRequest.isInterceptResolutionHandled()) return;
+  if (
+    interceptedRequest.url().endsWith('.png') ||
+    interceptedRequest.url().endsWith('.jpg')
+  )
+    interceptedRequest.abort();
+  else interceptedRequest.continue();
+});
+await page.goto('https://example.com');
+await browser.close();
 ```
 
-## Page
+# Page
 
 - <https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#browsernewpage>
 - **load** - consider navigation to be finished when the load event is fired. // default
@@ -260,7 +324,7 @@ const page = await incognito1.newPage()  //must do this or page node will not wo
 // go to page:
 // https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#pagegotourl-options
 await page.goto(url[, options])
-await page.goto('https://google.com', { waitUntil: 'networkidle0' });  //naviagate to google
+await page.goto('https://google.com', { waitUntil: 'networkidle0' });  //navigate to google
 
 
 
@@ -272,7 +336,7 @@ fs.writeFileSync('fileName.html', html)
 // When creating new browser, you can access page with:
 // https://scrapingant.com/blog/puppeteer-tricks-to-avoid-detection-and-make-web-scraping-easier
 // you do not have to create new page, just use page already open when browser opens.
-const page = (await browser.pages())[0];
+
 
 await page.goto('https://google.com', { waitUntil: 'networkidle0' });  //navigate to google
 await page.goto('https://google.com', { waitUntil: load, timeout: 0});
@@ -284,7 +348,7 @@ page.close()  //can use await if need to await page close
 - await page.**waitForNavigation**({waitUntil: 'load'});
 - <https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#pagewaitfornavigationoptions>
 - <https://stackoverflow.com/questions/46948489/puppeteer-wait-page-load-after-form-submit>
-- **load** //default
+- **load** // default
   - consider navigation to be finished when the load event is fired.
   - This is the default and very strict: your whole page including all dependent resources, i.e. images, scripts, css etc.
 - **domcontentloaded**
@@ -491,15 +555,15 @@ await Promise.all([
 - `page.evaluate(() => { htmlPage })`
   - enters page and allow you to use document.querySelector() on any element.
   - **cons**
-    - hard to take elements in with you. Console.log happens only in the browser instance.
-    - can’t use outside variables
+    - Console.log happens only in the browser instance.
+    - have to pass in outside variables. code is loaded in the browser, can only act onl what you pass in.
 - will only return results, not element handle.
 - With `page.evaluate()`, puppeteer sends function code to the browser as a string and browser compiles it and execute in the browser context, without access to the puppeteer context, so you need to transfer the argument number explicitly.
 
 ```ts
 let imageHref = await page.evaluate((sel) => {
   return document.querySelector(sel).getAttribute('src').replace('/', '');
-}, IMAGE_SELECTOR);
+}, IMAGE_SELECTOR); // pass in a variable.
 const images = await page.evaluate(() =>
   Array.from(document.images, (e) => e.src)
 );
@@ -522,17 +586,6 @@ const listItems = await page.evaluate(() =>
     (el) => el.innerText
   )
 );
-
-// click multiple items
-// get length of items, click and record src attribute. Audio 'src' was in different spot on page is why it's complex.
-const num = await page.$$eval('ul#plList>li', (el) => el.length); //return number of 'li' items.
-const arr = [];
-for (let i = 0; i < num; i++) {
-  page.click(`ul#plList>li:nth-of-type(${i + 1})`);
-  await page.waitForTimeout(1000);
-  const link = await page.$eval('audio#audio1', (el) => el.getAttribute('src'));
-  arr.push(link);
-}
 
 // Get all the search result URLs
 const links = await page.evaluate(function getUrls() {
@@ -740,6 +793,18 @@ export const click = async (
 // https://stackoverflow.com/questions/56226990/puppeteers-page-click-is-working-on-some-links-but-not-others/56227068
 // https://stackoverflow.com/questions/60827605/puppeteer-page-click-works-but-page-evaluate-document-click-doesnt-work
 await page.click('selector', { delay: 300 });
+// click multiple items
+// get length of items, click and record src attribute. Audio 'src' was in different spot on page is why it's complex.
+const num = await page.$$eval('ul#plList>li', (el) => el.length); //return number of 'li' items.
+const arr = [];
+for (let i = 0; i < num; i++) {
+  page.click(`ul#plList>li:nth-of-type(${i + 1})`);
+  await page.waitForTimeout(1000);
+  const link = await page.$eval('audio#audio1', (el) => el.getAttribute('src'));
+  arr.push(link);
+}
+
+// not sure
 await page.evaluate(() => document.querySelector('#btn').scrollIntoView()); //haven't tried
 puppeteer.launch({ ignoreHTTPSErrors: true, headless: false }); //haven't tried
 ```
@@ -775,6 +840,10 @@ await page.mouse.click(x, y, { options });
 - [_https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#keyboardtypetext-options_](https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#keyboardtypetext-options)
 
 ```ts
+// returns elementHandle of node.
+const searchBox = await page.waitForSelector('#search-query');
+await searchBox?.type('fridge', { delay: 100 });
+
 // Type "JavaScript" into the search bar
 await page.evaluate(() => {
   document.querySelector('input[name="q"]').value = 'JavaScript';
@@ -943,7 +1012,7 @@ await page.evaluate((deserializedStorage) => {
   for (const key in deserializedStorage) {
     localStorage.setItem(key, deserializedStorage[key]);
   }
-}, deserializedStorage);
+}, deserializedStorage); // pass into evaluate.
 ```
 
 # error handling

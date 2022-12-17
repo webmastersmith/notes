@@ -5,7 +5,7 @@
 - <https://blog.logrocket.com/how-to-set-up-node-typescript-express/>
 
 ```bash
-npm init -y && npm i express cors axios dotenv axios && npm i -D nodemon @types/express @types/node @types/cors && npx tsc --init
+npm init -y && npm i express cors dotenv && npm i -D nodemon @types/express @types/node @types/cors && npx tsc --init
 ```
 
 **package.json**
