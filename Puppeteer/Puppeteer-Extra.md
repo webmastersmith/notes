@@ -5,6 +5,42 @@ Puppeteer-Extra
 - <https://scrapingant.com/blog/puppeteer-tricks-to-avoid-detection-and-make-web-scraping-easier>
 - npm i puppeteer-core puppeteer-extra puppeteer-extra-plugin-stealth dotenv puppeteer-extra-plugin-adblocker
 
+**new**
+
+```ts
+import puppeteer from 'puppeteer-extra';
+import { executablePath } from 'puppeteer';
+puppeteer.use(require('puppeteer-extra-plugin-stealth')());
+puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')());
+
+export async function search() {
+  // const resolution = {
+  //   x: 1280,
+  //   y: Number(`80${Math.floor(Math.random() * 10)}`), //0-9
+  // };
+  const args = [
+    // `--window-size=${resolution.x},${resolution.y}`,
+    '--no-sandbox',
+    // '--disable-setuid-sandbox',
+    // '--disable-infobars',
+    // '--window-position=0,0',
+    // '--ignore-certifcate-errors',
+    // '--ignore-certifcate-errors-spki-list',
+    // '--user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0"'
+  ];
+  const browser = await puppeteer.launch({
+    executablePath: executablePath(),
+    ignoreHTTPSErrors: true,
+    headless: true,
+    args,
+    // devtools: true,
+    //defaultViewport: null;  -will cause browser to open up to viewport size.
+  });
+}
+```
+
+**old**
+
 ```ts
 import puppeteer from 'puppeteer-extra';
 //const puppeteer = require('puppeteer-extra')

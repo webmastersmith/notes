@@ -57,6 +57,7 @@ curl --request POST \
 
 - **-A** // change user agent
 - `curl -A 'Mozilla Firefox(42.0)' https://...`
+  - curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0" "https://..."
 - **-C | --continue-at** // download where left off if interrupted.
 - **-d | --data**
   - `curl -X POST -H "Content-Type:application/json" http://localhost:5500 -d '{"road":"Box car rd"}'`

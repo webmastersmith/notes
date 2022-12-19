@@ -26,6 +26,11 @@
 - **Without Chromium**
   - npm i puppeteer-core
 
+## Documentation
+
+- <https://github.com/puppeteer/puppeteer/blob/main/docs/api.md>
+- <https://flaviocopes.com/puppeteer/>
+
 ## Setup
 
 ```bash
@@ -192,7 +197,7 @@ async function Audio() {
     // headless: true,
     headless: false,
     handleSIGINT: false,
-    args: args,
+    args,
     devtools: true,
     executablePath:
       'C:/Users/USER_NAME/AppData/Local/Chromium/Application/chrome.exe',
@@ -222,83 +227,6 @@ async function Audio() {
   }
 }
 Audio();
-```
-
-## fetch
-
-```ts
-// not needed in node 18+
-import fetch from 'fetch';
-await page.exposeFunction('fetch', fetch); // expose it
-await page.evaluate(`fetch()`); // use it
-```
-
-## JSON Data
-
-```ts
-// I would leave this here as a fail safe
-await page.content();
-const innerText = await page.$eval('body', (e) => JSON.parse(e.innerText));
-console.log(JSON.stringify(innerText, null, 2));
-```
-
-## Documentation
-
-- <https://github.com/puppeteer/puppeteer/blob/main/docs/api.md>
-- <https://flaviocopes.com/puppeteer/>
-
-## Node Functions
-
-- `Page.on` // Node events -must be before `page.goto()` to see request.
-- [https://github.com/puppeteer/puppeteer/blob/v1.14.0/docs/api.md#keyboardpresskey-options](https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#keyboardpresskey-options)
-- <https://nodejs.org/api/events.html#events_class_eventemitter>
-- <https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#class-httpresponse>
-  - functions that return items from http response object
-    - `url(), json(), text(), headers()`
-- The Page class emits various events (described below) which can be handled using any of **Node's** native EventEmitter methods, such as **on**, **once** or **removeListener**.
-
-## Intercept Request
-
-```ts
-// this must be before page.goto.
-page.on('response', async (response) => {
-  console.log(await response._request._resourceType);
-});
-// events:
-_headers;
-_request._resourceType;
-_request._url;
-// shorthand
-response.url(); // same as '_request._url'
-response.json();
-
-const res = await response._request._url;
-if (res.includes('image')) {
-}
-// don't load font's or images
-await page.setRequestInterception(true);
-page.on('request', (req) => {
-  req.resourceType() == 'font' || req.resourceType() == 'image'
-    ? req.abort()
-    : req.continue();
-});
-
-// from docs
-// https://pptr.dev/guides/request-interception
-const browser = await puppeteer.launch();
-const page = await browser.newPage();
-await page.setRequestInterception(true);
-page.on('request', (interceptedRequest) => {
-  if (interceptedRequest.isInterceptResolutionHandled()) return;
-  if (
-    interceptedRequest.url().endsWith('.png') ||
-    interceptedRequest.url().endsWith('.jpg')
-  )
-    interceptedRequest.abort();
-  else interceptedRequest.continue();
-});
-await page.goto('https://example.com');
-await browser.close();
 ```
 
 # Page
@@ -398,7 +326,9 @@ a[rel]:not([rel=""])  // any 'a' tag with an attribute of 'rel', but not 'rel' t
 
 ## Timeout
 
-- `await page.**waitForTimeout**(500)` // delay for 1/2 second
+- `new Promise(r => setTimeout(r, milliseconds));` // new way of waiting.
+  - better to use: `waitForSelector`
+- `await page.**waitForTimeout**(500)` // obsolete delay for 1/2 second
 - [_https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#pagewaitfortimeoutmilliseconds_](https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#pagewaitfortimeoutmilliseconds)
 - `page.waitForSelector('span[widgetid="dijit_form_ToggleButton_2"]',{timeout: 3000})`
   - must use try catch because timeout will error.
@@ -507,6 +437,17 @@ or
 if ( await handle.$eval('table.improvements', () => true).catch(() => false) ) {...}  //I use this one for handles
 or
 if (await page.$(selector) !== null) {...}
+
+// 'waitForSelector' will return an ElementHandle.
+const searchBox = await this.page.waitForSelector('#search-query');
+await searchBox?.type(item);
+// Promise.all and waitForNavigation are only needed if click navigates to another page.
+await Promise.all([
+  this.page.$eval('#frmQuickSearch button', (e) => e.click()),
+  this.page.waitForNavigation({ waitUntil: 'networkidle2' })
+]);
+
+
 ```
 
 ## Attributes
@@ -606,9 +547,10 @@ const links = await page.evaluate((evalVar) => {
 
 - `await page.$eval(selector, (el) => el.innerText)`
   - allows you to operate on element with js.
-- `page.$$eval(selector, (el) => el.map(e => e.innerText) )`
+  - same as `document.querySelector('something')`
+- `await page.$$eval(selector, (el) => el.map(e => e.innerText) )`
   - does `Array.from` for you.
-  - short for `document.querySelectorAll('selector')`
+  - same as `document.querySelectorAll('selector')`
 - <https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#pageevalselector-pagefunction-args-1>
 - same as document.querySelector('#search')
 - [_https://stackoverflow.com/questions/51280984/how-to-use-eval-function_](https://stackoverflow.com/questions/51280984/how-to-use-eval-function)
@@ -616,6 +558,12 @@ const links = await page.evaluate((evalVar) => {
 - [_https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#pageevalselector-pagefunction-args_](https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#pageevalselector-pagefunction-args)
 
 ```ts
+// typescript
+const storeId = await storeNode?.$eval(
+  '.store-card',
+  (e) => (e as HTMLDivElement).dataset['store-id']
+);
+
 const list = await page.$eval(
   'div.propertyDeedHistoryGrantee',
   (e) => e.textContent
@@ -774,6 +722,11 @@ await page.evaluate(() => document.querySelector('SELECTOR').click());
 await page.$eval('button#signin-button', (elem: HTMLButtonElement) =>
   elem.click()
 );
+
+// https://github.com/puppeteer/puppeteer/blob/main/examples/search.js
+// https://pptr.dev/api/puppeteer.page.click
+// options: delay: 300, button: left, clickCount: 2.
+await page.click('selector', { options });
 
 // wait for selector, then click
 export const click = async (
@@ -1322,4 +1275,95 @@ for (const imageUrl of urls) {
   const image = await.goto(imageUrl); // this changes the page, so code written after this will point to this page.
   await fs.writeFile('imageName', image.buffer()); //write buffer to file.
 }
+```
+
+## fetch
+
+```ts
+// not needed in node 18+
+import fetch from 'fetch';
+await page.exposeFunction('fetch', fetch); // expose it
+await page.evaluate(`fetch()`); // use it
+```
+
+## JSON Data
+
+```ts
+// I would leave this here as a fail safe
+await page.content();
+const innerText = await page.$eval('body', (e) => JSON.parse(e.innerText));
+console.log(JSON.stringify(innerText, null, 2));
+```
+
+## Node Functions
+
+- `Page.on` // Node events -must be before `page.goto()` to see request.
+- [https://github.com/puppeteer/puppeteer/blob/v1.14.0/docs/api.md#keyboardpresskey-options](https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#keyboardpresskey-options)
+- <https://nodejs.org/api/events.html#events_class_eventemitter>
+- <https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#class-httpresponse>
+  - functions that return items from http response object
+    - `url(), json(), text(), headers()`
+- The Page class emits various events (described below) which can be handled using any of **Node's** native EventEmitter methods, such as **on**, **once** or **removeListener**.
+
+## Intercept Request
+
+```ts
+// this must be before page.goto.
+page.on('response', async (response) => {
+  console.log(await response._request._resourceType);
+});
+// events:
+_headers;
+_request._resourceType;
+_request._url;
+// shorthand
+response.url(); // same as '_request._url'
+response.json();
+
+const res = await response._request._url;
+if (res.includes('image')) {
+}
+// don't load font's or images
+await page.setRequestInterception(true);
+page.on('request', (req) => {
+  req.resourceType() == 'font' || req.resourceType() == 'image'
+    ? req.abort()
+    : req.continue();
+});
+
+// from docs
+// https://pptr.dev/guides/request-interception
+const browser = await puppeteer.launch();
+const page = await browser.newPage();
+await page.setRequestInterception(true);
+page.on('request', (interceptedRequest) => {
+  if (interceptedRequest.isInterceptResolutionHandled()) return;
+  if (
+    interceptedRequest.url().endsWith('.png') ||
+    interceptedRequest.url().endsWith('.jpg')
+  )
+    interceptedRequest.abort();
+  else interceptedRequest.continue();
+});
+await page.goto('https://example.com');
+await browser.close();
+
+// https://github.com/puppeteer/puppeteer/blob/main/examples/block-images.js
+const puppeteer = require('puppeteer');
+(async () => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.setRequestInterception(true);
+  page.on('request', (request) => {
+    if (request.resourceType() === 'image') {
+      request.abort();
+    } else {
+      request.continue();
+    }
+  });
+  await page.goto('https://news.google.com/news/');
+  await page.screenshot({ path: 'news.png', fullPage: true });
+
+  await browser.close();
+})();
 ```

@@ -48,3 +48,17 @@ import 'dotenv/config';
   }
 })();
 ```
+
+# Extend typescript
+
+- <https://github.com/puppeteer/puppeteer/issues/6214>
+
+```ts
+import * as puppeteer from 'puppeteer';
+
+declare module 'puppeteer' {
+  export interface Page {
+    waitForTimeout(duration: number): Promise<void>;
+  }
+}
+```
