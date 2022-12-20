@@ -145,9 +145,13 @@ const JWT_KEY = 49326389eae6287603867f47b9e2532e42da9f71d8a9f76709b70276c040bc22
 const expiresIn = new Date(Date.now() + 2 * 60 * 60 * 1000), // 36e5 same as 3,600,000 same as 60*60*1000.
 
 // SIGN TOKEN
-const token = JWT.sign({ id: user.id }, JWT_KEY, { expiresIn:'2h',  });
+// exp // This means that the exp field should contain the number of seconds since the epoch.
+// exp: Math.floor(Date.now() / 1000) + (60 * 60), // 1 hour.
+// iat: Math.floor(Date.now() / 1000)
+// iat: Math.floor(Date.now() / 1000) - 30 // backdate 30 seconds
+const token = JWT.sign({ id: user.id }, JWT_KEY, { expiresIn:'1h' }); // best to use string
+const token = JWT.sign({ id: user.id }, JWT_KEY, { expiresIn: 60*60 }); // expiresIn is 60m * 60s = 1h
 
-//
 type jwt_type = {
   id: string;
   iat: number;
@@ -158,9 +162,76 @@ type jwt_type = {
 // iat = issue at time: when token created.
 // exp = when token expires.
 const { id, iat, exp } = JWT.verify(decryptedToken, JWT_KEY) as jwt_type;
+
+
+// RS256
+// https://siddharthac6.medium.com/json-web-token-jwt-the-right-way-of-implementing-with-node-js-65b8915d550e
+const fs   = require('fs');
+const jwt   = require('jsonwebtoken');
+// use 'utf8' to get string instead of byte array  (512 bit key)
+var privateKEY  = fs.readFileSync('./private.key', 'utf8');
+var publicKEY  = fs.readFileSync('./public.key', 'utf8');
+// PAYLOAD
+var payload = {
+ data1: "Data 1",
+ data2: "Data 2",
+ data3: "Data 3",
+ data4: "Data 4",
+};
+// PRIVATE and PUBLIC key
+// Use utf8 character encoding while reading the private.key and private.key to get a string as content instead of byte array.
+var privateKEY  = fs.readFileSync('./private.key', 'utf8');
+var publicKEY  = fs.readFileSync('./public.key', 'utf8');
+var i  = 'Mysoft corp';          // Issuer // issuer — Software organization that issues the token.
+var s  = 'some@user.com';        // Subject // subject — Intended user of the token.
+var a  = 'http://mysoftcorp.in'; // Audience // Basically identity of the intended recipient of the token.
+
+// SIGNING OPTIONS
+var signOptions = {
+ issuer:  i,
+ subject:  s,
+ audience:  a,
+ expiresIn:  "12h", // Expiration time after which the token will be invalid.
+ algorithm:  "RS256" // Encryption algorithm to be used to protect the token.
+};
+
+// sign
+var token = jwt.sign(payload, privateKEY, signOptions); // private key sign
+
+// verify
+var verifyOptions = {
+ issuer:  i,
+ subject:  s,
+ audience:  a,
+ expiresIn:  "12h",
+ algorithm:  ["RS256"] // this is an array, unlike the signOptions
+};
+var legit = jwt.verify(token, publicKEY, verifyOptions); // public key verify
 ```
 
 ### Cookies
+
+- two types of cookies:
+  1. session cookies: (data stays on server and id (jwt inside cookie) sent to client),
+     1. data persist only for short period of time. (More secure, but stateful).
+  2. regular cookie: all data sent to client. (jwt inside cookie) server is stateless.
+
+**session cookie**
+
+```ts
+// express-session -more secure because only stores id in cookie.
+
+
+//  not as secure cookie-session stores all info in cookie
+stores all information in the cookie, not on the server.
+import cookieSession from 'cookie-session';
+  app.use(
+    cookieSession({
+      signed: false,
+      secure: config.dev.env === 'production' ? true : false
+    })
+  );
+```
 
 - `res.cookie('cookieName', cookieToken, objOptions)`
 - attach cookie to response object. Browser stores cookie, then send it with each request.

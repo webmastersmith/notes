@@ -10,20 +10,97 @@
 - Schema is the Model
 - Document is one Model filled with info.
 
+**Best Practices**
+
+- <https://climbtheladder.com/10-mongoose-best-practices/>
+
 **Folders**
 
 - model - where schema is stored
 - controller - where route functions are stored
 - routes - where routes are stored.
 
+# About
+
+- Mongoose is an object-document mapping (ODM) framework for Node.js and MongoDB.
+  - Mongoose ensures your objects have the same structure in Node.js as they do when they're stored in MongoDB.
+  - Mongoose validates your data, provides a middleware framework, and transforms vanilla JavaScript operations into database operations.
+  - Mongoose provides middleware, custom validators, custom types, and other paradigms for code organization.
+  - allows for MVC pattern, and sequel style request and schema structure.
+- **Collections** - ‘Collections’ in Mongo are equivalent to tables in relational databases. They can hold multiple JSON documents.
+- **Documents** - ‘Documents’ are equivalent to records or rows of data in SQL. While a SQL row can have reference to data in other tables, Mongo documents usually combine that in a document.
+- **Fields** - ‘Fields’ or attributes are similar to columns in a SQL table.
+
+**Model Class**
+
+- The mongoose.model() function takes the model's name and schema as parameters, and **returns a class**. That class is configured to cast, validate, and track changes on the paths defined in the schema.
+- A Mongoose model is a wrapper on the Mongoose schema. A Mongoose schema defines the structure of the document, default values, validators, etc., whereas a Mongoose model provides an interface to the database for creating, querying, updating, deleting records, etc.
+
+**Document**
+
+- instance of a model is called a document.
+- There are two ways to create a Mongoose document:
+  1.  you can instantiate a model to create a new `hydrated document`: `Model.create({})`
+  2.  or you can execute a query to return a `hydrated document` from the MongoDB server.
+
+**hydrated document** // instantiated Model (object) with mongoose methods attached.
+
+# Events
+
+- mongoose will publish events based on connection status.
+
+```ts
+mongoose.connection.on('connected', function () {
+  console.log('Mongoose connected to ' + dbURI);
+});
+
+// We need to listen for changes in the Node process to deal with close events.
+// To monitor when the application stops we need to listen to the Node.js
+// process for an event called SIGINT.
+// nodemon to automatically restart the application, then you’ll also have to listen to a
+// second event on the Node process called SIGUSR2
+
+// any index from unique ---------------------------------------------
+const schema = new mongoose.Schema({
+  name: { type: String, unique: true },
+});
+const Model = db.model('Test', schema);
+
+Model.on('index', function (err) {
+  // <-- Wait for model's indexes to finish
+  assert.ifError(err);
+  Model.create([{ name: 'Val' }, { name: 'Val' }], function (err) {
+    console.log(err);
+  });
+});
+
+// Promise based alternative. `init()` returns a promise that resolves
+// when the indexes have finished building successfully. The `init()`
+// function is idempotent, so don't worry about triggering an index rebuild.
+Model.init().then(function () {
+  Model.create([{ name: 'Val' }, { name: 'Val' }], function (err) {
+    console.log(err);
+  });
+});
+// or
+await Model.init(); // allow for index to build, before creating first document.
+const mod = await Model.create({});
+```
+
 # Schema Types
 
 - [Mongoose Schema Types](https://mongoosejs.com/docs/schematypes.html)
-- String, Buffer, Boolean, Mixed, ObjectId, Array, Map
-- Number // { type: Number, min: 18, max: 65 }, // Number can be a float so must use logic to make it an integer. [`Math.round(v)`]()
+- Array // `[String]`
+- Boolean //
+- Buffer // Buffer: A Node.js binary type (images, PDFs, archives, and so on)
 - Date, // `{ type: Date, default:() => new Date() }`,
   - `() => new Date()` // this will get new Date() when create document.
 - Decimal128, // same as MongoDB NumberDecimal. Used for floats and currency.
+- Map
+- Mixed // any type.
+- Number // { type: Number, min: 18, max: 65 }, // Number can be a float so must use logic to make it an integer. `Math.round(v)`
+- ObjectId // MongoDB 24-character hex string of a 12-byte binary number (e.g., 52dafa354bd71b30fa12c441)
+- String //
 
 ```ts
 const tourSchema = new mongoose.Schema({
@@ -32,6 +109,15 @@ const tourSchema = new mongoose.Schema({
     type: Number,
     require: true,
   },
+  comments: [
+    {
+      text: String,
+      postedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    },
+  ],
 });
 ```
 
@@ -358,6 +444,20 @@ const tourSchema = new Schema({
         `${props.value} is not a valid email.`,
     },
   },
+});
+
+// validate on update
+// https://mongoosejs.com/docs/api/model.html#model_Model-validate
+// throws mongoose.Error.ValidationError.
+// object to validate, path to validate
+await Model.validate({ name: null, email: 'bob@b.com' }, ['name', 'email']);
+await Model.validate({ ...req.body }, ['name', 'email']);
+
+// https://stackoverflow.com/questions/15627967/why-mongoose-doesnt-validate-on-update
+// Pre hook for `findOneAndUpdate`
+ClientSchema.pre(/update/i, function (next) {
+  this.options.runValidators = true;
+  next();
 });
 ```
 

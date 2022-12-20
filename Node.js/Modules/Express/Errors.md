@@ -4,6 +4,7 @@
 
 - express see's four parameters in route and knows it's error handling function.
 - <https://expressjs.com/en/guide/error-handling.html>
+- <https://www.honeybadger.io/blog/errors-nodejs/>
 
 ### Express Async Errors
 

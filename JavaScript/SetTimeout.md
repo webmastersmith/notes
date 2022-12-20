@@ -8,7 +8,7 @@
 
 ```js
 setTimeout();
-const timer = setTimeout(() => console.log("hi"), 1000);
+const timer = setTimeout(() => console.log('hi'), 1000);
 return clearTimeout(timer);
 ```
 
@@ -22,7 +22,7 @@ function greeting(name, role) {
   console.log(`I'm a ${role}`);
 }
 
-setTimeout(greeting, 3000, "Nathan", "Software developer");
+setTimeout(greeting, 3000, 'Nathan', 'Software developer');
 ```
 
 **async**
@@ -33,8 +33,11 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms)) //returns un
 await sleep(2000)
 
 // TypeScript
-const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
+const sleep = (ms: number): Promise<void> => new Promise((res) => setTimeout(res, ms));
 sleep(2000).then(() => console.log("I'm awake!"))
+// or
+await sleep(2000)
+console.log("I'm awake!")
 
 
 // Promise with setTimeout(), return something.
@@ -72,23 +75,23 @@ return clearInterval(intervalTimer);
 - Event loop executes tasks in `process.nextTick queue` first, and then executes `promises microtask queue`, and then executes `macrotask queue`.
 
 ```js
-import fs from "fs";
+import fs from 'fs';
 
 (async function () {
   const wait = (ms: number) => new Promise((res) => setTimeout(res, ms));
-  setImmediate(() => console.log("Immediate finished"));
-  setTimeout(() => console.log("Timeout finished"), 0);
-  process.nextTick(() => console.log("Process.nextTick finished!"));
-  console.log("I am the top dog!");
+  setImmediate(() => console.log('Immediate finished'));
+  setTimeout(() => console.log('Timeout finished'), 0);
+  process.nextTick(() => console.log('Process.nextTick finished!'));
+  console.log('I am the top dog!');
 
   // read file
-  await fs.readFile(process.cwd() + "/test-file.txt", "utf-8", () => {
-    setTimeout(() => console.log("Timeout in callback finished"), 0);
-    setImmediate(() => console.log("Immediate in callback finished"));
+  await fs.readFile(process.cwd() + '/test-file.txt', 'utf-8', () => {
+    setTimeout(() => console.log('Timeout in callback finished'), 0);
+    setImmediate(() => console.log('Immediate in callback finished'));
     process.nextTick(() =>
-      console.log("Process.nextTick in callback finished!")
+      console.log('Process.nextTick in callback finished!')
     );
-    console.log("This is what last looks like :-(");
+    console.log('This is what last looks like :-(');
   });
 })();
 

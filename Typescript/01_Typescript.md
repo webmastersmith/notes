@@ -36,6 +36,20 @@
 - object // typeof obj
 - class // instanceof class
 
+# Global
+
+- `node_modules/@types/cookie-session/index.d.ts`
+
+```ts
+declare global {
+  namespace CookieSessionInterfaces {
+    interface CookieSessionObject {
+      jwt: string;
+    }
+  }
+}
+```
+
 # Extend & Type Alias
 
 - <https://stackoverflow.com/questions/41385059/possible-to-extend-types-in-typescript>
