@@ -269,6 +269,23 @@ fs.writeFileSync('fileName.html', html)
 await page.goto('https://google.com', { waitUntil: 'networkidle0' });  //navigate to google
 await page.goto('https://google.com', { waitUntil: load, timeout: 0});
 page.close()  //can use await if need to await page close
+
+// private api. same as page.target()
+await page._client.send('Page.setDownloadBehavior', {
+  behavior: 'allow',
+  downloadPath: downloadPath
+});
+// CDP: Chrome Devtools Protocol.
+// https://jsoverson.medium.com/using-chrome-devtools-protocol-with-puppeteer-737a1300bac0
+// https://www.f5.com/company/blog/intercepting-and-modifying-responses-with-chrome-via-the-devtools-protocol
+// https://chromedevtools.github.io/devtools-protocol/
+// https://developer.chrome.com/blog/headless-chrome/
+const client = await page.target().createCDPSession()
+await client.send('Page.setDownloadBehavior', {
+  behavior: 'allow',
+  downloadPath: downloadPath  // required if 'behavior: allow'.
+})
+const res = await client.send('Browser.getVersion') // returns object.
 ```
 
 ### Navigation/Wait
@@ -428,6 +445,16 @@ await page.pdf({
 
 ```ts
 // check is selector exist
+async function isExist(selector: string) {
+  try {
+    await this.page.$eval(selector, (e) => e);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+// this one errors now.
 const is2faExist = await page.evaluate(() => {
   const el = document.querySelector( '#header-simplerAuth-dropdownoptions-styledselect' )
   return el ? true : false
@@ -717,6 +744,12 @@ const word = await txt.jsonValue();
 ```ts
 // most cases use this one!
 await page.$eval('#link', (elem) => elem.click()); // always works better than page.click()
+// click then wait for navigation.
+await Promise.all([
+  page.$eval('#link', (e) => e.click()),
+  page.waitForNavigation({ waitUntil: 'networkidle2' }),
+]);
+
 await page.evaluate(() => document.querySelector('SELECTOR').click());
 // typescript
 await page.$eval('button#signin-button', (elem: HTMLButtonElement) =>
@@ -1089,12 +1122,26 @@ start chrome with an extra CLI flag --remote-debugging-port=9229. Then you can o
 # Events
 
 - <https://nitayneeman.com/posts/getting-to-know-puppeteer-using-practical-examples/>
+- <https://pptr.dev/api/puppeteer.pageeventobject/>
+- <https://github.com/puppeteer/puppeteer/blob/v1.19.0/docs/api.md#event-response> // old
+- <https://devdocs.io/puppeteer/index#class-browser>
+- <https://devdocs.io/puppeteer/index#class-page>
 
 ```ts
 const puppeteer = require('puppeteer');
 
 (async () => {
   const browser = await puppeteer.launch();
+  // https://devdocs.io/puppeteer/index#class-browser
+  browser.on('targetcreated', function (target) {
+    console.log(target.type + ' was created');
+  });
+  browser.on('targetdestroyed', function (target) {
+    console.log(target.type + ' was destroyed');
+  });
+
+  // PAGE EVENTS
+  // https://devdocs.io/puppeteer/index#class-page
   const page = await browser.newPage();
 
   // Emitted when the DOM is parsed and ready (without waiting for resources)
@@ -1134,6 +1181,8 @@ const puppeteer = require('puppeteer');
   // Emitted when a new page, that belongs to the browser context, is opened
   page.on('popup', () => console.info('👉 New page is opened'));
 
+  // REQUEST EVENT
+  // https://pptr.dev/api/puppeteer.httprequest
   // Emitted when the page produces a request
   page.on('request', (request) => console.info(`👉 Request: ${request.url()}`));
 
@@ -1151,6 +1200,31 @@ const puppeteer = require('puppeteer');
   page.on('response', (response) =>
     console.info(`👉 Response: ${response.url()}`)
   );
+  // get raw json. Must be declared before the 'goto' function.
+  page.on('response', async (response) => {
+    console.log('got response', response._url);
+    const data = await response.buffer();
+    fs.writeFileSync('/tmp/response.json', data);
+  });
+  await page.goto(
+    'https://raw.githubusercontent.com/GoogleChrome/puppeteer/master/package.json',
+    { waitUntil: 'networkidle0' }
+  );
+  // another
+  page.on('response', async (response) => {
+    if (response.request() /*Your condition check*/) {
+      var buffer = await response.buffer(); /*You can get the buffer*/
+      var content = await response.text(); /*You can get the content as text*/
+    }
+  });
+  // https://pptr.dev/api/puppeteer.httpresponse
+  page.on('response', async (response) => {
+    // console.log(response.url());
+    if (/info.svg/.test(response.url())) {
+      fs.writeFileSync('info.svg', await response.text());
+      // var buffer = await response.buffer(); /*You can get the buffer*/
+    }
+  });
 
   // Emitted when the page creates a dedicated WebWorker
   page.on('workercreated', (worker) =>
