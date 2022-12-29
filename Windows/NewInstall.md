@@ -30,6 +30,8 @@
   - create and format hard disk / drive: F (main), G
 - **power & sleep**
   - settings / system / Power & sleep / screen: 15 minutes, sleep 3 hours
+- **git**
+  - wsl - 
 
 **Programs**
 7zip
