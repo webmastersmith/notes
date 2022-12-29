@@ -5,6 +5,10 @@
 - https://www.keycdn.com/support/popular-curl-examples
 - https://linuxhandbook.com/curl-command-examples/
 
+```sh
+curl -Lo outputName https://url # L=redirect, o=output
+```
+
 ## Get
 
 ```sh

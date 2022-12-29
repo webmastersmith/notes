@@ -37,6 +37,11 @@
 - Errors
   - `=IFNA(VLOOKUP(B8,Catalogue,2,FALSE), "Not Found")`
 
+## MOVE
+
+- `CTRL + UP-ARROW` // jump to cell row 1
+- `CTRL + UP-DOWN` // jump to cell last cell
+
 ## NAMING RANGE OF CELLS
 
 - select entire row, including title / Defined Names + Create from Selection / choose top row.
@@ -60,6 +65,7 @@
 - left // `=LEFT(CELL, NUMBER-OF-CHARS)`
 - right // `=RIGHT(CELL, NUMBER-OF-CHARS)`
 - mid // `=MID(CELL, START, NUMBER-OF-CHARS)` // returns text.
+- search // `=SEARCH(",", CELL)` // returns number of spaces from the left.
 
 ## UNIQUE
 
