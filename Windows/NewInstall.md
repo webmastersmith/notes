@@ -31,7 +31,17 @@
 - **power & sleep**
   - settings / system / Power & sleep / screen: 15 minutes, sleep 3 hours
 - **git**
-  - wsl - 
+  - wsl -
+    - if user is root. to use another user by default: `ubuntu config --default-user USERNAME` // in a cmd.exe terminal.
+    - when you git push, it will auto sign in.
+
+**.gitconfig**
+
+```sh
+[user]
+        email = EMAIL@gmail.com
+        name = BOB JONES
+```
 
 **Programs**
 7zip
