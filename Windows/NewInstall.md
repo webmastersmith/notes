@@ -22,20 +22,23 @@
   - Operating System Drives in the Group Policy window.
     - "Require additional authentication at startup"
     - Check Enable
-    - Set ALLOW to all settings.
-    - if you only want password pin, change it to Require startup pin with tpm.
+    - **password pin**: change it to Allow startup pin with tpm.
     - All others change to do not allow.
-  - control panel / system and security / bitlocker drive encryption
+  - control panel / system and security / bitlocker drive encryption // setup auto unlock.
 - **rename drives**
   - create and format hard disk / drive: F (main), G
 - **power & sleep**
-  - settings / system / Power & sleep / screen: 15 minutes, sleep 3 hours
+  - settings / system / Power & sleep / `screen: 15 minutes, sleep 3 hours`
 - **git**
-  - wsl -
+  - installed git on windows as well.
+  - wsl
     - if user is root. to use another user by default: `ubuntu config --default-user USERNAME` // in a cmd.exe terminal.
     - when you git push, it will auto sign in.
-
-**.gitconfig**
+  - `git config --global user.email "MY_NAME@example.com"`
+  - `git config --global user.name "FIRST_NAME LAST_NAME"`
+    **.gitconfig**
+- **file explorer**
+  - remove today yesterday // `file explorer / view / group by / none`
 
 ```sh
 [user]
