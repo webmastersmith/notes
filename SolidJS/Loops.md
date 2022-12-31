@@ -15,4 +15,9 @@ import { For } from 'solid-js';
     </li>
   )}
 </For>;
+
+// another
+<ul>
+  <For each={data()}>{(item: any) => <li>{item.title}</li>}</For>;
+</ul>;
 ```

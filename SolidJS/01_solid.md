@@ -22,29 +22,77 @@ cd src/pages
 touch index.ts
 ```
 
-# Effects
+## Rendering
+
+- <https://github.com/solidjs/solid/tree/main/packages/solid-ssr>
+- There are three choices for implementing a SPA:
+  - **Server-Side Rendering** (SSR): In the SSR, the server produces the application on the fly.
+  - **Client-Side Rendering** (CSR): In the CSR, the browser is the thing that leads everything and gets the basic data from the server, and the application generates the views and introduces it into the DOM.
+  - **Static Site Generators** (SSG): With SSG, the server returns a well-organized HTML with almost all the info. This approach is the fastest, but if you need to make a small change, the new page’s generation process will take time.
+
+## Components
+
+- functions that return `JSX`. Have access to **props**.
+
+## Exports
+
+- solidjs Components can have **default exports**.
+- `export default () => <p>This is a Paragraph</p>`
+
+## Signals
+
+- createSignal, createStore
+- when you change a signal's value, it automatically updates anything that uses it.
+
+# Methods ----------------------------------------------------------------
+
+### Effects
 
 - <https://www.solidjs.com/tutorial/introduction_effects>
 - pushed to end of DOM update
 - onMount()
+- observers that depend on a signal.
 
-## Create Effect
+## createEffect
 
-- runs after page load
+- runs after page load.
+- any page side effects you want to run. any 'signal' included inside the 'effect' will run when the signal is updated.
 
 ```tsx
 const [sig, setSig] = createSignal('settings');
-createEffect(() => setSig('home'));
+createEffect(() => setSig('home')); // only runs once, after page load.
 
 return <h1>This is the {sig()} </h1>; // changes after page load.
 ```
 
-## Create Signal / Store / State
+## createRenderEffect
+
+- render before the DOM loads.
+- <https://www.solidjs.com/docs/latest/api#createrendereffect>
+
+## createResource
+
+- <https://www.solidjs.com/tutorial/async_resources>
+
+```tsx
+import { createResource } from 'solid-js';
+// returns a function.
+const [data] = createResource(async () => {
+  return fetch('https://www.learnwithjason.dev/api/schedule').then((res) =>
+    res.json()
+  );
+});
+
+<div>{JSON.stringify(data())}</div>;
+```
+
+## createSignal / Store
 
 - **createSignal**
   - `const [sig, setSig] = createSignal(0)` // can be single, object, array.
     - getter and setter function.
     - `<h1>{sig()}</h1>` // must call function.
+    - `setSig(c => c+1)` // uses previous value, or `setSig(sig()+ 1)`
   - will always re-render what DOM node is linked to value.
 - **createStore**
   - `const [store, setStore] = createStore({})` // array or object.
@@ -130,4 +178,16 @@ export default function App() {
     </>
   );
 }
+```
+
+## Suspense
+
+- <https://www.solidjs.com/tutorial/async_suspense>
+
+```ts
+<Suspense fallback={<p>Loading...</p>}>
+  <Show when={episode()}>
+    <Greeting name="Jake" />
+  </Show>
+</Suspense>
 ```
