@@ -1,4 +1,4 @@
-# solidjs
+# Solidjs
 
 ## Templates
 
@@ -264,7 +264,9 @@ function App() {
 - Instead you can get a reference to an element in Solid using the ref attribute.
 - Refs are basically assignments like the example above, which happen at creation time before they are attached to the document DOM.
 - **forward ref**
-  - `<canvas ref={props.ref} width="256" height="256" />`
+  - parent can have access to child DOM node.
+  - `<Parent ref={myRef} />`
+    - `<div ref={props.myRef} >child</div>`
 
 ```tsx
 let myDiv;
@@ -367,6 +369,7 @@ function App() {
 - <https://www.solidjs.com/tutorial/flow_switch>
 - It will try in order to match each condition, stopping to render the first that evaluates to true. Failing all of them, it will render the the fallback.
 - Use in place of `<Show>` when you have multiple options.
+- see **Dynamic** for more options.
 
 ```tsx
 <Switch fallback={<p>{x()} is between 5 and 10</p>}>
