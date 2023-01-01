@@ -1,6 +1,16 @@
 # Solid Events
 
+[All Events](https://developer.mozilla.org/en-US/docs/Web/API/Element#events)
+
 - all methods can be lowercase or camelCase.
+- Events are attributes prefixed with `on`.
+- <https://www.solidjs.com/tutorial/bindings_events>
+
+**create custom events**
+
+```tsx
+<button on:DOMContentLoaded={() => /* Do something */} >Click Me</button>
+```
 
 ## onClick
 
@@ -23,3 +33,5 @@ return (
   </select>
 );
 ```
+
+## onMouseMove
