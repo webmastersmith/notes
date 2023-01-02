@@ -14,7 +14,20 @@
 
 ## onClick
 
--
+- <https://www.solidjs.com/tutorial/bindings_directives>
+
+```tsx
+export default function clickOutside(el, accessor) {
+  const onClick = (e) => !el.contains(e.target) && accessor()?.();
+  document.body.addEventListener('click', onClick);
+
+  onCleanup(() => document.body.removeEventListener('click', onClick));
+}
+
+<div class="modal" use:clickOutside={() => setShow(false)}>
+  Some Modal
+</div>;
+```
 
 ## onInput
 

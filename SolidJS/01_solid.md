@@ -54,6 +54,87 @@ touch index.ts
 - onMount()
 - **observers** that depend on a signal.
 
+## batch
+
+- <https://www.solidjs.com/tutorial/reactivity_batch?solved>
+- when multiple functions are ran, prevents double
+
+```tsx
+import { createSignal, batch } from 'solid-js';
+
+const App = () => {
+  const [firstName, setFirstName] = createSignal('John');
+  const [lastName, setLastName] = createSignal('Smith');
+  const fullName = () => {
+    console.log('Running FullName');
+    return `${firstName()} ${lastName()}`;
+  };
+  // without batch, this function will run twice with each button click.
+  const updateNames = () => {
+    console.log('Button Clicked');
+    batch(() => {
+      setFirstName(firstName() + 'n');
+      setLastName(lastName() + '!');
+    });
+  };
+
+  return <button onClick={updateNames}>My name is {fullName()}</button>;
+};
+```
+
+## context
+
+- <https://www.solidjs.com/tutorial/stores_context>
+- To get started we create a Context object. This object contains a Provider component used to inject our data.
+
+````tsx
+// create context
+import { createSignal, createContext, useContext } from 'solid-js';
+const CounterContext = createContext();
+export function CounterProvider(props) {
+  const [count, setCount] = createSignal(props.count || 0),
+    counter = [
+      count,
+      {
+        increment() {
+          setCount((c) => c + 1);
+        },
+        decrement() {
+          setCount((c) => c - 1);
+        },
+      },
+    ];
+  return (
+    <CounterContext.Provider value={counter}>
+      {props.children}
+    </CounterContext.Provider>
+  );
+}
+export function useCounter() {
+  return useContext(CounterContext);
+}
+// wrap children
+render(
+  () => (
+    <CounterProvider count={1}>
+      <App />
+    </CounterProvider>
+  ),
+  document.getElementById('app')
+);
+// useContext
+export default function Nested() {
+  const [count, { increment, decrement }] = useCounter();
+  return (
+    <>
+      <div>{count()}</div>
+      <button onClick={increment}>+</button>
+      <button onClick={decrement}>-</button>
+    </>
+  );
+};
+```
+
 ## createEffect
 
 - runs after page load.
@@ -64,7 +145,7 @@ const [sig, setSig] = createSignal('settings');
 createEffect(() => setSig('home')); // only runs once, after page load.
 
 return <h1>This is the {sig()} </h1>; // changes after page load.
-```
+````
 
 ## createMemo
 
@@ -126,17 +207,133 @@ const [data] = createResource(async () => {
 <div>{JSON.stringify(data())}</div>;
 ```
 
-## createSignal / Store
+## createSignal
 
 - **createSignal**
   - `const [sig, setSig] = createSignal(0)` // can be single, object, array.
     - getter and setter function.
     - `<h1>{sig()}</h1>` // must call function.
     - `setSig(c => c+1)` // uses previous value, or `setSig(sig()+ 1)`
-  - will always re-render what DOM node is linked to value.
-- **createStore**
-  - `const [store, setStore] = createStore({})` // array or object.
-  - will only update the property that changed. Does not re-render all linked DOM nodes when one value is changed.
+  - will always re-render the DOM node linked to the signal value.
+
+# createStore
+
+- `const [store, setStore] = createStore({})` // array or object.
+- will only update the property that changed. Does not re-render all linked DOM nodes when one value is changed.
+- **solves nested reactivity**. All objects are wrapped in a proxy and the properties are tracked. Nested objects are wrapped in a proxy and also have their properties tracked.
+- all Signals in Stores are created lazily as requested.
+- The `createStore` call takes the initial value and returns a read/write tuple similar to Signals.
+- **produce** // function that allows you to mutate `store` state and still maintain reactivity with functions like `push`.
+  - <https://www.solidjs.com/tutorial/stores_mutation>
+  - 3rd party libraries might need this.
+
+```tsx
+// createStore todos
+import { render } from 'solid-js/web';
+import { For } from 'solid-js';
+import { createStore } from 'solid-js/store';
+
+const App = () => {
+  let input;
+  let todoId = 0;
+  const [todos, setTodos] = createStore([]);
+
+  const addTodo = (text) => {
+    setTodos([...todos, { id: ++todoId, text, completed: false }]);
+  };
+
+  const toggleTodo = (id) => {
+    setTodos(
+      (todo) => todo.id === id,
+      'completed',
+      (completed) => !completed
+    );
+  };
+
+  return (
+    <>
+      <div>
+        <input ref={input} />
+        <button
+          onClick={(e) => {
+            if (!input.value.trim()) return;
+            addTodo(input.value);
+            input.value = '';
+          }}
+        >
+          Add Todo
+        </button>
+      </div>
+      <For each={todos}>
+        {(todo) => {
+          const { id, text } = todo;
+          console.log(`Creating ${text}`);
+          return (
+            <div>
+              <input
+                type="checkbox"
+                checked={todo.completed}
+                onchange={[toggleTodo, id]}
+              />
+              <span
+                style={{
+                  'text-decoration': todo.completed ? 'line-through' : 'none',
+                }}
+              >
+                {text}
+              </span>
+            </div>
+          );
+        }}
+      </For>
+    </>
+  );
+};
+
+// produce
+const addTodo = (text) => {
+  setTodos(
+    produce((todos) => {
+      todos.push({ id: ++todoId, text, completed: false });
+    })
+  );
+};
+const toggleTodo = (id) => {
+  setTodos(
+    (todo) => todo.id === id,
+    produce((todo) => (todo.completed = !todo.completed))
+  );
+};
+```
+
+### global Store
+
+- <https://www.solidjs.com/tutorial/stores_nocontext>
+- It doesn't matter if state is inside or outside components. There is no separate concept for global vs local state. It is all the same thing.
+
+```tsx
+// create global store with reactive root.
+import { createSignal, createMemo, createRoot } from 'solid-js';
+function createCounter() {
+  const [count, setCount] = createSignal(0);
+  const increment = () => setCount(count() + 1);
+  const doubleCount = createMemo(() => count() * 2);
+  return { count, doubleCount, increment };
+}
+export default createRoot(createCounter);
+// use global store
+import { render } from 'solid-js/web';
+import counter from './counter';
+function Counter() {
+  const { count, doubleCount, increment } = counter;
+  return (
+    <button type="button" onClick={increment}>
+      {count()} {doubleCount()}
+    </button>
+  );
+}
+render(() => <Counter />, document.getElementById('app'));
+```
 
 ## Dynamic
 
@@ -178,6 +375,8 @@ function App() {
 
 ## Lazy Loading
 
+- <https://www.solidjs.com/tutorial/async_lazy>
+
 ```ts
 // Users and Home components will only be loaded if you're navigating to them.
 import { lazy } from 'solid-js';
@@ -186,6 +385,11 @@ const Users = lazy(() => import('./pages/Users'));
 const Home = lazy(() => import('./pages/Home'));
 ```
 
+## on
+
+- <https://www.solidjs.com/tutorial/reactivity_on>
+- helper that enables setting explicit dependencies for effects.
+
 ## onCleanup
 
 - <https://www.solidjs.com/tutorial/lifecycles_oncleanup>
@@ -193,6 +397,7 @@ const Home = lazy(() => import('./pages/Home'));
 - Use it in your components or in your Effects.
 - `onCleanup(() => cancelAnimationFrame(frame));`
 - ` onCleanup(() => clearInterval(timer));`
+- `onCleanup(() => document.body.removeEventListener("click", onClick));`
 
 ```tsx
 import { render } from 'solid-js/web';
@@ -253,8 +458,88 @@ function App() {
 ## Props
 
 - <https://www.solidjs.com/tutorial/bindings_spreads>
+- Props are what we call the **object** that is passed to our component function on execution that represents all the attributes bound to its JSX.
+- Props objects are readonly and have reactive properties which are wrapped in Object getters.
+- For this reason it is also **very important to not destructure props objects**, as that would lose reactivity if not done within a tracking scope.
+  - This applies not just to destructuring, but also to spreads and functions like Object.assign.
 - **spread**
+  - spread in an object. // `props.name, props.id, ...`
   - `<Info {...pkg} />`
+- **mergeProps**
+  - which merges potentially reactive objects together
+- **splitProps**
+  - destructuring will loose reactivity.
+- **children**
+  - <https://www.solidjs.com/tutorial/props_children>
+  - when you work with children, you need to be careful to avoid creating the children multiple times.
+  - Solid has the `children` helper. This method both creates a `memo` around the children prop and resolves any nested child reactive references so that you can **interact with the children directly**.
+
+```tsx
+//
+import { render } from 'solid-js/web';
+import { createSignal } from 'solid-js';
+import Greeting from './greeting';
+function App() {
+  const [name, setName] = createSignal();
+  return (
+    <>
+      <Greeting greeting="Hello" />
+      <Greeting name="Jeremy" />
+      <Greeting name={name()} />
+      <button onClick={() => setName('Jarod')}>Set Name</button>
+    </>
+  );
+}
+// mergeProps
+import { mergeProps } from 'solid-js';
+export default function Greeting(props) {
+  const merged = mergeProps({ greeting: 'Hi', name: 'John' }, props);
+  return (
+    <h3>
+      {merged.greeting} {merged.name}
+    </h3>
+  );
+  // return <h3>{props.greeting || "Hi"} {props.name || "John"}</h3>
+}
+
+// splitProps
+export default function Greeting(props) {
+  const [local, others] = splitProps(props, ['greeting', 'name']);
+  return (
+    <h3 {...others}>
+      {local.greeting} {local.name}
+    </h3>
+  );
+}
+
+// children props - memoize it to avoid re-creating children with attribute change.
+import { createEffect, children } from 'solid-js';
+export default function ColoredList(props) {
+  const c = children(() => props.children);
+  createEffect(() => c().forEach((item) => (item.style.color = props.color)));
+  return <>{c()}</>;
+}
+// parent
+import { render } from 'solid-js/web';
+import { createSignal, For } from 'solid-js';
+import ColoredList from './colored-list';
+function App() {
+  const [color, setColor] = createSignal('purple');
+  return (
+    <>
+      <ColoredList color={color()}>
+        {' '}
+        // parent. // creating multiple children, passing in props.
+        <For each={['Most', 'Interesting', 'Thing']}>
+          {(item) => <div>{item}</div>}
+        </For>{' '}
+        // child
+      </ColoredList>
+      <button onClick={() => setColor('teal')}>Set Color</button>
+    </>
+  );
+}
+```
 
 ## Ref
 
@@ -272,6 +557,42 @@ function App() {
 let myDiv;
 <div ref={myDiv}>My Element</div>;
 <div ref={el => /* do something with element */}>My Element</div>;
+```
+
+## Resources
+
+- <https://www.solidjs.com/tutorial/async_resources>
+- Signals designed specifically to handle Async loading. Their purpose is to wrap async values in a way that makes them easy to interact with in Solid's distributed execution model.
+- The goal is for async to not block execution and not color our code.
+  - A query to an async data fetcher function that returns a promise. The contents of the fetcher function can be anything. You can hit typical REST endpoints or GraphQL or anything that generates a promise.
+- The resulting `Resource Signal` also contains reactive **loading** and **error** properties that make it easy to control our view based on the current status.
+- `const [user, { mutate, refetch }] = createResource(userId, fetchUser);`
+  - `mutate` // directly update internal signal
+  - `refetch` // manually fetch data.
+
+```tsx
+import { createSignal, createResource } from 'solid-js';
+import { render } from 'solid-js/web';
+const fetchUser = async (id) =>
+  (await fetch(`https://swapi.dev/api/people/${id}/`)).json();
+const App = () => {
+  const [userId, setUserId] = createSignal();
+  const [user] = createResource(userId, fetchUser);
+  return (
+    <>
+      <input
+        type="number"
+        min="1"
+        placeholder="Enter Numeric Id"
+        onInput={(e) => setUserId(e.currentTarget.value)}
+      />
+      <span>{user.loading && 'Loading...'}</span>
+      <div>
+        <pre>{JSON.stringify(user(), null, 2)}</pre>
+      </div>
+    </>
+  );
+};
 ```
 
 ## Router
@@ -355,14 +676,36 @@ function App() {
 ## Suspense
 
 - <https://www.solidjs.com/tutorial/async_suspense>
+- coordinates display of multiple async events. Shows a fallback until content is loaded.
+- This can improve user experience by **removing visual jank** caused by too many intermediate and partial loading states.
+- Suspense automatically detects any descendant async reads and acts accordingly. **You can nest as many Suspense components as needed** and only the nearest ancestor will transform to fallback when the loading state is detected.
 
 ```ts
 <Suspense fallback={<p>Loading...</p>}>
   <Show when={episode()}>
     <Greeting name="Jake" />
   </Show>
-</Suspense>
+</Suspense>;
+// or
+function Deferred(props) {
+  const [resume, setResume] = createSignal(false);
+  setTimeout(() => setResume(true), 0);
+  return <Show when={resume()}>{props.children}</Show>;
+}
 ```
+
+## SuspenseList
+
+- <https://www.solidjs.com/tutorial/async_suspense_list>
+- coordinate multiple loading states.
+- **revealOrder**
+  - `<SuspenseList revealOrder="forwards"`
+  - **forwards** // reveal in the order they appear in the tree, regardless when they are received.
+  - **backwards** // reverse the order they appear.
+  - **together** // wait for all before revealing.
+- **tail**
+  - **hidden** // show no fallbacks
+  - **collapsed** //
 
 ## Switch / Match
 
@@ -380,4 +723,82 @@ function App() {
     <p>{x()} is less than 5</p>
   </Match>
 </Switch>
+```
+
+## untrack
+
+- <>
+- prevent events from being notified of change.
+
+```tsx
+import { createSignal, createEffect, untrack } from 'solid-js';
+
+const App = () => {
+  const [a, setA] = createSignal(1);
+  const [b, setB] = createSignal(1);
+
+  // effect will not be notified if 'b' changes. 'setB' will still work.
+  createEffect(() => {
+    console.log(a(), untrack(b));
+  });
+
+  return (
+    <>
+      <button onClick={() => setA(a() + 1)}>Increment A {a}</button>
+      <button onClick={() => setB(b() + 1)}>Increment B {b}</button>
+    </>
+  );
+};
+```
+
+## useTransition
+
+- <https://www.solidjs.com/tutorial/async_transitions>
+- Suspense allows us to show fallback content when data is loading. This is great for initial loading, but on subsequent navigation it is often worse UX to fallback to the skeleton state.
+
+```tsx
+import { createSignal, Suspense, Switch, Match, useTransition } from 'solid-js';
+import { render } from 'solid-js/web';
+import Child from './child';
+
+import './styles.css';
+
+const App = () => {
+  const [tab, setTab] = createSignal(0);
+  const [pending, start] = useTransition();
+  const updateTab = (index) => () => start(() => setTab(index));
+
+  return (
+    <>
+      <ul class="inline">
+        <li classList={{ selected: tab() === 0 }} onClick={updateTab(0)}>
+          Uno
+        </li>
+        <li classList={{ selected: tab() === 1 }} onClick={updateTab(1)}>
+          Dos
+        </li>
+        <li classList={{ selected: tab() === 2 }} onClick={updateTab(2)}>
+          Tres
+        </li>
+      </ul>
+      <div class="tab" classList={{ pending: pending() }}>
+        <Suspense fallback={<div class="loader">Loading...</div>}>
+          <Switch>
+            <Match when={tab() === 0}>
+              <Child page="Uno" />
+            </Match>
+            <Match when={tab() === 1}>
+              <Child page="Dos" />
+            </Match>
+            <Match when={tab() === 2}>
+              <Child page="Tres" />
+            </Match>
+          </Switch>
+        </Suspense>
+      </div>
+    </>
+  );
+};
+
+render(App, document.getElementById('app'));
 ```
