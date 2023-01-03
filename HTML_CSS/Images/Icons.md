@@ -6,3 +6,4 @@
 - <https://github.com/amoutonbrady/solid-heroicons>
   - <https://heroicons.com/>
 - <https://github.com/x64Bits/solid-icons>
+  - <https://solid-icons.vercel.app/>

@@ -194,6 +194,13 @@ function Counter() {
 ## createResource
 
 - <https://www.solidjs.com/tutorial/async_resources>
+- Signals designed specifically to handle Async loading. Their purpose is to wrap async values in a way that makes them easy to interact with in Solid's distributed execution model.
+- The goal is for async to not block execution and not color our code.
+  - A query to an async data fetcher function that returns a promise. The contents of the fetcher function can be anything. You can hit typical REST endpoints or GraphQL or anything that generates a promise.
+- The resulting `Resource Signal` also contains reactive **loading** and **error** properties that make it easy to control our view based on the current status.
+- `const [user, { mutate, refetch }] = createResource(userId, fetchUser);`
+  - `mutate` // directly update internal signal
+  - `refetch` // manually fetch data.
 
 ```tsx
 import { createResource } from 'solid-js';
@@ -205,6 +212,30 @@ const [data] = createResource(async () => {
 });
 
 <div>{JSON.stringify(data())}</div>;
+
+// complex example
+import { createSignal, createResource } from 'solid-js';
+import { render } from 'solid-js/web';
+const fetchUser = async (id) =>
+  (await fetch(`https://swapi.dev/api/people/${id}/`)).json();
+const App = () => {
+  const [userId, setUserId] = createSignal();
+  const [user, { mutate, refetch }] = createResource(userId, fetchUser);
+  return (
+    <>
+      <input
+        type="number"
+        min="1"
+        placeholder="Enter Numeric Id"
+        onInput={(e) => setUserId(e.currentTarget.value)}
+      />
+      <span>{user.loading && 'Loading...'}</span>
+      <div>
+        <pre>{JSON.stringify(user(), null, 2)}</pre>
+      </div>
+    </>
+  );
+};
 ```
 
 ## createSignal
@@ -557,42 +588,6 @@ function App() {
 let myDiv;
 <div ref={myDiv}>My Element</div>;
 <div ref={el => /* do something with element */}>My Element</div>;
-```
-
-## Resources
-
-- <https://www.solidjs.com/tutorial/async_resources>
-- Signals designed specifically to handle Async loading. Their purpose is to wrap async values in a way that makes them easy to interact with in Solid's distributed execution model.
-- The goal is for async to not block execution and not color our code.
-  - A query to an async data fetcher function that returns a promise. The contents of the fetcher function can be anything. You can hit typical REST endpoints or GraphQL or anything that generates a promise.
-- The resulting `Resource Signal` also contains reactive **loading** and **error** properties that make it easy to control our view based on the current status.
-- `const [user, { mutate, refetch }] = createResource(userId, fetchUser);`
-  - `mutate` // directly update internal signal
-  - `refetch` // manually fetch data.
-
-```tsx
-import { createSignal, createResource } from 'solid-js';
-import { render } from 'solid-js/web';
-const fetchUser = async (id) =>
-  (await fetch(`https://swapi.dev/api/people/${id}/`)).json();
-const App = () => {
-  const [userId, setUserId] = createSignal();
-  const [user] = createResource(userId, fetchUser);
-  return (
-    <>
-      <input
-        type="number"
-        min="1"
-        placeholder="Enter Numeric Id"
-        onInput={(e) => setUserId(e.currentTarget.value)}
-      />
-      <span>{user.loading && 'Loading...'}</span>
-      <div>
-        <pre>{JSON.stringify(user(), null, 2)}</pre>
-      </div>
-    </>
-  );
-};
 ```
 
 ## Router

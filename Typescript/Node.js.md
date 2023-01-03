@@ -54,6 +54,25 @@ npm init -y && npm i ts-node dotenv && npm i -D @types/node && npx tsc --init
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
+
+// solidjs template
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "jsxImportSource": "solid-js",
+    "jsx": "preserve",
+    "strict": true,
+    "types": ["vite/client"],
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["./src/*"]
+    }
+  }
+}
 ```
 
 **JSON**
