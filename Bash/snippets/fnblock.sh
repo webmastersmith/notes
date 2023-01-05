@@ -1,20 +1,24 @@
 #! /bin/bash
-# solid cards
-# solid needs lowercase folder names for routes.
-mkdir "${1,}"
-cd "${1,}"
-touch "${1,}.module.scss"
+# fnblock "FolderName"
+properName="${1^}"
+fileName="${properName}.tsx"
 
-cat <<EOF> "index.tsx"
-import { Title } from "solid-start";
-import styles from "./${1,}.module.scss";
+mkdir $properName
+cd "$properName"
+touch "${properName}.module.scss"
 
-export default function ${1^}() {
+cat <<EOF> "${properName}.tsx"
+import styles from "./${properName}.module.scss";
+
+export function ${properName}() {
   return (
     <>
-      <Title>${1^}</Title>
-      <h1>${1^} Page</h1>
+      <h1>${properName} Page</h1>
     </>
   );
 }
+EOF
+
+cat <<EOF> "index.tsx"
+export * from './${properName}';
 EOF
