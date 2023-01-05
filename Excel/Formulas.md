@@ -48,6 +48,8 @@
   - `=NOW()` // dynamic. time stamp.
 - `SHIFT + ;` // date -fixed
 - `SHIFT + CTRL + ;` // time -fixed
+- **WEEKDAY**
+  - given date shows what day of week. // 1-7
 
 ## FILTER
 
@@ -133,6 +135,13 @@
 - COLUMN/ROW-SORT // default is FALSE. can leave off.
 - **SORTBY**
   - `=SORTBY(RANGE, COLUMN-RANGE, ASCENDING/DESCENDING)` // `=SORTBY(B4:E23, E4:E23, -1)`
+
+## SWITCH
+
+- <https://support.microsoft.com/en-us/office/switch-function-47ab33c0-28ce-4530-8a45-d532ec4aa25e>
+- switch statement
+- `SWITCH(Value to switch, Value to match1...[2-126], Value to return if there's a match1...[2-126], Value to return if there's no match)`
+- may be easier to use `IFS`.
 
 ## TEXT
 

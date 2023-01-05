@@ -4,23 +4,9 @@
 
 - <https://github.com/solidjs/templates/>
 
-**solid.sh**
+## Examples
 
-- add to .local/bin //your custom path.
-
-```sh
-#! /bin/bash
-# typescript starter
-# solid "NAME-OF-PROJECT"
-npx degit solidjs/templates/ts-sass "$1" -y
-cd "$1"
-npm install # or pnpm install or yarn install
-# get router
-npm i @solidjs/router
-mkdir -p src/pages
-cd src/pages
-touch index.ts
-```
+- <https://github.com/solidjs/solid/blob/main/documentation/resources/examples.md>
 
 ## Rendering
 
@@ -194,6 +180,7 @@ function Counter() {
 ## createResource
 
 - <https://www.solidjs.com/tutorial/async_resources>
+- **Signals for async request.**
 - Signals designed specifically to handle Async loading. Their purpose is to wrap async values in a way that makes them easy to interact with in Solid's distributed execution model.
 - The goal is for async to not block execution and not color our code.
   - A query to an async data fetcher function that returns a promise. The contents of the fetcher function can be anything. You can hit typical REST endpoints or GraphQL or anything that generates a promise.
@@ -220,7 +207,7 @@ const fetchUser = async (id) =>
   (await fetch(`https://swapi.dev/api/people/${id}/`)).json();
 const App = () => {
   const [userId, setUserId] = createSignal();
-  const [user, { mutate, refetch }] = createResource(userId, fetchUser);
+  const [user, { mutate, refetch }] = createResource(userId, fetchUser); //when 'userId' changes, fetchUser will be called.
   return (
     <>
       <input
@@ -240,23 +227,24 @@ const App = () => {
 
 ## createSignal
 
-- **createSignal**
-  - `const [sig, setSig] = createSignal(0)` // can be single, object, array.
-    - getter and setter function.
-    - `<h1>{sig()}</h1>` // must call function.
-    - `setSig(c => c+1)` // uses previous value, or `setSig(sig()+ 1)`
-  - will always re-render the DOM node linked to the signal value.
+- signal is the reactive part of solidjs. Any element subscribing to the signal, will automatically update when signal updates.
+- `const [sig, setSig] = createSignal(0)` // can be single, object, array.
+  - getter and setter function.
+  - `<h1>{sig()}</h1>` // must call function.
+  - `setSig(c => c+1)` // uses previous value, or `setSig(sig()+ 1)`
+- will always re-render the DOM node linked to the signal value.
 
 # createStore
 
-- `const [store, setStore] = createStore({})` // array or object.
+- `const [store, setStore] = createStore({})` // can only be an array or object.
 - will only update the property that changed. Does not re-render all linked DOM nodes when one value is changed.
-- **solves nested reactivity**. All objects are wrapped in a proxy and the properties are tracked. Nested objects are wrapped in a proxy and also have their properties tracked.
+- **solves nested reactivity**. All objects are wrapped in a proxy and the properties are tracked and any nested objects inside the proxy are wrapped in a proxy and also have their properties tracked.
 - all Signals in Stores are created lazily as requested.
 - The `createStore` call takes the initial value and returns a read/write tuple similar to Signals.
-- **produce** // function that allows you to mutate `store` state and still maintain reactivity with functions like `push`.
-  - <https://www.solidjs.com/tutorial/stores_mutation>
+- **produce**
   - 3rd party libraries might need this.
+  - <https://www.solidjs.com/tutorial/stores_mutation>
+  - function that allows you to mutate `store` state and still maintain reactivity with functions like `push`.
 
 ```tsx
 // createStore todos
