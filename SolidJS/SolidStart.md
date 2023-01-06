@@ -6,6 +6,7 @@
 ## Tutorials
 
 - <https://dev.to/alexmercedcoder/creating-a-todo-list-with-solid-start-and-mongodb-1c4>
+- <https://tahazsh.com/blog/building-a-solidjs-app-from-scratch/>
 
 ## Routing
 

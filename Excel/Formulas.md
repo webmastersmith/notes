@@ -46,7 +46,7 @@
 
 - `=TODAY()` // dynamic. will change when day changes.
   - `=NOW()` // dynamic. time stamp.
-- `SHIFT + ;` // date -fixed
+- `CTRL + ;` // date -fixed
 - `SHIFT + CTRL + ;` // time -fixed
 - **WEEKDAY**
   - given date shows what day of week. // 1-7
