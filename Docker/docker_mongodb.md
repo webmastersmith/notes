@@ -49,6 +49,7 @@ services:
 ```
 
 - `docker compose -f ./mongo.yaml up -d`
+- `docker compose -f ./mongo.yaml down`
 
 ```yaml
 # docker-compose

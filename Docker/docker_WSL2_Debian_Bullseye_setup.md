@@ -10,10 +10,10 @@
 ```sh
 # docker start on login  https://docs.docker.com/engine/install/linux-postinstall/
 sudo groupadd docker
-sudo usermod -aG docker \$USER
+sudo usermod -aG docker $USER
 sudo touch /etc/fstab
 sudo docker run --rm hello-world
-nano \~/.profile
+nano ~/.profile
 sudo service docker status | sudo service docker start
 
 # don't think you need to do this.
