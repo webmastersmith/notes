@@ -233,12 +233,22 @@ const App = () => {
   - `<h1>{sig()}</h1>` // must call function.
   - `setSig(c => c+1)` // uses previous value, or `setSig(sig()+ 1)`
 - will always re-render the DOM node linked to the signal value.
+- signals can be global, and exported, but data is not persistent. If you change pages or refresh, data will be lost.
+  - `export const [data, setData] = createSignal(0)`
+  - `import { data, setData } from '~/index.tsx'`
+
+```tsx
+import { createSignal, createMemo, createRoot } from 'solid-js';
+function createCounter() {
+  const [count, setCount] = createSignal(0);
+
+```
 
 # createStore
 
 - `const [store, setStore] = createStore({})` // can only be an array or object.
 - will only update the property that changed. Does not re-render all linked DOM nodes when one value is changed.
-- **solves nested reactivity**. All objects are wrapped in a proxy and the properties are tracked and any nested objects inside the proxy are wrapped in a proxy and also have their properties tracked.
+- **solves nested reactivity**. All objects are wrapped in a **proxy** and the properties are tracked and any nested objects inside the proxy are wrapped in a proxy and also have their properties tracked.
 - all Signals in Stores are created lazily as requested.
 - The `createStore` call takes the initial value and returns a read/write tuple similar to Signals.
 - **produce**
