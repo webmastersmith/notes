@@ -188,6 +188,9 @@ function Counter() {
 - `const [user, { mutate, refetch }] = createResource(userId, fetchUser);`
   - `mutate` // directly update internal signal
   - `refetch` // manually fetch data.
+- **problems**
+  - when navigation happens resource will refetch.
+  - when params change, resource will refetch.
 
 ```tsx
 import { createResource } from 'solid-js';

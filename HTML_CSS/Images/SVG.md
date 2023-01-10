@@ -19,3 +19,8 @@ const svg = (
 );
 return <>{svg}</>;
 ```
+
+## SVG-Loaders
+
+- <https://github.com/SamHerbert/SVG-Loaders>
+- <https://samherbert.net/svg-loaders/>
